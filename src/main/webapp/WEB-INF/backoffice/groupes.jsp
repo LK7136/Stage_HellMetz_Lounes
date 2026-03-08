@@ -22,9 +22,9 @@
                 <table class="hm-table">
                     <thead>
                     <tr>
-                        <th>#</th>
                         <th>Nom</th>
-                        <th>Style</th>
+                        <th>Description</th>
+                        <th>Année Création</th>
                         <th>Pays</th>
                         <th>Site web</th>
                         <th>Actions</th>
@@ -33,18 +33,20 @@
                     <tbody>
                     <c:forEach var="g" items="${groupes}">
                         <tr>
-                            <td>${g.id}</td>
                             <td>
                                 <strong>${g.nom}</strong>
                             </td>
                             <td>
-                                <span class="hm-pill">${g.style}</span>
+                                <strong>${g.description}</strong>
                             </td>
-                            <td>${g.pays}</td>
                             <td>
-                                <c:if test="${not empty g.siteWeb}">
+                                <span class="hm-pill">${g.annee_creation}</span>
+                            </td>
+                            <td>${g.pays_origine}</td>
+                            <td>
+                                <c:if test="${not empty g.site_web}">
                                     <a class="hm-link-site"
-                                       href="${g.siteWeb}"
+                                       href="${g.site_web}"
                                        target="_blank" rel="noopener noreferrer">
                                         ouvrir
                                     </a>
