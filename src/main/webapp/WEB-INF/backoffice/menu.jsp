@@ -20,7 +20,7 @@
 
         <a href="${pageContext.request.contextPath}/backoffice/artiste"
            class="${activeMenu eq 'artiste' ? 'active' : ''}">
-            <span>🪩</span>
+            <span>🧑‍🎤</span>
             <span>Artistes</span>
         </a>
 

@@ -125,6 +125,23 @@ public class SceneDao {
     }
 
     /**
+    Delete pour sup une scene
+     */
+     public void delete(Scene scene) {
+        String sql = "DELETE FROM scene WHERE id_scene = ?";
+
+        try (Connection cn = ConnectionFactory.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+
+
+            ps.setInt(1, scene.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Méthode utilitaire pour remplir les paramètres d'un PreparedStatement.
      */
     private void fillPreparedStatement(PreparedStatement ps, Scene scene) throws SQLException {

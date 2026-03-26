@@ -1,6 +1,8 @@
 package com.hellmetz.festival.backoffice.dao;
 
 import com.hellmetz.festival.backoffice.model.Artiste;
+import com.hellmetz.festival.backoffice.model.Groupe;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -117,6 +119,24 @@ public class ArtisteDao {
         ps.setString(10, artiste.getUrl_instagram());
         ps.setString(11, artiste.getUrl_spotify());
         ps.setString(12, artiste.getExigences_catering());
+    }
+
+
+    /**
+     Delete pour sup un artiste
+     */
+    public void delete(Artiste artiste) {
+        String sql = "DELETE FROM artiste WHERE id_artiste = ?";
+
+        try (Connection cn = ConnectionFactory.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+
+
+            ps.setInt(1, artiste.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

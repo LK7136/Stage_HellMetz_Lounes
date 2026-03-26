@@ -1,6 +1,7 @@
 package com.hellmetz.festival.backoffice.dao;
 
 import com.hellmetz.festival.backoffice.model.Concert;
+import com.hellmetz.festival.backoffice.model.Groupe;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -90,6 +91,24 @@ public class ConcertDao {
 
             fillPreparedStatement(ps, concert);
             ps.setInt(9, concert.getId_concert());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     Delete pour sup un grp
+     */
+    public void delete(Concert concert) {
+        String sql = "DELETE FROM concert WHERE id_concert = ?";
+
+        try (Connection cn = ConnectionFactory.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+
+
+            ps.setInt(1, concert.getId_concert());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

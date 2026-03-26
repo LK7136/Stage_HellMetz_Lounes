@@ -1,7 +1,7 @@
 package com.hellmetz.festival.backoffice.servlet;
 
-import com.hellmetz.festival.backoffice.dao.GroupeDao;
-import com.hellmetz.festival.backoffice.model.Groupe;
+import com.hellmetz.festival.backoffice.dao.ArtisteDao;
+import com.hellmetz.festival.backoffice.model.Artiste;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -9,10 +9,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/backoffice/groupes/delete")
-public class GroupeDeleteServlet extends HttpServlet {
+@WebServlet("/backoffice/artiste/delete")
+public class ArtisteDeleteServlet extends HttpServlet {
 
-    private GroupeDao groupeDao = new GroupeDao();
+    private ArtisteDao artisteDao = new ArtisteDao();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -24,14 +24,14 @@ public class GroupeDeleteServlet extends HttpServlet {
             int id = Integer.parseInt(idParam);
 
 
-            Groupe groupeASupprimer = new Groupe();
-            groupeASupprimer.setId(id);
+            Artiste artisteASupprimer = new Artiste();
+            artisteASupprimer.setId(id);
 
             // 3. Appel de la méthode delete du DAO
-            groupeDao.delete(groupeASupprimer);
+            artisteDao.delete(artisteASupprimer);
         }
 
         // 4. Redirection vers la liste des scènes
-        response.sendRedirect(request.getContextPath() + "/backoffice/groupes");
+        response.sendRedirect(request.getContextPath() + "/backoffice/artiste");
     }
 }
