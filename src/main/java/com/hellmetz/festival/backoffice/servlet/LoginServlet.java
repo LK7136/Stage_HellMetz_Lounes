@@ -1,5 +1,8 @@
 package com.hellmetz.festival.backoffice.servlet;
 
+import com.hellmetz.festival.backoffice.model.UtilisateurSessionDTO;
+import java.util.List;
+
 import com.hellmetz.festival.backoffice.dao.UtilisateurDao;
 import com.hellmetz.festival.backoffice.model.Utilisateur;
 import jakarta.servlet.ServletException;
@@ -39,13 +42,23 @@ public class LoginServlet extends HttpServlet {
              // inclure la vue correspondant au formulaire
             request.getRequestDispatcher("/WEB-INF/backoffice/login.jsp").forward(request, response);
         } else {
-        // créer la variable de session contenant l'utilisateur entier
-            HttpSession session = request.getSession();
-            session.setAttribute("utilisateurConnecte", utilisateur);
+            // Authentification réussie : on récupère les rôles de l'utilisateur
+            List<String> codesRoles = utilisateurDao.getCodesRoles(
+            utilisateur.getIdUtilisateur());
 
-            // redirection du navigateur vers la page d'accueil sécurisée du backoffice
+            // On construit le DTO destiné à la session (sans le mot de passe)
+            UtilisateurSessionDTO dto =
+                    new UtilisateurSessionDTO(utilisateur, codesRoles);
+
+            // On stocke le DTO en session, PAS l'objet Utilisateur complet
+            HttpSession session = request.getSession();
+            session.setAttribute("utilisateurConnecte", dto);
+
+            // Redirection vers la page d'accueil sécurisée du backoffice
             response.sendRedirect(request.getContextPath() + "/backoffice/dashboard");
-        }
+            }
+
+    }
     }
 }
 
