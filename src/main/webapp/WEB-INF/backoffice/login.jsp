@@ -16,6 +16,16 @@
   <div class="row justify-content-center">
     <div class="col-md-6 col-lg-4">
 
+      <%-- Bloc temporaire : à supprimer dès qu'un compte Administrateur existe --%>
+      <%-- Permet de créer le tout premier utilisateur Administrateur --%>
+      <div class="text-center mt-3">
+        <a href="${pageContext.request.contextPath}/register"
+           class="btn btn-link">
+          Créer un compte (premier Administrateur)
+        </a>
+      </div>
+
+
       <form class="form-login p-4 border rounded shadow bg-white" method="post" action="${pageContext.request.contextPath}/login">
 
         <h2 class="form-login-heading text-center mb-4">Identification</h2>
@@ -43,6 +53,12 @@
         <button class="btn custom-btn w-100" type="submit">
           <i class="bi bi-box-arrow-in-right"></i> Se connecter
         </button>
+        <a href="/register.jsp">
+          <button class="btn custom-btn w-100">
+            <i class="bi bi-box-arrow-in-right"></i> S'enregistrer
+          </button>
+        </a>
+
       </form>
     </div>
   </div>
