@@ -50,8 +50,8 @@
             <span>📍</span>
             <span>Points d’intérêt (à venir)</span>
         </a>
-    </nav>
-</div>
+
+
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>

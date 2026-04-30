@@ -100,4 +100,81 @@ private void chargerPermissions(Connection conn, Utilisateur utilisateur) throws
         }
     }
 }
+    // Crée un utilisateur dans la table "utilisateur" et retourne son id généré
+    public long creerUtilisateur(Utilisateur u) throws SQLException {
+        String sql = "INSERT INTO hellmetz.utilisateur "
+                + "(email, identifiant, mot_de_passe, nom, prenom, actif) "
+                + "VALUES (?, ?, ?, ?, ?, ?)";
+
+        try (Connection cnx = ConnexionBD.getConnexion();
+             PreparedStatement ps = cnx.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            ps.setString(1, u.getEmail());
+            ps.setString(2, u.getIdentifiant());
+            ps.setString(3, u.getMotDePasse());
+            ps.setString(4, u.getNom());
+            ps.setString(5, u.getPrenom());
+            ps.setBoolean(6, u.isActif());
+            ps.executeUpdate();
+
+            try (ResultSet keys = ps.getGeneratedKeys()) {
+                if (keys.next()) {
+                    return keys.getLong(1);
+                }
+            }
+        }
+        throw new SQLException("Échec de la création : aucun id généré.");
+    }
+
+    // Associe un utilisateur à un rôle (table de liaison role_utilisateur)
+    public void associerRole(long idUtilisateur, long idRole) throws SQLException {
+        String sql = "INSERT INTO hellmetz.role_utilisateur "
+                + "(id_utilisateur, id_role) VALUES (?, ?)";
+
+        try (Connection cnx = ConnexionBD.getConnexion();
+             PreparedStatement ps = cnx.prepareStatement(sql)) {
+
+            ps.setLong(1, idUtilisateur);
+            ps.setLong(2, idRole);
+            ps.executeUpdate();
+        }
+    }
+
+    // Hachage SHA-512 du mot de passe (cohérent avec la mission 2)
+    public String hacherMotDePasse(String motDePasse) {
+        try {
+            java.security.MessageDigest md = java.security.MessageDigest.getInstance("SHA-512");
+            byte[] hash = md.digest(motDePasse.getBytes("UTF-8"));
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hash) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        } catch (Exception e) {
+            throw new RuntimeException("Erreur lors du hachage", e);
+        }
+    }
+    // À ajouter dans UtilisateurDao : récupère les codes des rôles d'un utilisateur.
+// Utilise les tables role_utilisateur et role.
+    public List<String> getCodesRoles(long idUtilisateur) {
+        List<String> codes = new ArrayList<>();
+        String sql = "SELECT r.code_role "
+                + "FROM hellmetz.role r "
+                + "JOIN hellmetz.role_utilisateur ru ON ru.id_role = r.id_role "
+                + "WHERE ru.id_utilisateur = ?";
+
+        try (Connection cnx = ConnexionBD.getConnexion();
+             PreparedStatement ps = cnx.prepareStatement(sql)) {
+
+            ps.setLong(1, idUtilisateur);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    codes.add(rs.getString("code_role"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return codes;
+    }
 }
