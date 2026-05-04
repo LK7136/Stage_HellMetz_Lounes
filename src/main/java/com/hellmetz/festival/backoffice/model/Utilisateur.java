@@ -15,6 +15,7 @@ public class Utilisateur {
     private Date dernier_connexion;
     private String code_role;
     private String code_permission;
+    private String MotDePasse;
 
     // A vous de compléter les différentes propriétés de la classe sans mettre le mot de passe
 
@@ -101,6 +102,14 @@ public class Utilisateur {
 
     public void setCode_permission(String code_permission) {
         this.code_permission = code_permission;
+
+    }
+    public String getMotDePasse() {
+        return MotDePasse;
+    }
+
+    public void setMotDePasse(String MotDePasse) {
+        this.identifiant = MotDePasse;
     }
 
 
@@ -116,9 +125,10 @@ public class Utilisateur {
         this.dernier_connexion = new Date();
         this.code_role = "Undefined";
         this.code_permission = "Undefined";
+        this.MotDePasse="Undefined";
     }
 
-    public Utilisateur(int idUtilisateur, String email, String identifiant, String nom, String prenom, Boolean actif, Date date_creation, Date dernier_connexion, String code_role, String code_permission) {
+    public Utilisateur(int idUtilisateur, String email, String identifiant, String nom, String prenom, Boolean actif, Date date_creation, Date dernier_connexion, String code_role, String code_permission, String MotDePasse) {
         this.idUtilisateur = idUtilisateur;
         this.email = email;
         this.identifiant = identifiant;
@@ -129,6 +139,7 @@ public class Utilisateur {
         this.dernier_connexion = dernier_connexion;
         this.code_role = code_role;
         this.code_permission = code_permission;
+        this.MotDePasse=MotDePasse;
 
     }
 

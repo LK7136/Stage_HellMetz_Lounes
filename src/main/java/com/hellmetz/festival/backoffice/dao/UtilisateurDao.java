@@ -4,10 +4,9 @@ package com.hellmetz.festival.backoffice.dao;
 import com.hellmetz.festival.backoffice.model.Utilisateur;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class UtilisateurDao {
@@ -106,7 +105,7 @@ private void chargerPermissions(Connection conn, Utilisateur utilisateur) throws
                 + "(email, identifiant, mot_de_passe, nom, prenom, actif) "
                 + "VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (Connection cnx = ConnexionBD.getConnexion();
+        try (Connection cnx = ConnectionFactory.getConnection();
              PreparedStatement ps = cnx.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, u.getEmail());
@@ -114,7 +113,7 @@ private void chargerPermissions(Connection conn, Utilisateur utilisateur) throws
             ps.setString(3, u.getMotDePasse());
             ps.setString(4, u.getNom());
             ps.setString(5, u.getPrenom());
-            ps.setBoolean(6, u.isActif());
+            ps.setBoolean(6, u.getActif());
             ps.executeUpdate();
 
             try (ResultSet keys = ps.getGeneratedKeys()) {
@@ -131,7 +130,7 @@ private void chargerPermissions(Connection conn, Utilisateur utilisateur) throws
         String sql = "INSERT INTO hellmetz.role_utilisateur "
                 + "(id_utilisateur, id_role) VALUES (?, ?)";
 
-        try (Connection cnx = ConnexionBD.getConnexion();
+        try (Connection cnx = ConnectionFactory.getConnection();
              PreparedStatement ps = cnx.prepareStatement(sql)) {
 
             ps.setLong(1, idUtilisateur);
@@ -163,7 +162,7 @@ private void chargerPermissions(Connection conn, Utilisateur utilisateur) throws
                 + "JOIN hellmetz.role_utilisateur ru ON ru.id_role = r.id_role "
                 + "WHERE ru.id_utilisateur = ?";
 
-        try (Connection cnx = ConnexionBD.getConnexion();
+        try (Connection cnx = ConnectionFactory.getConnection();
              PreparedStatement ps = cnx.prepareStatement(sql)) {
 
             ps.setLong(1, idUtilisateur);

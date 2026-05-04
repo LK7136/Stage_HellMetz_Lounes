@@ -1,7 +1,7 @@
 package com.hellmetz.festival.backoffice.dao;
 
 import com.hellmetz.festival.backoffice.model.Groupe;
-import com.hellmetz.festival.backoffice.model.Scene;
+import com.hellmetz.festival.backoffice.model.role;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -124,7 +124,7 @@ public class GroupeDao {
     }
 
     /**
-     Delete pour sup un grp
+     * Delete pour sup un grp
      */
     public void delete(Groupe groupe) {
         String sql = "DELETE FROM groupe WHERE id_groupe = ?";
@@ -163,3 +163,4 @@ public class GroupeDao {
         ps.setString(16, groupe.getUrl_fiche_technique());
     }
 }
+
