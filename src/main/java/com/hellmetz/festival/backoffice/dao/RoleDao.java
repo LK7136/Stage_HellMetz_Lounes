@@ -1,14 +1,17 @@
 package com.hellmetz.festival.backoffice.dao;
 
+
 import com.hellmetz.festival.backoffice.model.role;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * DAO pour la gestion des rôles et de leurs permissions
  */
 public class RoleDao {
+
 
     /**
      * Récupère la liste de tous les rôles disponibles
@@ -18,9 +21,11 @@ public class RoleDao {
         List<role> roles = new ArrayList<>();
         String sql = "SELECT id_role, code_role, libelle FROM hellmetz.role";
 
+
         try (Connection cn = ConnectionFactory.getConnection();
              PreparedStatement ps = cn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
+
 
             while (rs.next()) {
                 role r = new role();
@@ -34,15 +39,16 @@ public class RoleDao {
         }
         return roles;
     }
-
     /**
      * Récupère un rôle spécifique par son identifiant
      */
     public role getUnRole(long idRole) {
         String sql = "SELECT id_role, code_role, libelle FROM hellmetz.role WHERE id_role = ?";
 
+
         try (Connection cn = ConnectionFactory.getConnection();
              PreparedStatement ps = cn.prepareStatement(sql)) {
+
 
             ps.setLong(1, idRole);
             try (ResultSet rs = ps.executeQuery()) {
@@ -59,7 +65,6 @@ public class RoleDao {
         }
         return null;
     }
-
     /**
      * Associe une liste de permissions à un rôle (table role_permission)
      * Supprime les anciennes associations avant d'insérer les nouvelles
@@ -68,15 +73,18 @@ public class RoleDao {
         String sqlDelete = "DELETE FROM hellmetz.role_permission WHERE id_role = ?";
         String sqlInsert = "INSERT INTO hellmetz.role_permission (id_role, id_permission) VALUES (?, ?)";
 
+
         try (Connection cn = ConnectionFactory.getConnection()) {
             // Désactivation de l'auto-commit pour gérer une transaction unique
             cn.setAutoCommit(false);
+
 
             // 1. Suppression des habilitations existantes pour ce rôle
             try (PreparedStatement psDel = cn.prepareStatement(sqlDelete)) {
                 psDel.setLong(1, idRole);
                 psDel.executeUpdate();
             }
+
 
             // 2. Insertion des nouvelles habilitations en mode Batch pour la performance
             try (PreparedStatement psIns = cn.prepareStatement(sqlInsert)) {
@@ -88,10 +96,27 @@ public class RoleDao {
                 psIns.executeBatch();
             }
 
+
             // Validation de la transaction
             cn.commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+    public List<Long> getPermissionsParRole(long idRole) {
+        List<Long> ids = new ArrayList<>();
+        String sql = "SELECT id_permission FROM role_permission WHERE id_role = ?";
+        try (Connection con = ConnectionFactory.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setLong(1, idRole);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ids.add(rs.getLong("id_permission"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ids;
+    }
 }
+
