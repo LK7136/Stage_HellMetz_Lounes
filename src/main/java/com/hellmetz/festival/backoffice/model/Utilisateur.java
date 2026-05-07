@@ -16,6 +16,7 @@ public class Utilisateur {
     private String code_role;
     private String code_permission;
     private String MotDePasse;
+    private boolean isAdmin;
 
     // A vous de compléter les différentes propriétés de la classe sans mettre le mot de passe
 
@@ -109,9 +110,16 @@ public class Utilisateur {
     }
 
     public void setMotDePasse(String MotDePasse) {
-        this.identifiant = MotDePasse;
+        this.MotDePasse = MotDePasse;
     }
 
+    public boolean getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
+    }
 
     // Constructeurs à compléter
     public Utilisateur() {
@@ -126,9 +134,10 @@ public class Utilisateur {
         this.code_role = "Undefined";
         this.code_permission = "Undefined";
         this.MotDePasse="Undefined";
+        this.isAdmin=false;
     }
 
-    public Utilisateur(int idUtilisateur, String email, String identifiant, String nom, String prenom, Boolean actif, Date date_creation, Date dernier_connexion, String code_role, String code_permission, String MotDePasse) {
+    public Utilisateur(int idUtilisateur, String email, String identifiant, String nom, String prenom, Boolean actif, Date date_creation, Date dernier_connexion, String code_role, String code_permission, String MotDePasse, boolean isAdmin) {
         this.idUtilisateur = idUtilisateur;
         this.email = email;
         this.identifiant = identifiant;
@@ -140,7 +149,7 @@ public class Utilisateur {
         this.code_role = code_role;
         this.code_permission = code_permission;
         this.MotDePasse=MotDePasse;
-
+        this.isAdmin=isAdmin;
     }
 
 }

@@ -30,9 +30,9 @@
 
         <h2 class="form-login-heading text-center mb-4">Identification</h2>
 
-        <c:if test="${not empty messageErreur}">
+        <c:if test="${not empty erreur}">
           <div class="alert alert-danger" role="alert">
-              ${messageErreur}
+              ${erreur}
           </div>
         </c:if>
 

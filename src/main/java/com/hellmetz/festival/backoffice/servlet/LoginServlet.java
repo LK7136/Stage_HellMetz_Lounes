@@ -21,8 +21,19 @@ public class LoginServlet extends HttpServlet {
     // Équivalent du case 'demanderConnexion' (Affichage du formulaire)
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Code temporaire pour créer le compte admin
+        String pass = request.getParameter("success");
+        if (pass == "created"){
+            request.setAttribute("erreur", "le compte a été crée :-D");
+
+            // inclure la vue correspondant au formulaire
+            request.getRequestDispatcher("/WEB-INF/backoffice/login.jsp").forward(request, response);
+        }
+        // Fin code temporaire
+
         // Redirige vers la vue JSP
         request.getRequestDispatcher("/WEB-INF/backoffice/login.jsp").forward(request, response);
+        // mettre un if pour dire
     }
 
     // Équivalent du case 'validerConnexion' (Traitement du formulaire)
@@ -55,7 +66,7 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("utilisateurConnecte", dto);
 
             // Redirection vers la page d'accueil sécurisée du backoffice
-            response.sendRedirect(request.getContextPath() + "/backoffice/dashboard");
+            response.sendRedirect(request.getContextPath() + "/backoffice/groupes");
             }
 
     }

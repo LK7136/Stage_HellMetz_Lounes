@@ -43,8 +43,9 @@ public class UtilisateurDao {
                         utilisateur.setNom(rsUser.getString("nom"));
                         utilisateur.setActif(rsUser.getBoolean("actif"));
                         utilisateur.setDate_creation(rsUser.getDate("date_creation"));
-                        utilisateur.setDernier_connexion(rsUser.getDate("dernier_connexion"));
+                        utilisateur.setDernier_connexion(rsUser.getDate("derniere_connexion"));
                         utilisateur.setIdentifiant(identifiant);
+                        utilisateur.setAdmin(isAdmin(utilisateur.getIdUtilisateur()));
 
                         // 3. Récupération des Rôles
                         chargerRoles(conn, utilisateur);
@@ -142,13 +143,14 @@ private void chargerPermissions(Connection conn, Utilisateur utilisateur) throws
     // Hachage SHA-512 du mot de passe (cohérent avec la mission 2)
     public String hacherMotDePasse(String motDePasse) {
         try {
-            java.security.MessageDigest md = java.security.MessageDigest.getInstance("SHA-512");
+            String hash = BCrypt.hashpw(motDePasse, BCrypt.gensalt(12));
+            /*java.security.MessageDigest md = java.security.MessageDigest.getInstance("SHA-512");
             byte[] hash = md.digest(motDePasse.getBytes("UTF-8"));
             StringBuilder sb = new StringBuilder();
             for (byte b : hash) {
                 sb.append(String.format("%02x", b));
-            }
-            return sb.toString();
+            }*/
+            return hash;
         } catch (Exception e) {
             throw new RuntimeException("Erreur lors du hachage", e);
         }
@@ -175,5 +177,30 @@ private void chargerPermissions(Connection conn, Utilisateur utilisateur) throws
             e.printStackTrace();
         }
         return codes;
+    }
+
+    public boolean isAdmin (long idUtilisateur) {
+        // SELECT idRole From Role_utilisateur Where id_Utilisateur = idUtilisateur
+        int idRole = 0;
+
+        String sql=  "SELECT id_role FROM role_utilisateur WHERE id_utilisateur = ?";
+        try (Connection cnx = ConnectionFactory.getConnection();
+             PreparedStatement ps = cnx.prepareStatement(sql)) {
+
+            ps.setLong(1, idUtilisateur);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    idRole = rs.getInt("id_role");
+                    if (idRole == 1){
+                        return true;
+                    }else {
+                        return false;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

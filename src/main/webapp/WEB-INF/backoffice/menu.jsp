@@ -53,9 +53,6 @@
 
 
 
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="jakarta.tags.core" prefix="c" %>
-
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="${pageContext.request.contextPath}/backoffice/dashboard">HellMetz - Backoffice</a>
@@ -69,7 +66,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="${pageContext.request.contextPath}/backoffice/groupes">Gestion des Groupes</a>
                 </li>
-                <c:if test="${utilisateurConnecte.hasPermission('ADMIN')}">
+                <c:if test="${utilisateurConnecte.admin}">
                     <li class="nav-item">
                         <a class="nav-link" href="${pageContext.request.contextPath}/backoffice/utilisateurs">Utilisateurs</a>
                     </li>
@@ -93,4 +90,3 @@
         </div>
     </div>
 </nav>
-

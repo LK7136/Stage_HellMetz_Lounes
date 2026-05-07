@@ -20,6 +20,7 @@ public class UtilisateurSessionDTO implements Serializable {
     private String      identifiant;
     private String      email;
     private List<String> roles;       // codes des rôles (ex: ["ADMIN"])
+    private boolean     isAdmin;
 
     // Constructeur vide (nécessaire pour la sérialisation de session)
     public UtilisateurSessionDTO() {}
@@ -32,6 +33,7 @@ public class UtilisateurSessionDTO implements Serializable {
         this.identifiant   = u.getIdentifiant();
         this.email         = u.getEmail();
         this.roles         = roles;
+        this.isAdmin       = u.getIsAdmin();
     }
 
     // ----- Getters / setters -----
@@ -47,4 +49,12 @@ public class UtilisateurSessionDTO implements Serializable {
     public void   setEmail(String v)        { this.email = v; }
     public List<String> getRoles()          { return roles; }
     public void   setRoles(List<String> v)  { this.roles = v; }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
+    }
 }

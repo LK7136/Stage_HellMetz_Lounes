@@ -41,13 +41,18 @@
                             <td>${s.type}</td>
                             <td>${s.superficie} m²</td>
                             <td>
-                                <c:if test="${not empty s.urlPlanTechnique}">
-                                    <a class="hm-link-site"
-                                       href="${s.urlPlanTechnique}"
-                                       target="_blank" rel="noopener noreferrer">
-                                        voir
-                                    </a>
-                                </c:if>
+                                <c:choose>
+                                    <c:when test="${not empty s.urlPlanTechnique}">
+                                        <a class="hm-link-site"
+                                           href="${pageContext.request.contextPath}${s.urlPlanTechnique}"
+                                           target="_blank" rel="noopener noreferrer">
+                                            voir
+                                        </a>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <span class="text-muted">—</span>
+                                    </c:otherwise>
+                                </c:choose>
                             </td>
                             <td>
                                 <a class="hm-link-site"

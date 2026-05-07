@@ -102,7 +102,7 @@ public class RegisterServlet extends HttpServlet {
             long idUtilisateur = utilisateurDao.creerUtilisateur(u);
             utilisateurDao.associerRole(idUtilisateur, idRole);
 
-            response.sendRedirect(request.getContextPath() + "/utilisateurs?success=created");
+            response.sendRedirect(request.getContextPath() + "/login?success=created");
 
         } catch (Exception e) {
             e.printStackTrace();
