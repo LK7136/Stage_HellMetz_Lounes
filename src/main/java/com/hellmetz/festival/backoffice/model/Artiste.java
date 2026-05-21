@@ -1,32 +1,77 @@
-package com.hellmetz.festival.backoffice.model;
+package com.hellmetz.festival.model;
+
+import jakarta.persistence.*;  // Importez les annotations JPA/Hibernate
+import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
 
+// Question : pourquoi ces deux annotations sont-elles nécessaires ?
+@Entity          // A vous d'expliquer le rôle de chaque annotation
+@Table(name = "artiste")
 public class Artiste {
+
+    // Question : que signifie GenerationType.IDENTITY ?
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_artiste")
     private int id;
+
+    @NotBlank(message = "Le nom est obligatoire")
+    @Column(name = "nom", nullable = false, length = 100)
     private String nom;
-    private String prenom ;
-    private String nom_scene ;
-    private String biographie ;
+
+    @NotBlank(message = "Le prénom est obligatoire")
+    @Column(name = "prenom", nullable = false, length = 100)
+    private String prenom;
+
+    @Column(name = "nom_scene ")
+    private String nom_scene;
+
+    @Column(name = "biographie")
+    private String biographie;
+
+    @Column(name = "url_photo")
     private String url_photo;
-    private int id_style;
+
+    @Column(name = "nationalite")
     private String nationalite;
-    private BigDecimal cachet ;
+
+    @Column(name = "cachet")
+    private BigDecimal cachet;
+
+    @Column(name = "url_facebook")
     private String url_facebook;
+
+    @Column(name = "url_instagram")
     private String url_instagram;
+
+    @Column(name = "url_spotify")
     private String url_spotify;
+
+    @Column(name = "exigences_catering")
     private String exigences_catering;
-    private int id_groupe;
-    private String styleLibelle;
 
 
-    public int getId() {
-        return id;
-    }
+    // Relation vers style
+    @ManyToOne
+    @JoinColumn(name = "id_style") // clé étrangère en BDD
+    private Style style;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    // A vous : ajoutez la relation avec Groupe
+    @ManyToOne
+    @JoinColumn(name = "id_groupe")
+    private Groupe groupe;
+
+    // Indice : un artiste peut appartenir à plusieurs groupes
+    // Quelle annotation utiliserez-vous ? @OneToMany ? @ManyToMany ?
+
+    public Artiste() {}  // Constructeur vide obligatoire pour Hibernate
+
+    // A vous : ajoutez les getters et setters
+
+    public int getId() { return id;}
+
+    public void setId(int id) { this.id = id;}
 
     public String getNom() {return nom;}
 
@@ -48,9 +93,9 @@ public class Artiste {
 
     public void setUrl_photo(String url_photo) {this.url_photo = url_photo;}
 
-    public int getId_style() {return id_style;}
+    public int getId_style() {return style;}
 
-    public void setId_style(int id_style) {this.id_style = id_style;}
+    public void setId_style(int style) {this.style = style;}
 
     public String getNationalite() {return nationalite;}
 
@@ -84,43 +129,4 @@ public class Artiste {
 
     public void setStyleLibelle(String styleLibelle) { this.styleLibelle = styleLibelle; }
 
-    public Artiste () {
-        this.id = 0;
-        this.nom = "Undefined";
-        this.prenom = "Undefined";
-        this.nom_scene = "Undefined";
-        this.biographie = "Undefined";
-        this.url_photo = "Undefined";
-        this.id_style = 0;
-        this.nationalite = "Undefined";
-        this.cachet = BigDecimal.ZERO;
-        this.url_facebook = "Undefined";
-        this.url_instagram = "Undefined";
-        this.url_spotify = "Undefined";
-        this.exigences_catering = "Undefined";
-        this.id_groupe = 0;
-
-    }
-
-    public Artiste (int id, String nom, String prenom, String nom_scene, String biographie, String url_photo, int id_style, String nationalite, BigDecimal cachet, String url_facebook, String url_instagram, String url_spotify, String exigences_catering, int id_groupe) {
-        this.id                 = id;
-        this.nom                = nom;
-        this.prenom             = prenom;
-        this.nom_scene          = nom_scene;
-        this.biographie         = biographie;
-        this.url_photo          = url_photo;
-        this.id_style           = id_style;
-        this.nationalite        = nationalite;
-        this.cachet             = cachet;
-        this.url_facebook       = url_facebook;
-        this.url_instagram      = url_instagram;
-        this.url_spotify        = url_spotify;
-        this.exigences_catering = exigences_catering;
-        this.id_groupe          = id_groupe;
-
-    }
-
-
 }
-
-
