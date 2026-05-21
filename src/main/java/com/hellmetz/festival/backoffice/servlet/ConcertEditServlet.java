@@ -1,7 +1,10 @@
 package com.hellmetz.festival.backoffice.servlet;
 
 import com.hellmetz.festival.backoffice.dao.ConcertDao;
+import com.hellmetz.festival.backoffice.dao.EditionDao;
 import com.hellmetz.festival.backoffice.model.Concert;
+import com.hellmetz.festival.backoffice.dao.SceneDao;
+
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -18,6 +21,10 @@ import java.util.Date;
 public class ConcertEditServlet extends HttpServlet {
 
     private ConcertDao concertDao = new ConcertDao();
+    private SceneDao sceneDao = new SceneDao();
+    private EditionDao editionDao = new EditionDao();
+
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -39,6 +46,10 @@ public class ConcertEditServlet extends HttpServlet {
         req.setAttribute("activeMenu", "concerts");
         req.setAttribute("contentPage", "/WEB-INF/backoffice/concerts/edit.jsp");
 
+        req.setAttribute("scenes", sceneDao.findAll());
+        req.setAttribute("editions", editionDao.findAll());
+
+
         this.getServletContext()
                 .getRequestDispatcher("/WEB-INF/backoffice/layout.jsp")
                 .forward(req, resp);
@@ -47,21 +58,23 @@ public class ConcertEditServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String idParam = req.getParameter("id");
-
-        int idScene     = parseInteger(req.getParameter("id_scene"), 0);
+        int idScene = parseInteger(req.getParameter("nom_scene"), 0);
         int idEdition   = parseInteger(req.getParameter("id_edition"), 0);
-        String statut   = req.getParameter("statut") != null ? req.getParameter("statut") : "Non programmé"; // ✅ String au lieu de boolean
+        String statut   = req.getParameter("statut") != null ? req.getParameter("statut") : "Non programmé";
         int decibelsMax = parseInteger(req.getParameter("decibels_max"), 95);
-
         Date dateHeureDebut   = parseDate(req.getParameter("date_heure_debut"));
         Date dateHeureFin     = parseDate(req.getParameter("date_heure_fin"));
         Date dateBalanceDebut = parseDate(req.getParameter("date_balance_debut"));
         Date dateBalanceFin   = parseDate(req.getParameter("date_balance_fin"));
+        boolean actif   = Boolean.parseBoolean(req.getParameter("actif"));
+
+
+
 
         Concert concert = new Concert(
                 idScene, idEdition,
                 0,
-                statut, // ✅ String
+                statut,
                 dateHeureDebut, dateHeureFin,
                 dateBalanceDebut, dateBalanceFin,
                 decibelsMax

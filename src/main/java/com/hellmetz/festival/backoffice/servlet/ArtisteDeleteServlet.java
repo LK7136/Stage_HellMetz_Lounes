@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/backoffice/artiste/delete")
+@WebServlet("/backoffice/artistes/delete")
 public class ArtisteDeleteServlet extends HttpServlet {
 
     private ArtisteDao artisteDao = new ArtisteDao();
@@ -32,6 +32,6 @@ public class ArtisteDeleteServlet extends HttpServlet {
         }
 
         // 4. Redirection vers la liste des scènes
-        response.sendRedirect(request.getContextPath() + "/backoffice/artiste");
+        response.sendRedirect(request.getContextPath() + "/backoffice/artistes");
     }
 }

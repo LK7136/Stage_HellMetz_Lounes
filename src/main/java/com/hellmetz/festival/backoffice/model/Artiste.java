@@ -16,6 +16,9 @@ public class Artiste {
     private String url_instagram;
     private String url_spotify;
     private String exigences_catering;
+    private int id_groupe;
+    private String styleLibelle;
+
 
     public int getId() {
         return id;
@@ -72,6 +75,52 @@ public class Artiste {
     public String getExigences_catering() {return exigences_catering;}
 
     public void setExigences_catering(String exigences_catering) {this.exigences_catering = exigences_catering;}
+
+    public int getId_groupe() {return id_groupe; }
+
+    public void setId_groupe(int id_groupe) { this.id_groupe = id_groupe; }
+
+    public String getStyleLibelle() { return styleLibelle; }
+
+    public void setStyleLibelle(String styleLibelle) { this.styleLibelle = styleLibelle; }
+
+    public Artiste () {
+        this.id = 0;
+        this.nom = "Undefined";
+        this.prenom = "Undefined";
+        this.nom_scene = "Undefined";
+        this.biographie = "Undefined";
+        this.url_photo = "Undefined";
+        this.id_style = 0;
+        this.nationalite = "Undefined";
+        this.cachet = BigDecimal.ZERO;
+        this.url_facebook = "Undefined";
+        this.url_instagram = "Undefined";
+        this.url_spotify = "Undefined";
+        this.exigences_catering = "Undefined";
+        this.id_groupe = 0;
+
+    }
+
+    public Artiste (int id, String nom, String prenom, String nom_scene, String biographie, String url_photo, int id_style, String nationalite, BigDecimal cachet, String url_facebook, String url_instagram, String url_spotify, String exigences_catering, int id_groupe) {
+        this.id                 = id;
+        this.nom                = nom;
+        this.prenom             = prenom;
+        this.nom_scene          = nom_scene;
+        this.biographie         = biographie;
+        this.url_photo          = url_photo;
+        this.id_style           = id_style;
+        this.nationalite        = nationalite;
+        this.cachet             = cachet;
+        this.url_facebook       = url_facebook;
+        this.url_instagram      = url_instagram;
+        this.url_spotify        = url_spotify;
+        this.exigences_catering = exigences_catering;
+        this.id_groupe          = id_groupe;
+
+    }
+
+
 }
 
 

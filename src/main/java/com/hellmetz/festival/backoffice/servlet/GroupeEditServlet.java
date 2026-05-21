@@ -2,6 +2,8 @@ package com.hellmetz.festival.backoffice.servlet;
 
 import com.hellmetz.festival.backoffice.dao.GroupeDao;
 import com.hellmetz.festival.backoffice.model.Groupe;
+import com.hellmetz.festival.backoffice.dao.ArtisteDao;
+
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -15,10 +17,12 @@ import java.io.IOException;
 public class GroupeEditServlet extends HttpServlet {
 
     private GroupeDao groupeDao = new GroupeDao();
+    private ArtisteDao artisteDao = new ArtisteDao();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String idParam = req.getParameter("id");
+
 
         // Si un ID est fourni, on charge les données (Mode Modification)
         if (idParam != null && !idParam.trim().isEmpty()) {
@@ -27,6 +31,10 @@ public class GroupeEditServlet extends HttpServlet {
                 Groupe groupe = groupeDao.findById(id);
                 req.setAttribute("groupe", groupe);
                 req.setAttribute("pageTitle", "Modifier le groupe - HellMetz");
+                req.setAttribute("artistes", artisteDao.findArtistesByGroupe(id));
+
+
+
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
@@ -35,8 +43,12 @@ public class GroupeEditServlet extends HttpServlet {
             req.setAttribute("pageTitle", "Nouveau groupe - HellMetz");
         }
 
+        req.setAttribute("activeMenu", "groupes");
+
+
         // On indique au layout quelle page charger au centre
-        req.setAttribute("contentPage", "groupes/edit.jsp");
+        req.setAttribute("contentPage", "/WEB-INF/backoffice/groupes/edit.jsp");
+
 
         // On transfère la requête au layout principal (qui s'occupera d'inclure le header, le menu et la page d'édition)
         this.getServletContext()
@@ -112,5 +124,4 @@ public class GroupeEditServlet extends HttpServlet {
         }
         return defaultValue;
     }
-
 }

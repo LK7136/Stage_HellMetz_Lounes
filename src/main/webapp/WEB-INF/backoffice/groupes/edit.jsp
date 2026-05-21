@@ -71,6 +71,66 @@
                 <label class="form-check-label fw-bold text-success" for="actif">Groupe actif (programmé au festival)</label>
             </div>
 
+<%--            Afficher la liste des artistes apartenant au groupe modifier --%>
+            <div class="text-end mt-4 pt-3 border-top">
+                <div class="table-responsive">
+                    <table class="hm-table">
+                        <thead>
+                        <tr>
+                            <th>Photo</th>
+                            <th>Artiste / Groupe</th>
+                            <th>Style</th>
+                            <th>Nationalité</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <%-- On boucle sur la liste "artistes" --%>
+                        <c:forEach var="a" items="${artistes}">
+                            <tr>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${not empty a.url_photo}">
+                                            <img src="${pageContext.request.contextPath}/${a.url_photo}"
+                                                 alt="Photo de ${a.nom}"
+                                                 style="width: 50px; height: 50px; border-radius: 4px;">
+                                        </c:when>
+
+                                        <c:otherwise>
+                                            <img src="${pageContext.request.contextPath}/backoffice/images/artistes/defaultAvatar.png"
+                                                 alt="Photo par défaut"
+                                                 style="width: 50px; height: 50px; border-radius: 4px;">
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
+                                <td>
+                                    <strong>${a.nom_scene}</strong><br>
+                                    <small style="color: #666;">${a.prenom} ${a.nom}</small>
+                                </td>
+                                <td>
+                                    <span class="hm-pill">${a.styleLibelle}</span>
+                                </td>
+                                <td>${a.nationalite}</td>
+                                <td>
+                                    <a class="hm-link-site"
+                                       href="${pageContext.request.contextPath}/backoffice/artistes/edit?id=${a.id}&id_groupe_param=${groupe.id}">
+                                        ✏️ éditer
+                                    </a>
+                                    &nbsp;|&nbsp;
+                                    <a class="hm-link-site"
+                                       href="${pageContext.request.contextPath}/backoffice/artistes/delete?id=${a.id}"
+                                       onclick="return confirm('Supprimer l\'artiste ${a.id} ?');"
+                                       style="color: #e74c3c;">
+                                        🗑️ supprimer
+                                    </a>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
             <div class="text-end mt-4 pt-3 border-top">
                 <button type="submit" class="hm-btn-primary" style="border: none;">
                     <span>💾</span>

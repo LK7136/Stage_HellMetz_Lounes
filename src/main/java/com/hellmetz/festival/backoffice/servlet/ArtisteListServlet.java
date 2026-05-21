@@ -9,10 +9,11 @@ import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/backoffice/artiste")
+@WebServlet("/backoffice/artistes")
 public class ArtisteListServlet extends HttpServlet {
 
     private ArtisteDao artisteDao= new ArtisteDao();
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -24,7 +25,8 @@ public class ArtisteListServlet extends HttpServlet {
         // Pour le layout
         req.setAttribute("pageTitle", "HellMetz - Artistes");
         req.setAttribute("activeMenu", "artistes");  // pour surligner le menu
-        req.setAttribute("contentPage", "/WEB-INF/backoffice/artiste/artistes.jsp");
+        req.setAttribute("contentPage", "/WEB-INF/backoffice/artistes/list.jsp");
+
 
         req.getRequestDispatcher("/WEB-INF/backoffice/layout.jsp").forward(req, resp);
     }

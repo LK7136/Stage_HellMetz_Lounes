@@ -18,7 +18,7 @@
             <span>Scenes</span>
         </a>
 
-        <a href="${pageContext.request.contextPath}/backoffice/artiste"
+        <a href="${pageContext.request.contextPath}/backoffice/artistes"
            class="${activeMenu eq 'artiste' ? 'active' : ''}">
             <span>🧑‍🎤</span>
             <span>Artistes</span>
@@ -50,43 +50,45 @@
             <span>📍</span>
             <span>Points d’intérêt (à venir)</span>
         </a>
+    </nav>
 
 
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="${pageContext.request.contextPath}/backoffice/dashboard">HellMetz - Backoffice</a>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="${pageContext.request.contextPath}/backoffice/dashboard">HellMetz - Backoffice</a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/backoffice/groupes">Gestion des Groupes</a>
-                </li>
-                <c:if test="${utilisateurConnecte.admin}">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/backoffice/utilisateurs">Utilisateurs</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/backoffice/groupes">Gestion des Groupes</a>
                     </li>
-                </c:if>
-            </ul>
+                    <c:if test="${utilisateurConnecte.admin}">
+                        <li class="nav-item">
+                            <a class="nav-link" href="${pageContext.request.contextPath}/backoffice/utilisateurs">Utilisateurs</a>
+                        </li>
+                    </c:if>
+                </ul>
 
-            <ul class="navbar-nav ms-auto">
-                <c:if test="${not empty utilisateurConnecte}">
-                    <li class="nav-item d-flex align-items-center">
-                        <span class="nav-link text-light me-3">
-                            <i class="bi bi-person-circle"></i> Bonjour, <strong>${utilisateurConnecte.prenom} ${utilisateurConnecte.nom}</strong>
-                         </span>
-                    </li>
-                    <li class="nav-item">
-                        <a class="btn btn-outline-danger btn-sm mt-1" href="${pageContext.request.contextPath}/logout">
-                            <i class="bi bi-box-arrow-right"></i> Se déconnecter
-                        </a>
-                    </li>
-                </c:if>
-            </ul>
+                <ul class="navbar-nav ms-auto">
+                    <c:if test="${not empty utilisateurConnecte}">
+                        <li class="nav-item d-flex align-items-center">
+                            <span class="nav-link text-light me-3">
+                                <i class="bi bi-person-circle"></i> Bonjour, <strong>${utilisateurConnecte.prenom} ${utilisateurConnecte.nom}</strong>
+                             </span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-outline-danger btn-sm mt-1" href="${pageContext.request.contextPath}/logout">
+                                <i class="bi bi-box-arrow-right"></i> Se déconnecter
+                            </a>
+                        </li>
+                    </c:if>
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
+</div>

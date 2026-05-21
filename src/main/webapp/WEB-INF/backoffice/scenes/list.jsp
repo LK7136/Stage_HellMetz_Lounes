@@ -45,8 +45,7 @@
                                     <c:when test="${not empty s.urlPlanTechnique}">
                                         <a class="hm-link-site"
                                            href="${pageContext.request.contextPath}${s.urlPlanTechnique}"
-                                           target="_blank" rel="noopener noreferrer">
-                                            voir
+                                           target="_blank" rel="noopener noreferrer">voir
                                         </a>
                                     </c:when>
                                     <c:otherwise>

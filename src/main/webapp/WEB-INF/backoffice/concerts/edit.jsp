@@ -25,12 +25,30 @@
 
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <label for="id_scene" class="form-label fw-bold">ID Scène <span class="text-danger">*</span></label>
-                    <input type="number" id="id_scene" name="id_scene" class="form-control" value="${concert.id_scene}" required>
+                    <label for="nom_scene" class="form-label fw-bold">Nom de la scène</label>
+                    <select id="nom_scene" name="nom_scene" class="form-control">
+                        <option value="">-- Sélectionner une scène --</option>
+                        <c:forEach var="scene" items="${scenes}">
+                            <option value="${scene.id}"
+                                    <c:if test="${scene.id == concert.id_scene}">selected</c:if>>
+                                    ${scene.nom}
+                            </option>
+                        </c:forEach>
+                    </select>
+
                 </div>
+
                 <div class="col-md-6">
-                    <label for="id_edition" class="form-label fw-bold">ID Édition <span class="text-danger">*</span></label>
-                    <input type="number" id="id_edition" name="id_edition" class="form-control" value="${concert.id_edition}" required>
+                    <label for="id_edition" class="form-label fw-bold">Édition <span class="text-danger">*</span></label>
+                    <select id="id_edition" name="id_edition" class="form-control">
+                        <option value="">-- Sélectionner une édition --</option>
+                        <c:forEach var="edition" items="${editions}">
+                            <option value="${edition.id}"
+                                    <c:if test="${edition.actif}"> selected</c:if>>
+                                    ${edition.nom_edition}
+                            </option>
+                        </c:forEach>
+                    </select>
                 </div>
             </div>
 

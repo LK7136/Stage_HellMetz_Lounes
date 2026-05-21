@@ -1,5 +1,6 @@
 package com.hellmetz.festival.backoffice.dao;
 
+import com.hellmetz.festival.backoffice.model.Artiste;
 import com.hellmetz.festival.backoffice.model.Groupe;
 import com.hellmetz.festival.backoffice.model.role;
 
@@ -89,6 +90,7 @@ public class GroupeDao {
         }
         return null;
     }
+
 
     /**
      * Insère un nouveau groupe dans la base de données.

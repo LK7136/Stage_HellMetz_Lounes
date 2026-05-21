@@ -15,11 +15,10 @@ public class ConcertDao {
     public List<Concert> findAll() {
         List<Concert> result = new ArrayList<>();
 
-        String sql = "SELECT c.id_scene, c.id_edition, c.id_concert, c.statut, " +
-                "c.date_heure_debut, c.date_heure_fin, c.heure_balance_debut, c.heure_balance_fin, c.decibels_max, " +
-                "s.nom_scene, g.nom_groupe " +
+        String sql = "SELECT c.id_scene, c.id_edition, c.id_concert, c.statut, c.date_heure_debut, c.date_heure_fin, c.heure_balance_debut, c.heure_balance_fin, c.decibels_max, s.nom_scene, g.nom_groupe, e.nom_edition " +
                 "FROM concert c " +
-                "JOIN scene s ON c.id_scene = s.id_scene " +
+                "LEFT JOIN edition_festival e ON c.id_edition = e.id_edition " +
+                "LEFT JOIN scene s ON c.id_scene = s.id_scene " +
                 "JOIN groupe g ON g.id_concert = c.id_concert " +
                 "ORDER BY c.id_concert";
 
