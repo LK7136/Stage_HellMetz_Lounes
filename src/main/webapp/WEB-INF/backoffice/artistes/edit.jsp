@@ -107,8 +107,8 @@
                     <textarea id="exigences_catering" name="exigences_catering" class="form-control">${artiste.exigences_catering}</textarea>
                 </div>
                 <div>
-                    <select id="id_style" name="id_style" class="form-control">
-                        <option value="">-- Sélectionner un style --</option>
+                    <select id="nom_groupe" name="nom_groupe" class="form-control">
+                        <option value="">-- Sélectionner un groupe --</option>
                         <c:forEach var="style" items="${styles}">
                             <option value="${style.id}"
                                     <c:if test="${style.id == artiste.id_style}">selected</c:if>>
