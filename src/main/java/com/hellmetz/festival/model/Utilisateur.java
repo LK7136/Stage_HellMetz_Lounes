@@ -1,0 +1,174 @@
+package com.hellmetz.festival.model;
+
+import jakarta.persistence.*;  // Importez les annotations JPA/Hibernate
+import jakarta.validation.constraints.*;
+import java.util.Date;
+import java.util.List;
+
+
+
+@Entity
+@Table(name = "utilisateur")
+public class Utilisateur {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_utilisateur")
+    private int id;
+
+    @NotBlank(message = "L'identifiant est obligatoire")
+    @Column(name = "identifiant", nullable = false, length = 100)
+    private String identifiant;
+
+    @NotBlank(message = "Le mot de passe est obligatoire")
+    @Column(name = "mot_de_passe", nullable = false, length = 255)
+    private String motDePasse;
+
+    @NotBlank(message = "Le nom est obligatoire")
+    @Column(name = "nom", nullable = false, length = 100)
+    private String nom;
+
+    @NotBlank(message = "Le prénom est obligatoire")
+    @Column(name = "prenom", nullable = false, length = 100)
+    private String prenom;
+
+    @NotBlank(message = "L'email est obligatoire")
+    @Column(name = "email", nullable = false, length = 100)
+    private String email;
+
+    @Column(name = "actif")
+    private Boolean actif;
+
+    @Column(name = "date_creation")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreation;
+
+    @Column(name = "derniere_connexion")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date derniereConnexion;
+
+    @Column(name = "is_admin", nullable = false)
+    private boolean isAdmin;
+
+
+    @ManyToMany
+    @JoinTable(name = "role_utilisateur", joinColumns = @JoinColumn(name = "id_utilisateur"), inverseJoinColumns = @JoinColumn(name = "id_role"))
+    private List<Role> roles;
+
+    @ManyToMany
+    @JoinTable(name = "role_permission", joinColumns = @JoinColumn(name = "id_role"), inverseJoinColumns = @JoinColumn(name = "id_permission"))
+    private List<Permission> permissions;
+
+
+
+    // Getters et Setters à compléter
+
+
+    public class Utilisateur() {}
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getIdentifiant() {
+        return identifiant;
+    }
+
+    public void setIdentifiant(String identifiant) {
+        this.identifiant = identifiant;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public String getPrenom() {
+        return prenom;
+    }
+
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
+
+    public Boolean getActif() {
+        return actif;
+    }
+
+    public void setActif(Boolean actif) {
+        this.actif = actif;
+    }
+
+    public Date getDateCreation() {
+        return dateCreation;
+    }
+
+    public void setDateCreation(Date dateCreation) {
+        this.dateCreation = dateCreation;
+    }
+
+    public Date getDerniereConnexion() {
+        return derniereConnexion;
+    }
+
+    public void setDerniereConnexion(Date derniereConnexion) {
+        this.derniereConnexion = derniereConnexion;
+    }
+
+
+    public String getMotDePasse() {
+        return motDePasse;
+    }
+
+    public void setMotDePasse(String motDePasse) {
+        this.motDePasse = motDePasse;
+    }
+
+    public boolean getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public List<Permission> getPermission() { return permission;}
+
+    public void setPermission(List<Permission> permission) { this.permission = permission; }
+
+}
+
+
+
+
+
+
+
+
+
+
+

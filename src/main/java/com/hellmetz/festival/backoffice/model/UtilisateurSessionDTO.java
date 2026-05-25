@@ -1,5 +1,7 @@
 package com.hellmetz.festival.backoffice.model;
 
+import com.hellmetz.festival.model.Utilisateur;
+
 import java.io.Serializable;
 import java.util.List;
 

@@ -2,7 +2,6 @@ package com.hellmetz.festival.model;
 
 import jakarta.persistence.*;  // Importez les annotations JPA/Hibernate
 import jakarta.validation.constraints.*;
-
 import java.math.BigDecimal;
 
 @Entity
@@ -121,6 +120,6 @@ public class Artiste {
 
     public Style getStyle() { return style; }
 
-    public void setStylee(Style style) { this.style = style; }
+    public void setStyle(Style style) { this.style = style; }
 
 }

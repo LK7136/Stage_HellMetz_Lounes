@@ -4,7 +4,7 @@ import com.hellmetz.festival.backoffice.model.UtilisateurSessionDTO;
 import java.util.List;
 
 import com.hellmetz.festival.backoffice.dao.UtilisateurDao;
-import com.hellmetz.festival.backoffice.model.Utilisateur;
+import com.hellmetz.festival.model.Utilisateur;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

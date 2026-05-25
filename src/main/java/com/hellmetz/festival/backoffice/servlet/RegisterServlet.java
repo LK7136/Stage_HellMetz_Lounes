@@ -5,7 +5,7 @@ import com.hellmetz.festival.backoffice.dao.RoleDao;
 import com.hellmetz.festival.backoffice.dao.permissionDao;
 import com.hellmetz.festival.backoffice.model.permission;
 import com.hellmetz.festival.backoffice.model.role;
-import com.hellmetz.festival.backoffice.model.Utilisateur;
+import com.hellmetz.festival.model.Utilisateur;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -14,7 +14,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

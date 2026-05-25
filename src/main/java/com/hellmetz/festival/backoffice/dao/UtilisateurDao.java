@@ -1,7 +1,7 @@
 package com.hellmetz.festival.backoffice.dao;
 
 
-import com.hellmetz.festival.backoffice.model.Utilisateur;
+import com.hellmetz.festival.model.Utilisateur;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.*;
