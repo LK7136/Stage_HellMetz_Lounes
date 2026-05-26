@@ -15,16 +15,16 @@ public class Edition {
     private int id;
 
     @Column(name = "annnee")
-    private int annnee;
+    private int annee;
 
     @Column(name = "nom_edition")
-    private String nom_edition;
+    private String nomEdition;
 
     @Column(name = "date_debut")
-    private Date date_debut;
+    private Date dateDebut;
 
     @Column(name = "date_fin")
-    private Date date_fin;
+    private Date dateFin;
 
     @Column(name = "longitude")
     private BigDecimal longitude;
@@ -36,16 +36,21 @@ public class Edition {
     private String theme;
 
     @Column(name = "url_affiche_officielle")
-    private String url_affiche_officielle;
+    private String urlAfficheOfficielle;
 
     @Column(name = "budget_previsionnel")
-    private BigDecimal budget_previsionnel;
+    private BigDecimal budgetPrevisionnel;
 
     @Column(name = "jauge_maximale")
-    private int jauge_maximale;
+    private int jaugeMaximale;
 
     @Column(name = "actif")
     private boolean actif;
+
+    @Column(name = "lattitude")
+    private BigDecimal lattitude;
+
+
 
     public Edition() {}
 
@@ -53,17 +58,17 @@ public class Edition {
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
-    public int getId_edition() { return annnee; }
-    public void setAnnnee(int annnee) { this.annnee = annnee; }
+    public int getAnnee() { return annee; }
+    public void setAnnee(int annee) { this.annee = annee; }
 
-    public String getNom_edition() { return nom_edition; }
-    public void setNom_edition(String nom_edition) { this.nom_edition = nom_edition; }
+    public String getNomEdition() { return nomEdition; }
+    public void setNomEdition(String nomEdition) { this.nomEdition = nomEdition; }
 
-    public Date getDate_debut() { return date_debut; }
-    public void setDate_debut(Date date_debut) { this.date_debut = date_debut; }
+    public Date getDateDebut() { return dateDebut; }
+    public void setDateDebut(Date dateDebut) { this.dateDebut = dateDebut; }
 
-    public Date getDate_fin() { return date_fin; }
-    public void setDate_fin(Date date_fin) { this.date_fin = date_fin; }
+    public Date getDateFin() { return dateFin; }
+    public void setDateFin(Date dateFin) { this.dateFin = dateFin; }
 
     public BigDecimal getLongitude() { return longitude; }
     public void setLongitude(BigDecimal longitude) { this.longitude = longitude; }
@@ -74,31 +79,18 @@ public class Edition {
     public String getTheme() { return theme; }
     public void setTheme(String theme) { this.theme = theme; }
 
-    public String getUrl_affiche_officielle() { return url_affiche_officielle; }
-    public void setUrl_affiche_officielle(String url_affiche_officielle) { this.url_affiche_officielle = url_affiche_officielle; }
+    public String getUrlAfficheOfficielle() { return urlAfficheOfficielle; }
+    public void setUrlAfficheOfficielle(String urlAfficheOfficielle) { this.urlAfficheOfficielle = urlAfficheOfficielle; }
 
-    public BigDecimal getBudget_previsionnel() { return budget_previsionnel; }
-    public void setBudget_previsionnel(BigDecimal budget_previsionnel) { this.budget_previsionnel = budget_previsionnel; }
+    public BigDecimal getBudgetPrevisionnel() { return budgetPrevisionnel; }
+    public void setBudgetPrevisionnel(BigDecimal budgetPrevisionnel) { this.budgetPrevisionnel = budgetPrevisionnel; }
 
-    public int getJauge_maximale() { return jauge_maximale; }
-    public void setJauge_maximale(int jauge_maximale) { this.jauge_maximale = jauge_maximale; }
+    public int getJaugeMaximale() { return jaugeMaximale; }
+    public void setJaugeMaximale(int jaugeMaximale) { this.jaugeMaximale = jaugeMaximale; }
 
     public boolean getActif() { return actif; }
     public void setActif(boolean actif) { this.actif = actif; }
 
-
-    public Edition (int id, int annnee, String nom_edition, Date date_debut, Date date_fin, BigDecimal longitude, String lieu, String theme, String url_affiche_officielle, BigDecimal budget_previsionnel, int jauge_maximale, boolean actif) {
-        this.id = id;
-        this.annnee = annnee;
-        this.nom_edition = nom_edition;
-        this.date_debut = date_debut;
-        this.date_fin = date_fin;
-        this.longitude = longitude;
-        this.lieu = lieu;
-        this.theme = theme;
-        this.url_affiche_officielle = url_affiche_officielle;
-        this.budget_previsionnel = budget_previsionnel;
-        this.jauge_maximale = jauge_maximale;
-        this.actif = actif;
-    }
+    public boolean getLattitude() { return lattitude; }
+    public void setLattitude(boolean lattitude) { this.lattitude = lattitude; }
 }

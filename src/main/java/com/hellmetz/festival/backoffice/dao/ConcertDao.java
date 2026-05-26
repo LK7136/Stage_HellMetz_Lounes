@@ -1,7 +1,6 @@
 package com.hellmetz.festival.backoffice.dao;
 
-import com.hellmetz.festival.backoffice.model.Concert;
-import com.hellmetz.festival.backoffice.model.Groupe;
+import com.hellmetz.festival.model.Concert;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

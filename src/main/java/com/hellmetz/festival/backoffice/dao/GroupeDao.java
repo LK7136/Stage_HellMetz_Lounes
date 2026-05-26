@@ -1,7 +1,7 @@
 //package com.hellmetz.festival.backoffice.dao;
 //
 //import com.hellmetz.festival.backoffice.model.Artiste;
-//import com.hellmetz.festival.backoffice.model.Groupe;
+//import com.hellmetz.festival.model.Groupe;
 //
 //import java.sql.*;
 //import java.util.ArrayList;

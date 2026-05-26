@@ -1,7 +1,7 @@
 package com.hellmetz.festival.backoffice.servlet;
 
 import com.hellmetz.festival.backoffice.dao.ConcertDao;
-import com.hellmetz.festival.backoffice.model.Concert;
+import com.hellmetz.festival.model.Concert;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

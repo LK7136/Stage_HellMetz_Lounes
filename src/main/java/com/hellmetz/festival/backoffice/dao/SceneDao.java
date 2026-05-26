@@ -1,6 +1,6 @@
 package com.hellmetz.festival.backoffice.dao;
 
-import com.hellmetz.festival.backoffice.model.Scene;
+import com.hellmetz.festival.model.Scene;
 
 import java.sql.*;
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
 //package com.hellmetz.festival.backoffice.servlet;
 //
 //import com.hellmetz.festival.backoffice.dao.GroupeDao;
-//import com.hellmetz.festival.backoffice.model.Groupe;
+//import com.hellmetz.festival.model.Groupe;
 //
 //
 //import jakarta.servlet.ServletException;

@@ -12,7 +12,7 @@ public class Artiste {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_artiste")
-    private int id;
+    private Long id;
 
     @NotBlank(message = "Le nom est obligatoire")
     @Column(name = "nom", nullable = false, length = 100)
@@ -68,7 +68,7 @@ public class Artiste {
 
     public int getId() { return id;}
 
-    public void setId(int id) { this.id = id;}
+    public void setId(Long id) { this.id = id;}
 
     public String getNom() {return nom;}
 

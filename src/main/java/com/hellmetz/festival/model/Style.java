@@ -10,7 +10,7 @@ public class Style {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_style")
-    private int id;
+    private Long id;
 
     @Column(name = "libelle")
     private String libelle;
@@ -23,7 +23,7 @@ public class Style {
     // Getters / Setters
     public int getId() { return id; }
 
-    public void setId(int id) { this.id = id; }
+    public void setId(Long id) { this.id = id; }
 
     public String getLibelle() { return libelle; }
 
@@ -33,10 +33,5 @@ public class Style {
     public void setDescription(String description) { this.description = description; }
 
 
-    public Style (int id, String libelle, String description) {
-        this.id = id;
-        this.libelle = libelle;
-        this.description = description;
-    }
 }
 
