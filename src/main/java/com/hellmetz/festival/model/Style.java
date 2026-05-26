@@ -32,11 +32,6 @@ public class Style {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
-    public Style () {
-        this.id = 0;
-        this.libelle = "Undefined";
-        this.description = "Undefined";
-    }
 
     public Style (int id, String libelle, String description) {
         this.id = id;
