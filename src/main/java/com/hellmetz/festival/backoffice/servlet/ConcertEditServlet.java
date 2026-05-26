@@ -1,7 +1,6 @@
 package com.hellmetz.festival.backoffice.servlet;
 
 import com.hellmetz.festival.backoffice.dao.ConcertDao;
-import com.hellmetz.festival.backoffice.dao.EditionDao;
 import com.hellmetz.festival.backoffice.model.Concert;
 import com.hellmetz.festival.backoffice.dao.SceneDao;
 

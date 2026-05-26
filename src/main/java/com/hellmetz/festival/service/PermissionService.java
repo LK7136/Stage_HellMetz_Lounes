@@ -1,7 +1,7 @@
 package com.hellmetz.festival.service;
 
-import com.hellmetz.festival.model.Style;
-import com.hellmetz.festival.repository.StyleRepository;
+import com.hellmetz.festival.model.Permission;
+import com.hellmetz.festival.repository.PermissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,13 +9,10 @@ import java.util.List;
 
 @Service
 @Transactional
-public class StyleService {
+public class PermissionService {
 
     @Autowired
-    private StyleRepository styleRepository;
+    private PermissionRepository permissionRepository;
 
-
-    public List<Style> findAll() {
-        return styleRepository.findAll();
-    }
+    public List<Permission> findAll() {return permissionRepository.findAll();}
 }

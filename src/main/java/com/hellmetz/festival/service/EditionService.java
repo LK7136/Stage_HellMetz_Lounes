@@ -1,6 +1,8 @@
 package com.hellmetz.festival.service;
 
+import com.hellmetz.festival.model.Edition;
 import com.hellmetz.festival.model.Style;
+import com.hellmetz.festival.repository.EditionRepository;
 import com.hellmetz.festival.repository.StyleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,13 +11,11 @@ import java.util.List;
 
 @Service
 @Transactional
-public class StyleService {
+public class EditionService {
 
     @Autowired
-    private StyleRepository styleRepository;
+    private EditionRepository editionRepository;
 
 
-    public List<Style> findAll() {
-        return styleRepository.findAll();
-    }
+    public List<Edition> findAll() {return editionRepository.findAll();}
 }

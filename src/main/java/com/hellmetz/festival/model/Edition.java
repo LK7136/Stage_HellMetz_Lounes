@@ -1,22 +1,53 @@
-package com.hellmetz.festival.backoffice.model;
+package com.hellmetz.festival.model;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
+@Entity
+@Table(name = "edition_festival")
 public class Edition {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_edition")
     private int id;
+
+    @Column(name = "annnee")
     private int annnee;
+
+    @Column(name = "nom_edition")
     private String nom_edition;
+
+    @Column(name = "date_debut")
     private Date date_debut;
+
+    @Column(name = "date_fin")
     private Date date_fin;
+
+    @Column(name = "longitude")
     private BigDecimal longitude;
+
+    @Column(name = "lieu")
     private String lieu;
+
+    @Column(name = "theme")
     private String theme;
+
+    @Column(name = "url_affiche_officielle")
     private String url_affiche_officielle;
+
+    @Column(name = "budget_previsionnel")
     private BigDecimal budget_previsionnel;
+
+    @Column(name = "jauge_maximale")
     private int jauge_maximale;
+
+    @Column(name = "actif")
     private boolean actif;
 
+    public Edition() {}
 
     // Getters / Setters
     public int getId() { return id; }
@@ -55,25 +86,6 @@ public class Edition {
     public boolean getActif() { return actif; }
     public void setActif(boolean actif) { this.actif = actif; }
 
-
-
-
-
-
-    public Edition () {
-        this.id = 0;
-        this.annnee = 0;
-        this.nom_edition = "Undefined";
-        this.date_debut = null;
-        this.date_fin = null;
-        this.longitude = BigDecimal.ZERO;
-        this.lieu = "Undefined";
-        this.theme = "Undefined";
-        this.url_affiche_officielle = "Undefined";
-        this.budget_previsionnel = BigDecimal.ZERO;
-        this.jauge_maximale = 0;
-        this.actif = false;
-    }
 
     public Edition (int id, int annnee, String nom_edition, Date date_debut, Date date_fin, BigDecimal longitude, String lieu, String theme, String url_affiche_officielle, BigDecimal budget_previsionnel, int jauge_maximale, boolean actif) {
         this.id = id;
