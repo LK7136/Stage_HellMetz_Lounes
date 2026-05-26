@@ -1,6 +1,6 @@
 package com.hellmetz.festival.backoffice.dao;
 
-import com.hellmetz.festival.backoffice.model.Style;
+import com.hellmetz.festival.model.Style;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

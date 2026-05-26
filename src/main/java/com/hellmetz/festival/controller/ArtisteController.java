@@ -7,7 +7,6 @@ import com.hellmetz.festival.service.StyleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,19 +26,19 @@ public class ArtisteController {
     public String liste(Model model) {
         model.addAttribute("artistes", artisteService.findAll());
         model.addAttribute("pageTitle", "HellMetz - Artistes");
-        model.addAttribute("activeMenu", "artistes");
-        return "/artistes/liste";
+        model.addAttribute("activeMenu", "templates");
+        return "list";
     }
 
     // Formulaire d'edit — GET affiche le form vide
     @GetMapping("/ajouter")
-    public String edit(@RequestParam(required = false) Integer id,
+    public String edit(@RequestParam(required = false) Long id,
                        @RequestParam(required = false) Integer idGroupeParam,
                        Model model)  {
 
         // si id null on modifie l'artiste
         if (id != null) {
-            Artiste artiste = artisteService.findById(id));
+            Artiste artiste = artisteService.findById(id);
             model.addAttribute("artiste", artiste);
             model.addAttribute("pageTitle", "Modifier l'artiste - HellMetz");
         } else { // sinon on le creer
@@ -57,7 +56,7 @@ public class ArtisteController {
 
         // pour le menu deroulant des styles
         model.addAttribute("styles", styleService.findAll());
-        return "backoffice/artistes/edit";
+        return "/ressources/templates/artiste/edit";
     }
 
 
@@ -78,24 +77,24 @@ public class ArtisteController {
         // pour upload photo
         if (urlPhotoArtiste != null && !urlPhotoArtiste.isEmpty()) {
             String fileName = urlPhotoArtiste.getOriginalFilename();
-            artiste.setUrlPhoto("/resources/images/artistes/" + fileName);
+            artiste.setUrlPhoto("/static/images/artistes/" + fileName);
         }
 
         artisteService.save(artiste);
 
         // redirge
         if (idGroupeParam != null) {
-            return "redirect:/resources/groupes/edit?id=" + idGroupeParam;
+            return "redirect:/resources/templates/groupe/edit?id=" + idGroupeParam;
         }
-        return "redirect:/resources/artistes";
+        return "redirect:/resources/templates/artiste";
     }
 
 
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable int id) {
+    public String delete(@PathVariable Long id) {
         artisteService.deleteById(id);
-        return "redirect:/resources/artistes";
+        return "redirect:/resources/templates/artistes";
     }
 
 }

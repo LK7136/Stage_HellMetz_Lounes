@@ -1,9 +1,13 @@
 package com.hellmetz.festival.service;
 
-import com.hellmetz.festival.model.Artiste;
 import com.hellmetz.festival.model.Utilisateur;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import com.hellmetz.festival.repository.UtilisateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,13 +18,29 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 
-public class UtilisateurDetailService {
+public class UtilisateurDetailService implements UserDetailsService{
 
     @Autowired  // Spring injecte automatiquement le Repository
     private UtilisateurRepository utilisateurRepository;
 
     @Autowired  // Spring injecte automatiquement le Repository
     private PasswordEncoder passwordEncoder;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Utilisateur utilisateur = utilisateurRepository.findByIdentifiant(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé : " + username));
+
+        List<SimpleGrantedAuthority> authorities = utilisateur.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getCodeRole()))
+                .collect(Collectors.toList());
+
+        return new User(
+                utilisateur.getIdentifiant(),
+                utilisateur.getMotDePasse(),
+                authorities
+        );
+    }
 
     //recup un utilisateur
     public List<Utilisateur> findAll() {
@@ -29,7 +49,7 @@ public class UtilisateurDetailService {
 
     // recup un utilisateur par son id
     public Utilisateur findById(Long id) {
-        return utilisateurRepository.findById(id);
+        return utilisateurRepository.findById(id).orElse(null);
     }
 
     //cree un utilisateur

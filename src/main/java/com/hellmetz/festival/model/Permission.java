@@ -1,12 +1,26 @@
-package com.hellmetz.festival.backoffice.model;
+package com.hellmetz.festival.model;
 
-public class permission {
-    private long idPermission; // Changé en long pour correspondre aux IDs SQL
-    private String codePermission; // String pour les codes type "ADMIN_ALL"
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+
+@Entity
+@Table(name = "permission")
+public class Permission {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_permission")
+    private long idPermission;
+
+    @Column(name = "code_permission")
+    private String codePermission;
+
+    @Column(name = "libelle")
     private String libelle;
+
+    @Column(name = "description")
     private String description;
 
-
+    public Permission() {}
 
     // Getters et Setters (Indispensables pour le DAO)
     public long getIdPermission() { return idPermission; }
@@ -21,6 +35,4 @@ public class permission {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
-
-    public permission() {}
 }

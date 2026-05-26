@@ -64,7 +64,7 @@ public class Utilisateur {
     // Getters et Setters à compléter
 
 
-    public class Utilisateur() {}
+    public Utilisateur() {}
 
 
     public int getId() {
@@ -148,17 +148,17 @@ public class Utilisateur {
         isAdmin = admin;
     }
 
-    public Role getRole() {
-        return role;
+    public List<Role> getRoles() {
+        return roles;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
-    public List<Permission> getPermission() { return permission;}
+    public List<Permission> getPermissions() { return permissions;}
 
-    public void setPermission(List<Permission> permission) { this.permission = permission; }
+    public void setPermissions(List<Permission> permissions) { this.permissions = permissions; }
 
 }
 

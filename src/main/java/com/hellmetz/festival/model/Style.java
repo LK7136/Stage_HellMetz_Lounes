@@ -1,9 +1,24 @@
-package com.hellmetz.festival.backoffice.model;
+package com.hellmetz.festival.model;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+
+@Entity
+@Table(name = "style")
 public class Style {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_style")
     private int id;
+
+    @Column(name = "libelle")
     private String libelle;
+
+    @Column(name = "description")
     private String description;
+
+    public Style() {}
 
     // Getters / Setters
     public int getId() { return id; }
