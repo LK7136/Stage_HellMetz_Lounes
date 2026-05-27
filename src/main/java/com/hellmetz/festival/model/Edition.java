@@ -12,9 +12,9 @@ public class Edition {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_edition")
-    private int id;
+    private Long id;
 
-    @Column(name = "annnee")
+    @Column(name = "annee")
     private int annee;
 
     @Column(name = "nom_edition")
@@ -55,8 +55,8 @@ public class Edition {
     public Edition() {}
 
     // Getters / Setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
     public int getAnnee() { return annee; }
     public void setAnnee(int annee) { this.annee = annee; }
@@ -91,6 +91,6 @@ public class Edition {
     public boolean getActif() { return actif; }
     public void setActif(boolean actif) { this.actif = actif; }
 
-    public boolean getLattitude() { return lattitude; }
-    public void setLattitude(boolean lattitude) { this.lattitude = lattitude; }
+    public BigDecimal getLattitude() { return lattitude; }
+    public void setLattitude(BigDecimal lattitude) { this.lattitude = lattitude; }
 }

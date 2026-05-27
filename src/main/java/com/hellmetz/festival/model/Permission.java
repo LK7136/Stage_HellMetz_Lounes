@@ -9,7 +9,7 @@ public class Permission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_permission")
-    private long idPermission;
+    private Long idPermission;
 
     @Column(name = "code_permission")
     private String codePermission;
@@ -23,8 +23,8 @@ public class Permission {
     public Permission() {}
 
     // Getters et Setters (Indispensables pour le DAO)
-    public long getIdPermission() { return idPermission; }
-    public void setIdPermission(long idPermission) { this.idPermission = idPermission; }
+    public Long getIdPermission() { return idPermission; }
+    public void setIdPermission(Long idPermission) { this.idPermission = idPermission; }
 
     public String getCodePermission() { return codePermission; }
     public void setCodePermission(String codePermission) { this.codePermission = codePermission; }
