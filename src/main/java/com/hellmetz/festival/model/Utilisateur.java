@@ -14,7 +14,7 @@ public class Utilisateur {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_utilisateur")
-    private int id;
+    private Long id;
 
     @NotBlank(message = "L'identifiant est obligatoire")
     @Column(name = "identifiant", nullable = false, length = 100)
@@ -67,11 +67,11 @@ public class Utilisateur {
     public Utilisateur() {}
 
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
