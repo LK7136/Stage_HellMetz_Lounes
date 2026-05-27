@@ -1,25 +1,20 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns:th="http://www.thymeleaf.org">
-
-<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Création d'un compte - HellMetz</title>
-    <link href="${pageContext.request.contextPath}/backoffice/css/bootstrap.min.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/backoffice/css/backoffice.css" rel="stylesheet">
+    <link th:href="@{static/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{static/css/backoffice.css}" rel="stylesheet">
 </head>
 <body>
 <div class="container connexion mt-5">
-    <form class="form-login" method="post"
-          action="${pageContext.request.contextPath}/register">
+    <form class="form-login" method="post" th:action="@{/register}">
         <h2 class="form-login-heading">Création d'un compte utilisateur</h2>
 
-        <%-- Affichage d'un éventuel message d'erreur --%>
-        <c:if test="${not empty erreur}">
-            <div class="erreurCnx"><p>${erreur}</p></div>
-        </c:if>
+        <div th:if="${not #strings.isEmpty(erreur)}" class="erreurCnx">
+            <p th:text="${erreur}"></p>
+        </div>
 
-        <%-- INFORMATIONS DE L'UTILISATEUR --%>
         <div class="mb-3">
             <label class="form-label">Nom</label>
             <input type="text" class="form-control" name="nom" required>
@@ -41,46 +36,45 @@
             <input type="password" class="form-control" name="motDePasse" required>
         </div>
 
-        <%-- CHOIX DU RÔLE --%>
         <div class="mb-3">
             <label class="form-label">Rôle de l'utilisateur</label>
             <select class="form-select" name="idRole" id="selectRole" required>
                 <option value="">-- Choisir un rôle --</option>
-                <c:forEach var="r" items="${roles}">
-                    <option value="${r.idRole}">${r.libelle}</option>
-                </c:forEach>
+                <option th:each="r : ${roles}"
+                        th:value="${r.idRole}"
+                        th:text="${r.libelle}">
+                </option>
             </select>
         </div>
 
-        <%-- PERMISSIONS --%>
         <div class="mb-3">
             <label class="form-label">Permissions accordées</label>
             <div id="zonePermissions" class="border rounded p-2">
-                <c:forEach var="p" items="${permissions}">
-                    <div class="form-check">
-                        <input class="form-check-input chkPermission"
-                               type="checkbox"
-                               name="idsPermissions"
-                               value="${p.idPermission}"
-                               id="perm_${p.idPermission}"
-                               disabled>
-                        <label class="form-check-label" for="perm_${p.idPermission}">
-                            <strong>${p.codePermission}</strong> - ${p.libelle}
-                        </label>
-                    </div>
-                </c:forEach>
+                <div class="form-check" th:each="p : ${permissions}">
+                    <input class="form-check-input chkPermission"
+                           type="checkbox"
+                           name="idsPermissions"
+                           th:value="${p.idPermission}"
+                           th:id="'perm_' + ${p.idPermission}"
+                           disabled>
+                    <label class="form-check-label" th:for="'perm_' + ${p.idPermission}">
+                        <strong th:text="${p.codePermission}"></strong> - <span th:text="${p.libelle}"></span>
+                    </label>
+                </div>
             </div>
         </div>
 
         <button type="submit" class="btn btn-primary">Créer le compte</button>
-        <a href="${pageContext.request.contextPath}/login" class="btn btn-secondary">
+        <a th:href="@{/login}" class="btn btn-secondary">
             Annuler
         </a>
     </form>
 </div>
 
-<script>
-    var permissionsParRole = ${permissionsParRole};
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var permissionsParRole = /*[[${permissionsParRole}]]*/ {};
+    /*]]>*/
 
     document.getElementById("selectRole").addEventListener("change", function () {
         var idRole = this.value;

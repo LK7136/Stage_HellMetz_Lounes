@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
 
 <div>
   <div class="backoffice-logo">HellMetz</div>
@@ -7,58 +7,47 @@
 
   <nav class="backoffice-nav">
     <a th:href="@{/templates/dashboard}"
-       class="<p th:if='${activeMenu eq "dashboard"}'>active</p>">
-    <span>🏠</span>
-    <span>Tableau de bord</span>
+       th:class="${activeMenu eq 'dashboard' ? 'active' : ''}">
+      <span>🏠</span>
+      <span>Tableau de bord</span>
     </a>
 
     <a th:href="@{/templates/scene}"
-       class="${activeMenu eq 'scenes' ? 'active' : ''}">
+       th:class="${activeMenu eq 'scenes' ? 'active' : ''}">
       <span>🪩</span>
       <span>Scenes</span>
     </a>
 
     <a th:href="@{/templates/artiste}"
-       class="${activeMenu eq 'artiste' ? 'active' : ''}">
+       th:class="${activeMenu eq 'artiste' ? 'active' : ''}">
       <span>🧑‍🎤</span>
       <span>Artistes</span>
     </a>
 
     <a th:href="@{/templates/groupe}"
-       class="<p th:if='${activeMenu eq "groupes"}'>active</p>">
-    <span>🎸</span>
-    <span>Groupes</span>
+       th:class="${activeMenu eq 'groupes' ? 'active' : ''}">
+      <span>🎸</span>
+      <span>Groupes</span>
     </a>
 
     <a th:href="@{/templates/concert}"
-       class="<p th:if test='${activeMenu eq "concerts"}'>active</p>">
-    <span>🎵</span>
-    <span>Concerts</span>
+       th:class="${activeMenu eq 'concerts' ? 'active' : ''}">
+      <span>🎵</span>
+      <span>Concerts</span>
     </a>
 
-    <a class="disabled">
-      <span>📦</span>
-      <span>Logistique & Matériel (à venir)</span>
-    </a>
-
-    <a class="disabled">
-      <span>🧑‍🤝‍🧑</span>
-      <span>RH & Bénévoles (à venir)</span>
-    </a>
-
-    <a class="disabled">
-      <span>📍</span>
-      <span>Points d’intérêt (à venir)</span>
-    </a>
+    <a class="disabled"><span>📦</span><span>Logistique & Matériel (à venir)</span></a>
+    <a class="disabled"><span>🧑‍🤝‍🧑</span><span>RH & Bénévoles (à venir)</span></a>
+    <a class="disabled"><span>📍</span><span>Points d'intérêt (à venir)</span></a>
   </nav>
-
-
 
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
       <a class="navbar-brand" th:href="@{/templates/dashboard}">HellMetz - Backoffice</a>
 
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button"
+              data-bs-toggle="collapse" data-bs-target="#navbarNav"
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
@@ -67,26 +56,24 @@
           <li class="nav-item">
             <a class="nav-link" th:href="@{/templates/groupe}">Gestion des Groupes</a>
           </li>
-          <p th:if="${utilisateurConnecte.admin}">
-            <li class="nav-item">
-              <a class="nav-link" th:href="@{/templates/utilisateurs}">Utilisateurs</a>
-            </li>
-          </p:if>
+
+          <li class="nav-item" th:if="${utilisateurConnecte.admin}">
+            <a class="nav-link" th:href="@{/templates/utilisateurs}">Utilisateurs</a>
+          </li>
         </ul>
 
-        <ul class="navbar-nav ms-auto">
-          <p th:if="${not empty utilisateurConnecte}">
-            <li class="nav-item d-flex align-items-center">
-                            <span class="nav-link text-light me-3">
-                                <i class="bi bi-person-circle"></i> Bonjour, <strong>${utilisateurConnecte.prenom} ${utilisateurConnecte.nom}</strong>
-                             </span>
-            </li>
-            <li class="nav-item">
-              <a class="btn btn-outline-danger btn-sm mt-1" th:href="@{/logout}">
-                <i class="bi bi-box-arrow-right"></i> Se déconnecter
-              </a>
-            </li>
-          </p:if>
+        <ul class="navbar-nav ms-auto" th:if="${not empty utilisateurConnecte}">
+          <li class="nav-item d-flex align-items-center">
+            <span class="nav-link text-light me-3">
+              <i class="bi bi-person-circle"></i> Bonjour,
+              <strong th:text="${utilisateurConnecte.prenom + ' ' + utilisateurConnecte.nom}"></strong>
+            </span>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-outline-danger btn-sm mt-1" th:href="@{/logout}">
+              <i class="bi bi-box-arrow-right"></i> Se déconnecter
+            </a>
+          </li>
         </ul>
       </div>
     </div>
