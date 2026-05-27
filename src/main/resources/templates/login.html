@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns:th="http://www.thymeleaf.org">
-
 <head>
   <meta charset="UTF-8">
   <title>Identification - HellMetz Backoffice</title>
-  <link th:href="@{/static/css/bootstrap.min.css}" rel="stylesheet">
-  <link th:href="@{/static/css/bootstrap-icons.css}" rel="stylesheet">
-  <link th:href="@{/static/css/templatemo-festava-live.css}" rel="stylesheet">
-  <link th:href="@{/static/css/backoffice.css}" rel="stylesheet">
+  <link th:href="@{static/css/bootstrap.min.css}" rel="stylesheet">
+  <link th:href="@{static/css/bootstrap-icons.css}" rel="stylesheet">
+  <link th:href="@{static/css/templatemo-festava-live.css}" rel="stylesheet">
+  <link th:href="@{static/css/backoffice.css}" rel="stylesheet">
 </head>
 <body class="bg-light">
 
@@ -15,19 +14,21 @@
   <div class="row justify-content-center">
     <div class="col-md-6 col-lg-4">
 
-
       <form class="form-login p-4 border rounded shadow bg-white" method="post" th:action="@{/login}">
 
         <h2 class="form-login-heading text-center mb-4">Identification</h2>
 
-        <div class="alert alert-danger" role="alert" th:if="${not empty erreur}" th:text="${erreur}"></div>
-
-        <div class="mb-3">
-          <input type="text" class="form-control" name="identifiant" placeholder="Identifiant" required autofocus />
+        <div class="alert alert-danger" role="alert"
+             th:if="${not #strings.isEmpty(erreur)}"
+             th:text="${erreur}">
         </div>
 
         <div class="mb-3">
-          <input type="password" class="form-control" name="motDePasse" placeholder="Mot de passe" required />
+          <input type="text" class="form-control" name="username" placeholder="Identifiant" required autofocus />
+        </div>
+
+        <div class="mb-3">
+          <input type="password" class="form-control" name="password" placeholder="Mot de passe" required />
         </div>
 
         <div class="mb-3 text-end login-social-link">
@@ -45,7 +46,7 @@
   </div>
 </div>
 
-<script th:src="@{/static/js/jquery.min.js}"></script>
-<script th:src="@{/static/js/bootstrap.min.js}"></script>
+<script th:src="@{static/js/jquery.min.js}"></script>
+<script th:src="@{static/js/bootstrap.min.js}"></script>
 </body>
 </html>
