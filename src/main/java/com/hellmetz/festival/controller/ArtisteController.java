@@ -27,7 +27,7 @@ public class ArtisteController {
         model.addAttribute("artistes", artisteService.findAll());
         model.addAttribute("pageTitle", "HellMetz - Artistes");
         model.addAttribute("activeMenu", "templates");
-        return "list";
+        return "artiste/list";
     }
 
     // Formulaire d'edit — GET affiche le form vide
@@ -56,7 +56,7 @@ public class ArtisteController {
 
         // pour le menu deroulant des styles
         model.addAttribute("styles", styleService.findAll());
-        return "/ressources/templates/artiste/edit";
+        return "/artiste/edit";
     }
 
 
@@ -84,9 +84,9 @@ public class ArtisteController {
 
         // redirge
         if (idGroupeParam != null) {
-            return "redirect:/resources/templates/groupe/edit?id=" + idGroupeParam;
+            return "redirect:/groupe/edit?id=" + idGroupeParam;
         }
-        return "redirect:/resources/templates/artiste";
+        return "redirect:/artistes/liste";
     }
 
 
@@ -94,7 +94,7 @@ public class ArtisteController {
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
         artisteService.deleteById(id);
-        return "redirect:/resources/templates/artistes";
+        return "redirect:/artistes/liste";
     }
 
 }
