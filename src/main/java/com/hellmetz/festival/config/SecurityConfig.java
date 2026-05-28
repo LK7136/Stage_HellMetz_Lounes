@@ -37,7 +37,7 @@ public class SecurityConfig {
                 )
                 .formLogin(form -> form
                         .loginPage("/login")      // Votre page de login Thymeleaf
-                        .defaultSuccessUrl("/dashboard", true)
+                        .defaultSuccessUrl("/artistes/liste", true)
                         .permitAll()
                 )
                 .logout(logout -> logout.logoutSuccessUrl("/login?logout").permitAll());
