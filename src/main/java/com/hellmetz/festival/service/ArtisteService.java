@@ -20,7 +20,7 @@ public class ArtisteService {
 
     public Artiste findById(Long id) {return artisteRepository.findById(id).orElseThrow(() -> new RuntimeException("Artiste introuvable"));}
 
-    public List<Artiste> findByGroupeId(int idGroupe) {
+    public List<Artiste> findByGroupeId(Long idGroupe) {
         return artisteRepository.findByGroupeId(idGroupe);
     }
 

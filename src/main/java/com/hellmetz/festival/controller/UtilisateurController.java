@@ -19,17 +19,11 @@ public class UtilisateurController {
     private RoleService roleService;
 
     @GetMapping("/login")
-    public String loginPage(@RequestParam(required = false) String success,
-                            @RequestParam(required = false) String logout,
-                            Model model) {
+    public String loginPage(@RequestParam(required = false) String success, Model model) {
 
         if ("created".equals(success)) {
-            model.addAttribute("message", "Le compte a été créé !");
+            model.addAttribute("erreur", "Le compte a été créé avec succès !");
         }
-        if ("success".equals(logout)) {
-            model.addAttribute("message", "Vous êtes déconnecté.");
-        }
-
         return "login";
     }
 

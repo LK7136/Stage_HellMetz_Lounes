@@ -13,6 +13,6 @@ public interface ArtisteRepository extends JpaRepository<Artiste, Long> {
     List<Artiste> findAllByOrderByNomSceneAsc();
 
     // chercher les artistes par groupe
-    List<Artiste> findByGroupeId(int idGroupe);
+    List<Artiste> findByGroupeId(Long idGroupe);
 
 }

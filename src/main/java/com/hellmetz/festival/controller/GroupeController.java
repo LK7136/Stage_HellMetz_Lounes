@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @Controller
 @RequestMapping("/groupes")
@@ -21,14 +20,10 @@ public class GroupeController {
 
     @GetMapping("/liste")
     public String listGroupes(Model model) {
-        List<Groupe> groupes = groupeService.findAll();
-
-        model.addAttribute("groupes", groupes);
+        model.addAttribute("groupes", groupeService.findAll());
         model.addAttribute("pageTitle", "HellMetz - Groupes");
         model.addAttribute("activeMenu", "groupes");
-        model.addAttribute("contentPage", "/WEB-INF/backoffice/groupes/list.jsp");
-
-        return "backoffice/layout"; // Redirige vers la vue du layout principal
+        return "groupe/list";
     }
 
 
@@ -43,19 +38,14 @@ public class GroupeController {
             model.addAttribute("groupe", new Groupe());
             model.addAttribute("pageTitle", "Nouveau groupe - HellMetz");
         }
-
         model.addAttribute("activeMenu", "groupes");
-        model.addAttribute("contentPage", "/WEB-INF/backoffice/groupes/edit.jsp");
-
         return "groupe/edit";
     }
 
 
     @PostMapping("/edit")
     public String save(@ModelAttribute Groupe groupe) {
-
         groupeService.save(groupe);
-
         return "redirect:/groupes/liste";
     }
 
