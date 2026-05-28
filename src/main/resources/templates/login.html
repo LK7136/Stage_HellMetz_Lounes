@@ -18,6 +18,14 @@
 
         <h2 class="form-login-heading text-center mb-4">Identification</h2>
 
+        <div class="alert alert-success text-center" role="alert" th:if="${param.logout}">
+          Vous avez été déconnecté avec succès.
+        </div>
+
+        <div class="alert alert-danger text-center" role="alert" th:if="${param.error}">
+          Identifiant ou mot de passe incorrect.
+        </div>
+
         <div class="alert alert-danger" role="alert"
              th:if="${not #strings.isEmpty(erreur)}"
              th:text="${erreur}">

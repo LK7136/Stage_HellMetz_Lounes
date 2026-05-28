@@ -70,9 +70,11 @@
             </span>
           </li>
           <li class="nav-item">
-            <a class="btn btn-outline-danger btn-sm mt-1" th:href="@{/logout}">
-              <i class="bi bi-box-arrow-right"></i> Se déconnecter
-            </a>
+            <form th:action="@{/logout}" method="post" style="display: inline;">
+              <button type="submit" class="btn btn-outline-danger btn-sm mt-1">
+                <i class="bi bi-box-arrow-left"></i> Se déconnecter
+              </button>
+            </form>
           </li>
         </ul>
       </div>
