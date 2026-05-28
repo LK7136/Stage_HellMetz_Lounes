@@ -56,7 +56,7 @@ public class ArtisteController {
 
         // pour le menu deroulant des styles
         model.addAttribute("styles", styleService.findAll());
-        return "/artiste/edit";
+        return "artiste/edit";
     }
 
 
