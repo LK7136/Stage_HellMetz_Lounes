@@ -1,86 +1,81 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout}">
 
-<div class="hm-card">
-    <div class="hm-card-header">
-        <div>
-            <div class="hm-tag">Programmation</div>
-            <div class="hm-card-title">Artistes du HellMetz Festival</div>
+<div th:fragment="content">
+    <div class="hm-card">
+        <div class="hm-card-header">
+            <div>
+                <div class="hm-tag">Programmation</div>
+                <div class="hm-card-title">Artistes du HellMetz Festival</div>
+            </div>
+
+            <a th:href="@{/artistes/ajouter}" class="hm-btn-primary">
+                <span>＋</span>
+                <span>Nouvel artiste</span>
+            </a>
         </div>
 
-        <!-- Remplace ${pageContext.request.contextPath}/... -->
-        <a th:href="@{/templates/artiste/edit}" class="hm-btn-primary">
-            <span>＋</span>
-            <span>Nouvel artiste</span>
-        </a>
-    </div>
 
-    <!-- Remplace <c:choose> + <c:when test="${empty artistes}"> -->
-    <div th:if="${#lists.isEmpty(artistes)}" style="padding: 40px; text-align: center;">
-        <p>Aucun artiste enregistré pour le moment.</p>
-    </div>
+        <div th:if="${#lists.isEmpty(artistes)}" style="padding: 40px; text-align: center;">
+            <p>Aucun artiste enregistré pour le moment.</p>
+        </div>
 
-    <!-- Remplace <c:otherwise> -->
-    <div th:unless="${#lists.isEmpty(artistes)}" class="table-responsive">
-        <table class="hm-table">
-            <thead>
-            <tr>
-                <th>Photo</th>
-                <th>Artiste / Groupe</th>
-                <th>Style</th>
-                <th>Nationalité</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            <!-- Remplace <c:forEach var="a" items="${artistes}"> -->
-            <tr th:each="a : ${artistes}">
-                <td>
-                    <!-- Remplace <c:choose> sur url_photo -->
-                    <img th:if="${not #strings.isEmpty(a.urlPhoto)}"
-                         th:src="@{/{photo}(photo=${a.urlPhoto})}"
-                         th:alt="${'Photo de ' + a.nom}"
-                         style="width: 50px; height: 50px; border-radius: 4px;">
+        <div th:unless="${#lists.isEmpty(artistes)}" class="table-responsive">
+            <table class="hm-table">
+                <thead>
+                <tr>
+                    <th>Photo</th>
+                    <th>Artiste / Groupe</th>
+                    <th>Style</th>
+                    <th>Nationalité</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
 
-                    <img th:unless="${not #strings.isEmpty(a.urlPhoto)}"
-                         th:src="@{/webapp/backoffice/images/artistes/defaultAvatar.png}"
-                         alt="Photo par défaut"
-                         style="width: 50px; height: 50px; border-radius: 4px;">
-                </td>
+                <tr th:each="a : ${artistes}">
+                    <td>
+                        <img th:if="${not #strings.isEmpty(a.urlPhoto)}"
+                             th:src="@{/{photo}(photo=${a.urlPhoto})}"
+                             th:alt="${'Photo de ' + a.nom}"
+                             style="width: 50px; height: 50px; border-radius: 4px;">
 
-                <td>
-                    <!-- Remplace ${a.nom_scene} → camelCase en Spring -->
-                    <strong th:text="${a.nomScene}"></strong><br>
-                    <small style="color: #666;">
-                        <span th:text="${a.prenom}"></span>
-                        <span th:text="${a.nom}"></span>
-                    </small>
-                </td>
+                        <img th:unless="${not #strings.isEmpty(a.urlPhoto)}"
+                             th:src="@{/images/artistes/defaultAvatar.png}"
+                             alt="Photo par défaut"
+                             style="width: 50px; height: 50px; border-radius: 4px;">
+                    </td>
 
-                <td>
-                    <!-- Remplace ${a.styleLibelle} → on accède via l'objet Style -->
-                    <span class="hm-pill" th:text="${a.style != null ? a.style.libelle : ''}"></span>
-                </td>
+                    <td>
+                        <strong th:text="${a.nomScene}"></strong><br>
+                        <small style="color: #666;">
+                            <span th:text="${a.prenom}"></span>
+                            <span th:text="${a.nom}"></span>
+                        </small>
+                    </td>
 
-                <td th:text="${a.nationalite}"></td>
+                    <td>
+                        <span class="hm-pill" th:text="${a.style != null ? a.style.libelle : ''}"></span>
+                    </td>
 
-                <td>
-                    <!-- Remplace href avec contextPath -->
-                    <a class="hm-link-site"
-                       th:href="@{/templates/artiste/edit(id=${a.id})}">
-                        ✏️ éditer
-                    </a>
-                    &nbsp;|&nbsp;
-                    <!-- Remplace onclick confirm -->
-                    <a class="hm-link-site"
-                       th:href="@{/templates/artistes/delete/{id}(id=${a.id})}"
-                       th:onclick="'return confirm(\'Supprimer l\'artiste ' + ${a.id} + ' ?\')'"
-                       style="color: #e74c3c;">
-                        🗑️ supprimer
-                    </a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+                    <td th:text="${a.nationalite}"></td>
+
+                    <td>
+                        <a class="hm-link-site"
+                           th:href="@{/artistes/ajouter(id=${a.id})}">
+                            ✏️ éditer
+                        </a>
+                        &nbsp;|&nbsp;
+                        <a class="hm-link-site"
+                           th:href="@{/artistes/delete/{id}(id=${a.id})}"
+                           th:onclick="'return confirm(\'Supprimer l\'artiste ' + ${a.id} + ' ?\')'"
+                           style="color: #e74c3c;">
+                            🗑️ supprimer
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

@@ -1,36 +1,36 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns:th="http://www.thymeleaf.org">
 
-<div>
+<div th:fragment="menu">
   <div class="backoffice-logo">HellMetz</div>
   <div class="backoffice-subtitle">Backoffice organisateur</div>
 
   <nav class="backoffice-nav">
-    <a th:href="@{/templates/dashboard}"
+    <a th:href="@{/dashboard}"
        th:class="${activeMenu eq 'dashboard' ? 'active' : ''}">
       <span>🏠</span>
       <span>Tableau de bord</span>
     </a>
 
-    <a th:href="@{/templates/scene}"
+    <a th:href="@{/scene}"
        th:class="${activeMenu eq 'scenes' ? 'active' : ''}">
       <span>🪩</span>
       <span>Scenes</span>
     </a>
 
-    <a th:href="@{/templates/artiste}"
+    <a th:href="@{/artiste}"
        th:class="${activeMenu eq 'artiste' ? 'active' : ''}">
       <span>🧑‍🎤</span>
       <span>Artistes</span>
     </a>
 
-    <a th:href="@{/templates/groupe}"
+    <a th:href="@{/groupe}"
        th:class="${activeMenu eq 'groupes' ? 'active' : ''}">
       <span>🎸</span>
       <span>Groupes</span>
     </a>
 
-    <a th:href="@{/templates/concert}"
+    <a th:href="@{/concert}"
        th:class="${activeMenu eq 'concerts' ? 'active' : ''}">
       <span>🎵</span>
       <span>Concerts</span>
@@ -43,7 +43,7 @@
 
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" th:href="@{/templates/dashboard}">HellMetz - Backoffice</a>
+      <a class="navbar-brand" th:href="@{/dashboard}">HellMetz - Backoffice</a>
 
       <button class="navbar-toggler" type="button"
               data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -54,19 +54,19 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
-            <a class="nav-link" th:href="@{/templates/groupe}">Gestion des Groupes</a>
+            <a class="nav-link" th:href="@{/groupe}">Gestion des Groupes</a>
           </li>
 
-          <li class="nav-item" th:if="${utilisateurConnecte.admin}">
-            <a class="nav-link" th:href="@{/templates/utilisateurs}">Utilisateurs</a>
+          <li class="nav-item" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+            <a class="nav-link" th:href="@{/utilisateurs}">Utilisateurs</a>
           </li>
         </ul>
 
-        <ul class="navbar-nav ms-auto" th:if="${not empty utilisateurConnecte}">
+        <ul class="navbar-nav ms-auto" th:if="${#authentication != null}">
           <li class="nav-item d-flex align-items-center">
             <span class="nav-link text-light me-3">
               <i class="bi bi-person-circle"></i> Bonjour,
-              <strong th:text="${utilisateurConnecte.prenom + ' ' + utilisateurConnecte.nom}"></strong>
+              <strong th:text="${#authentication.name}"></strong>
             </span>
           </li>
           <li class="nav-item">

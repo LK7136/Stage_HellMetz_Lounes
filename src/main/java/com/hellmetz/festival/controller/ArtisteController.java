@@ -1,7 +1,6 @@
 package com.hellmetz.festival.controller;
 
 import com.hellmetz.festival.model.Artiste;
-import com.hellmetz.festival.model.Style;
 import com.hellmetz.festival.service.ArtisteService;
 import com.hellmetz.festival.service.StyleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +55,7 @@ public class ArtisteController {
 
         // pour le menu deroulant des styles
         model.addAttribute("styles", styleService.findAll());
-        return "/artiste/edit";
+        return "artiste/edit";
     }
 
 
