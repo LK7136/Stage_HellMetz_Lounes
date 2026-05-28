@@ -9,19 +9,17 @@
                 <div class="hm-card-title">Artistes du HellMetz Festival</div>
             </div>
 
-            <!-- Remplace ${pageContext.request.contextPath}/... -->
             <a th:href="@{/artistes/ajouter}" class="hm-btn-primary">
                 <span>＋</span>
                 <span>Nouvel artiste</span>
             </a>
         </div>
 
-        <!-- Remplace <c:choose> + <c:when test="${empty artistes}"> -->
+
         <div th:if="${#lists.isEmpty(artistes)}" style="padding: 40px; text-align: center;">
             <p>Aucun artiste enregistré pour le moment.</p>
         </div>
 
-        <!-- Remplace <c:otherwise> -->
         <div th:unless="${#lists.isEmpty(artistes)}" class="table-responsive">
             <table class="hm-table">
                 <thead>
@@ -34,10 +32,9 @@
                 </tr>
                 </thead>
                 <tbody>
-                <!-- Remplace <c:forEach var="a" items="${artistes}"> -->
+
                 <tr th:each="a : ${artistes}">
                     <td>
-                        <!-- Remplace <c:choose> sur url_photo -->
                         <img th:if="${not #strings.isEmpty(a.urlPhoto)}"
                              th:src="@{/{photo}(photo=${a.urlPhoto})}"
                              th:alt="${'Photo de ' + a.nom}"
@@ -50,7 +47,6 @@
                     </td>
 
                     <td>
-                        <!-- Remplace ${a.nom_scene} → camelCase en Spring -->
                         <strong th:text="${a.nomScene}"></strong><br>
                         <small style="color: #666;">
                             <span th:text="${a.prenom}"></span>
@@ -59,20 +55,17 @@
                     </td>
 
                     <td>
-                        <!-- Remplace ${a.styleLibelle} → on accède via l'objet Style -->
                         <span class="hm-pill" th:text="${a.style != null ? a.style.libelle : ''}"></span>
                     </td>
 
                     <td th:text="${a.nationalite}"></td>
 
                     <td>
-                        <!-- Remplace href avec contextPath -->
                         <a class="hm-link-site"
                            th:href="@{/artistes/ajouter(id=${a.id})}">
                             ✏️ éditer
                         </a>
                         &nbsp;|&nbsp;
-                        <!-- Remplace onclick confirm -->
                         <a class="hm-link-site"
                            th:href="@{/artistes/delete/{id}(id=${a.id})}"
                            th:onclick="'return confirm(\'Supprimer l\'artiste ' + ${a.id} + ' ?\')'"
