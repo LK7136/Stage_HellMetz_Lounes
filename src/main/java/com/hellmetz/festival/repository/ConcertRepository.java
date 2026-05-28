@@ -8,5 +8,5 @@ import java.util.List;
 @Repository
 // JpaRepository<T, ID> : T = votre entité, ID = type de sa clé primaire
 public interface ConcertRepository extends JpaRepository<Concert, Long> {
-    List<Concert> findAllByOrderByNomGroupeAsc();
+    List<Concert> findAllByOrderByDateHeureDebutAsc();
 }
