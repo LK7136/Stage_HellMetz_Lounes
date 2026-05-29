@@ -25,7 +25,7 @@ public class ConcertController {
     public String liste(Model model) {
         model.addAttribute("concerts", concertService.findAll());
         model.addAttribute("pageTitle", "HellMetz - Concerts");
-        model.addAttribute("activeMenu", "concerts");
+        model.addAttribute("activeMenu", "templates");
         return "concert/list";
     }
 
@@ -44,7 +44,6 @@ public class ConcertController {
 
         model.addAttribute("scenes", sceneService.findAll());
         model.addAttribute("editions", editionService.findAll());
-        model.addAttribute("activeMenu", "concerts");
 
         return "concert/edit";
     }

@@ -18,7 +18,7 @@ public class SceneController {
     public String liste(Model model) {
         model.addAttribute("scenes", sceneService.findAll());
         model.addAttribute("pageTitle", "HellMetz - Scenes");
-        model.addAttribute("activeMenu", "scenes");
+        model.addAttribute("activeMenu", "templates");
         return "scene/list";
     }
 
@@ -36,8 +36,6 @@ public class SceneController {
         }
 
         model.addAttribute("scenes", sceneService.findAll());
-        model.addAttribute("activeMenu", "scenes");
-
         return "scene/edit";
     }
 

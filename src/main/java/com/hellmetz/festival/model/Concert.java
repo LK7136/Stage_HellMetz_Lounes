@@ -43,7 +43,7 @@ public class Concert {
     @JoinColumn(name = "id_edition")
     private Edition edition;
 
-    @OneToMany(mappedBy = "concert")
+    @OneToMany(mappedBy = "concert", fetch = FetchType.EAGER)
     private List<Groupe> groupes;
 
 

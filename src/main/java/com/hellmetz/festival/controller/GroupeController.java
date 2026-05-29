@@ -22,7 +22,7 @@ public class GroupeController {
     public String listGroupes(Model model) {
         model.addAttribute("groupes", groupeService.findAll());
         model.addAttribute("pageTitle", "HellMetz - Groupes");
-        model.addAttribute("activeMenu", "groupes");
+        model.addAttribute("activeMenu", "templates");
         return "groupe/list";
     }
 
@@ -38,7 +38,6 @@ public class GroupeController {
             model.addAttribute("groupe", new Groupe());
             model.addAttribute("pageTitle", "Nouveau groupe - HellMetz");
         }
-        model.addAttribute("activeMenu", "groupes");
         return "groupe/edit";
     }
 
