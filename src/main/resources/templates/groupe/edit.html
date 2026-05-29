@@ -1,79 +1,87 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-
-<div class="hm-card">
-  <div class="hm-card-header">
-    <div>
-      <div class="hm-tag">Édition</div>
-      <div class="hm-card-title">
-        <c:choose>
-          <c:when test="${not empty groupe.id}">Modifier le groupe : ${groupe.nom}</c:when>
-          <c:otherwise>Nouveau groupe</c:otherwise>
-        </c:choose>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout}">
+<body>
+<div th:fragment="content">
+  <div class="hm-card">
+    <div class="hm-card-header">
+      <div>
+        <div class="hm-tag">Édition</div>
+        <div class="hm-card-title">
+          <span th:if="${groupe.id != null}" th:text="'Modifier le groupe : ' + ${groupe.nomGroupe}"></span>
+          <span th:unless="${groupe.id != null}">Nouveau groupe</span>
+        </div>
       </div>
+      <a th:href="@{/groupes/liste}" class="hm-btn-primary" style="background-color:#6c757d; color:white;">
+        <span>←</span><span>Retour à la liste</span>
+      </a>
     </div>
-    <a href="${pageContext.request.contextPath}/backoffice/groupes" class="hm-btn-primary" style="background-color: #6c757d; color: white;">
-      <span>←</span>
-      <span>Retour à la liste</span>
-    </a>
-  </div>
 
-  <div class="p-4">
-    <form action="${pageContext.request.contextPath}/backoffice/groupes/edit" method="post">
+    <div class="p-4">
+      <form th:action="@{/groupes/edit}" method="post">
 
-      <input type="hidden" name="id" value="${groupe.id}">
-      <input type="hidden" name="id_concert" value="${groupe.id_concert}">
+        <input type="hidden" name="id" th:value="${groupe.id}">
 
-      <div class="row mb-3">
-        <div class="col-md-6">
-          <label for="nom" class="form-label fw-bold">Nom du groupe <span class="text-danger">*</span></label>
-          <input type="text" id="nom" name="nom" class="form-control" value="${groupe.nom}" required>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="nomGroupe" class="form-label fw-bold">Nom du groupe <span class="text-danger">*</span></label>
+            <input type="text" id="nomGroupe" name="nom" class="form-control"
+                   th:value="${groupe.nomGroupe}" required>
+          </div>
+          <div class="col-md-6">
+            <label for="anneeCreation" class="form-label fw-bold">Année de création</label>
+            <input type="number" id="anneeCreation" name="anneeCreation" class="form-control"
+                   th:value="${groupe.anneeCreation}">
+          </div>
         </div>
-        <div class="col-md-6">
-          <label for="annee_creation" class="form-label fw-bold">Année de création</label>
-          <input type="number" id="annee_creation" name="annee_creation" class="form-control" value="${groupe.annee_creation}">
-        </div>
-      </div>
 
-      <div class="mb-3">
-        <label for="description" class="form-label fw-bold">Description</label>
-        <textarea id="description" name="description" class="form-control" rows="4">${groupe.description}</textarea>
-      </div>
+        <div class="mb-3">
+          <label for="description" class="form-label fw-bold">Description</label>
+          <textarea id="description" name="description" class="form-control"
+                    rows="4" th:text="${groupe.description}"></textarea>
+        </div>
 
-      <div class="row mb-3">
-        <div class="col-md-6">
-          <label for="pays_origine" class="form-label fw-bold">Pays d'origine</label>
-          <input type="text" id="pays_origine" name="pays_origine" class="form-control" value="${groupe.pays_origine}">
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="paysOrigine" class="form-label fw-bold">Pays d'origine</label>
+            <input type="text" id="paysOrigine" name="paysOrigine" class="form-control"
+                   th:value="${groupe.paysOrigine}">
+          </div>
+          <div class="col-md-6">
+            <label for="villeOrigine" class="form-label fw-bold">Ville d'origine</label>
+            <input type="text" id="villeOrigine" name="villeOrigine" class="form-control"
+                   th:value="${groupe.villeOrigine}">
+          </div>
         </div>
-        <div class="col-md-6">
-          <label for="ville_origine" class="form-label fw-bold">Ville d'origine</label>
-          <input type="text" id="ville_origine" name="ville_origine" class="form-control" value="${groupe.ville_origine}">
-        </div>
-      </div>
 
-      <div class="row mb-3">
-        <div class="col-md-4">
-          <label for="site_web" class="form-label fw-bold">Site Web</label>
-          <input type="url" id="site_web" name="site_web" class="form-control" value="${groupe.site_web}">
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label for="siteWeb" class="form-label fw-bold">Site Web</label>
+            <input type="url" id="siteWeb" name="siteWeb" class="form-control"
+                   th:value="${groupe.siteWeb}">
+          </div>
+          <div class="col-md-4">
+            <label for="urlYoutube" class="form-label fw-bold">Chaîne YouTube</label>
+            <input type="url" id="urlYoutube" name="urlYoutube" class="form-control"
+                   th:value="${groupe.urlYoutube}">
+          </div>
+          <div class="col-md-4">
+            <label for="urlLogo" class="form-label fw-bold">URL Logo</label>
+            <input type="url" id="urlLogo" name="urlLogo" class="form-control"
+                   th:value="${groupe.urlLogo}">
+          </div>
         </div>
-        <div class="col-md-4">
-          <label for="url_youtube" class="form-label fw-bold">Chaîne YouTube</label>
-          <input type="url" id="url_youtube" name="url_youtube" class="form-control" value="${groupe.url_youtube}">
-        </div>
-        <div class="col-md-4">
-          <label for="url_logo" class="form-label fw-bold">URL Logo</label>
-          <input type="url" id="url_logo" name="url_logo" class="form-control" value="${groupe.url_logo}">
-        </div>
-      </div>
 
-      <div class="form-check form-switch mb-4 mt-3">
-        <input class="form-check-input" type="checkbox" id="actif" name="actif" value="true" ${groupe.actif ? 'checked' : ''}>
-        <label class="form-check-label fw-bold text-success" for="actif">Groupe actif (programmé au festival)</label>
-      </div>
+        <div class="form-check form-switch mb-4 mt-3">
+          <input class="form-check-input" type="checkbox" id="actif" name="actif"
+                 value="true" th:checked="${groupe.actif}">
+          <label class="form-check-label fw-bold text-success" for="actif">
+            Groupe actif (programmé au festival)
+          </label>
+        </div>
 
-      <%--            Afficher la liste des artistes apartenant au groupe modifier --%>
-      <div class="text-end mt-4 pt-3 border-top">
-        <div class="table-responsive">
+        <!-- Liste des artistes du groupe -->
+        <div class="table-responsive mt-4">
           <table class="hm-table">
             <thead>
             <tr>
@@ -85,58 +93,55 @@
             </tr>
             </thead>
             <tbody>
-            <%-- On boucle sur la liste "artistes" --%>
-            <c:forEach var="a" items="${artistes}">
-              <tr>
-                <td>
-                  <c:choose>
-                    <c:when test="${not empty a.url_photo}">
-                      <img src="${pageContext.request.contextPath}/${a.url_photo}"
-                           alt="Photo de ${a.nom}"
-                           style="width: 50px; height: 50px; border-radius: 4px;">
-                    </c:when>
-
-                    <c:otherwise>
-                      <img src="${pageContext.request.contextPath}/backoffice/images/artistes/defaultAvatar.png"
-                           alt="Photo par défaut"
-                           style="width: 50px; height: 50px; border-radius: 4px;">
-                    </c:otherwise>
-                  </c:choose>
-                </td>
-                <td>
-                  <strong>${a.nom_scene}</strong><br>
-                  <small style="color: #666;">${a.prenom} ${a.nom}</small>
-                </td>
-                <td>
-                  <span class="hm-pill">${a.styleLibelle}</span>
-                </td>
-                <td>${a.nationalite}</td>
-                <td>
-                  <a class="hm-link-site"
-                     href="${pageContext.request.contextPath}/backoffice/artistes/edit?id=${a.id}&id_groupe_param=${groupe.id}">
-                    ✏️ éditer
-                  </a>
-                  &nbsp;|&nbsp;
-                  <a class="hm-link-site"
-                     href="${pageContext.request.contextPath}/backoffice/artistes/delete?id=${a.id}"
-                     onclick="return confirm('Supprimer l\'artiste ${a.id} ?');"
-                     style="color: #e74c3c;">
-                    🗑️ supprimer
-                  </a>
-                </td>
-              </tr>
-            </c:forEach>
+            <tr th:each="a : ${artistes}">
+              <td>
+                <img th:if="${not #strings.isEmpty(a.urlPhoto)}"
+                     th:src="@{/{photo}(photo=${a.urlPhoto})}"
+                     th:alt="${'Photo de ' + a.nom}"
+                     style="width:50px; height:50px; border-radius:4px;">
+                <img th:unless="${not #strings.isEmpty(a.urlPhoto)}"
+                     th:src="@{/images/artistes/defaultAvatar.png}"
+                     alt="Photo par défaut"
+                     style="width:50px; height:50px; border-radius:4px;">
+              </td>
+              <td>
+                <strong th:text="${a.nomScene}"></strong><br>
+                <small style="color:#666;">
+                  <span th:text="${a.prenom}"></span>
+                  <span th:text="${a.nom}"></span>
+                </small>
+              </td>
+              <td>
+                <span class="hm-pill" th:text="${a.style != null ? a.style.libelle : ''}"></span>
+              </td>
+              <td th:text="${a.nationalite}"></td>
+              <td>
+                <a class="hm-link-site"
+                   th:href="@{/artistes/ajouter(id=${a.id}, idGroupeParam=${groupe.id})}">
+                  ✏️ éditer
+                </a>
+                &nbsp;|&nbsp;
+                <a class="hm-link-site"
+                   th:href="@{/artistes/delete/{id}(id=${a.id})}"
+                   th:onclick="'return confirm(\'Supprimer l\'artiste ' + ${a.id} + ' ?\')'"
+                   style="color:#e74c3c;">
+                  🗑️ supprimer
+                </a>
+              </td>
+            </tr>
             </tbody>
           </table>
         </div>
-      </div>
 
-      <div class="text-end mt-4 pt-3 border-top">
-        <button type="submit" class="hm-btn-primary" style="border: none;">
-          <span>💾</span>
-          <span>Enregistrer les modifications</span>
-        </button>
-      </div>
-    </form>
+        <div class="text-end mt-4 pt-3 border-top">
+          <button type="submit" class="hm-btn-primary" style="border:none;">
+            <span>💾</span><span>Enregistrer les modifications</span>
+          </button>
+        </div>
+
+      </form>
+    </div>
   </div>
 </div>
+</body>
+</html>
