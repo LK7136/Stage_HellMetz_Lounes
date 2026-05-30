@@ -44,13 +44,11 @@ public class Edition {
     @Column(name = "jauge_maximale")
     private int jaugeMaximale;
 
-    @Column(name = "actif")
-    private boolean actif;
-
     @Column(name = "lattitude")
     private BigDecimal lattitude;
 
-
+    @Column(name = "actif", nullable = false)
+    private boolean actif;
 
     public Edition() {}
 
@@ -88,9 +86,9 @@ public class Edition {
     public int getJaugeMaximale() { return jaugeMaximale; }
     public void setJaugeMaximale(int jaugeMaximale) { this.jaugeMaximale = jaugeMaximale; }
 
-    public boolean getActif() { return actif; }
-    public void setActif(boolean actif) { this.actif = actif; }
-
     public BigDecimal getLattitude() { return lattitude; }
     public void setLattitude(BigDecimal lattitude) { this.lattitude = lattitude; }
+
+    public boolean isActif() { return actif; }
+    public void setActif(boolean actif) { this.actif = actif; }
 }

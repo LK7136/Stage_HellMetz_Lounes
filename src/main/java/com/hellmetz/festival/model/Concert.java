@@ -2,6 +2,8 @@ package com.hellmetz.festival.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -19,16 +21,16 @@ public class Concert {
     private String statut;
 
     @Column(name = "date_heure_debut")
-    private Date dateHeureDebut;
+    private LocalDateTime dateHeureDebut;
 
     @Column(name = "date_heure_fin")
-    private Date dateHeureFin;
+    private LocalDateTime dateHeureFin;
 
     @Column(name = "heure_balance_debut")
-    private Date  heureBalanceDebut;
+    private LocalDateTime  heureBalanceDebut;
 
     @Column(name = "heure_balance_fin")
-    private Date heureBalanceFin;
+    private LocalDateTime heureBalanceFin;
 
     @Column(name = "decibels_max")
     private int decibelsMax;
@@ -56,17 +58,17 @@ public class Concert {
     public String getStatut() { return statut; }
     public void setStatut(String statut) {this.statut = statut;}
 
-    public Date getDateHeureDebut() { return dateHeureDebut; }
-    public void setDateHeureDebut(Date dateHeureDebut) {this.dateHeureDebut = dateHeureDebut;}
+    public LocalDateTime getDateHeureDebut() { return dateHeureDebut; }
+    public void setDateHeureDebut(LocalDateTime dateHeureDebut) {this.dateHeureDebut = dateHeureDebut;}
 
-    public Date getDateHeureFin() { return dateHeureFin; }
-    public void setDateHeureFin(Date dateHeureFin) {this.dateHeureFin = dateHeureFin;}
+    public LocalDateTime getDateHeureFin() { return dateHeureFin; }
+    public void setDateHeureFin(LocalDateTime dateHeureFin) {this.dateHeureFin = dateHeureFin;}
 
-    public Date getHeureBalanceDebut() { return heureBalanceDebut; }
-    public void setHeureBalanceDebut(Date heureBalanceDebut) { this.heureBalanceDebut = heureBalanceDebut; }
+    public LocalDateTime getHeureBalanceDebut() { return heureBalanceDebut; }
+    public void setHeureBalanceDebut(LocalDateTime heureBalanceDebut) { this.heureBalanceDebut = heureBalanceDebut; }
 
-    public Date getHeureBalanceFin() { return heureBalanceFin; }
-    public void setHeureBalanceFin(Date heureBalanceFin) { this.heureBalanceFin = heureBalanceFin; }
+    public LocalDateTime getHeureBalanceFin() { return heureBalanceFin; }
+    public void setHeureBalanceFin(LocalDateTime heureBalanceFin) { this.heureBalanceFin = heureBalanceFin; }
 
     public int getDecibelsMax() { return decibelsMax; }
     public void setDecibelsMax(int decibelsMax) {this.decibelsMax = decibelsMax;}

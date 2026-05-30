@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" xmlns:th="http://www.thymeleaf.org" th:fragment="layout">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" th:fragment="layout(content)">
 
 
 <head>
@@ -25,20 +25,35 @@
 
 <div class="backoffice-wrapper">
 
-    <!-- SIDEBAR -->
+    <!-- SIDEBAR (menu à gauche) -->
     <aside class="backoffice-sidebar">
         <div th:replace="~{menu :: menu}"></div>
     </aside>
 
     <!-- MAIN -->
     <main class="backoffice-main">
-        <header class="backoffice-header">
-            <h1 th:text="${pageTitle != null ? pageTitle : 'Backoffice HellMetz'}">Backoffice HellMetz</h1>
-            <p class="subtitle">Interface d’administration du festival (groupes, concerts, logistique…)</p>
+        <header class="backoffice-header"
+                style="display:flex; justify-content:space-between; align-items:flex-start; gap:1rem;">
+            <div>
+                <h1 th:text="${pageTitle != null ? pageTitle : 'Backoffice HellMetz'}">Backoffice HellMetz</h1>
+                <p class="subtitle">Interface d'administration du festival (groupes, concerts, logistique…)</p>
+            </div>
+
+            <div th:if="${#authentication != null}"
+                 style="display:flex; align-items:center; gap:.75rem; white-space:nowrap;">
+        <span><i class="bi bi-person-circle"></i> Bonjour,
+            <strong th:text="${#authentication.name}">admin</strong>
+        </span>
+                <form th:action="@{/logout}" method="post" style="margin:0;">
+                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                        <i class="bi bi-box-arrow-left"></i> Se déconnecter
+                    </button>
+                </form>
+            </div>
         </header>
 
         <section>
-            <div th:replace="~{::content}"></div>
+            <div th:replace="${content}"></div>
         </section>
     </main>
 

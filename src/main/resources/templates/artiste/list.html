@@ -1,6 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout}">
-
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout :: layout(~{::content})}">
+<head>
+    <title>Artistes - HellMetz</title>
+</head>
+<body>
 <div th:fragment="content">
     <div class="hm-card">
         <div class="hm-card-header">

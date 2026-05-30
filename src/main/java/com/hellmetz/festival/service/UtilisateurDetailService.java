@@ -1,58 +1,63 @@
 package com.hellmetz.festival.service;
 
 import com.hellmetz.festival.model.Utilisateur;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import com.hellmetz.festival.repository.UtilisateurRepository;
+import com.hellmetz.festival.security.UtilisateurDetails;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Service de gestion des utilisateurs.
+ * Implemente UserDetailsService pour brancher l'authentification Spring Security
+ * sur la table "utilisateur".
+ */
 @Service
 @Transactional
+public class UtilisateurDetailService implements UserDetailsService {
 
-public class UtilisateurDetailService implements UserDetailsService{
-
-    @Autowired  // Spring injecte automatiquement le Repository
+    @Autowired
     private UtilisateurRepository utilisateurRepository;
 
-    @Autowired  // Spring injecte automatiquement le Repository
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
+    /**
+     * Appele par Spring Security lors de la connexion.
+     * Charge l'utilisateur et l'emballe dans un UtilisateurDetails.
+     */
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Utilisateur utilisateur = utilisateurRepository.findByIdentifiant(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé : " + username));
-
-        List<SimpleGrantedAuthority> authorities = utilisateur.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getCodeRole()))
-                .collect(Collectors.toList());
-
-        return new User(
-                utilisateur.getIdentifiant(),
-                utilisateur.getMotDePasse(),
-                authorities
-        );
+    @Transactional(readOnly = true)
+    public UserDetails loadUserByUsername(String identifiant) throws UsernameNotFoundException {
+        Utilisateur utilisateur = utilisateurRepository.findByIdentifiant(identifiant)
+                .orElseThrow(() -> new UsernameNotFoundException(
+                        "Utilisateur introuvable : " + identifiant));
+        // Initialise les roles (LAZY) tant que la transaction est ouverte
+        if (utilisateur.getRoles() != null) {
+            utilisateur.getRoles().size();
+        }
+        return new UtilisateurDetails(utilisateur);
     }
 
-    //recup un utilisateur
+    @Transactional(readOnly = true)
     public List<Utilisateur> findAll() {
         return utilisateurRepository.findAll();
     }
 
-    // recup un utilisateur par son id
+    @Transactional(readOnly = true)
     public Utilisateur findById(Long id) {
         return utilisateurRepository.findById(id).orElse(null);
     }
 
-    //cree un utilisateur
+    /** Cree un nouvel utilisateur avec mot de passe encode. */
     public void creerUtilisateur(Utilisateur utilisateur) {
         utilisateur.setMotDePasse(passwordEncoder.encode(utilisateur.getMotDePasse()));
         utilisateur.setActif(true);
@@ -60,34 +65,25 @@ public class UtilisateurDetailService implements UserDetailsService{
         utilisateurRepository.save(utilisateur);
     }
 
-    // update et insert
     public void save(Utilisateur utilisateur) {
         utilisateurRepository.save(utilisateur);
     }
 
-    // supp
     public void deleteById(Long id) {
         utilisateurRepository.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
     public boolean isAdmin(Utilisateur utilisateur) {
+        if (utilisateur.getRoles() == null) return false;
         return utilisateur.getRoles().stream()
-                .anyMatch(role -> role.getCodeRole().equals("ADMIN"));
+                .anyMatch(role -> "ADMIN".equals(role.getCodeRole()));
     }
 
+    @Transactional(readOnly = true)
     public List<String> getCodesRoles(Utilisateur utilisateur) {
         return utilisateur.getRoles().stream()
                 .map(role -> role.getCodeRole())
                 .collect(Collectors.toList());
     }
-
-    public List<String> getCodesPermissions(Utilisateur utilisateur) {
-        return utilisateur.getRoles().stream()
-                .flatMap(role -> role.getPermissions().stream())
-                .map(permission -> permission.getCodePermission())
-                .distinct()
-                .collect(Collectors.toList());
-    }
-
-
 }

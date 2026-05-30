@@ -47,17 +47,10 @@ public class Utilisateur {
     @Temporal(TemporalType.TIMESTAMP)
     private Date derniereConnexion;
 
-    @Column(name = "is_admin", nullable = false)
-    private boolean isAdmin;
-
-
     @ManyToMany
     @JoinTable(name = "role_utilisateur", joinColumns = @JoinColumn(name = "id_utilisateur"), inverseJoinColumns = @JoinColumn(name = "id_role"))
     private List<Role> roles;
 
-    @ManyToMany
-    @JoinTable(name = "role_permission", joinColumns = @JoinColumn(name = "id_role"), inverseJoinColumns = @JoinColumn(name = "id_permission"))
-    private List<Permission> permissions;
 
 
 
@@ -140,14 +133,6 @@ public class Utilisateur {
         this.motDePasse = motDePasse;
     }
 
-    public boolean getIsAdmin() {
-        return isAdmin;
-    }
-
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
-    }
-
     public List<Role> getRoles() {
         return roles;
     }
@@ -156,9 +141,6 @@ public class Utilisateur {
         this.roles = roles;
     }
 
-    public List<Permission> getPermissions() { return permissions;}
-
-    public void setPermissions(List<Permission> permissions) { this.permissions = permissions; }
 
 }
 

@@ -2,28 +2,34 @@ package com.hellmetz.festival.service;
 
 import com.hellmetz.festival.model.Scene;
 import com.hellmetz.festival.repository.SceneRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @Service
 @Transactional
 public class SceneService {
 
-    @Autowired
-    private SceneRepository sceneRepository;
+    private final SceneRepository sceneRepository;
 
-    public List<Scene> findAll() {return sceneRepository.findAllByOrderByNomAsc();}
+    public SceneService(SceneRepository sceneRepository) {
+        this.sceneRepository = sceneRepository;
+    }
 
-    public Scene findById(Long id) {return sceneRepository.findById(id).orElseThrow(() -> new RuntimeException("Scene introuvable"));}
+    @Transactional(readOnly = true)
+    public List<Scene> findAll() {
+        return sceneRepository.findAllByOrderByNomAsc();
+    }
+
+    @Transactional(readOnly = true)
+    public Scene findById(Long id) {
+        return sceneRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Scene introuvable : " + id));
+    }
 
     public void save(Scene scene) {
         sceneRepository.save(scene);
-    }
-
-    public void delete(Scene scene) {
-        sceneRepository.delete(scene);
     }
 
     public void deleteById(Long id) {

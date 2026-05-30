@@ -2,28 +2,34 @@ package com.hellmetz.festival.service;
 
 import com.hellmetz.festival.model.Concert;
 import com.hellmetz.festival.repository.ConcertRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @Service
 @Transactional
 public class ConcertService {
 
-    @Autowired
-    private ConcertRepository concertRepository;
+    private final ConcertRepository concertRepository;
 
-    public List<Concert> findAll() {return concertRepository.findAllByOrderByDateHeureDebutAsc();}
-
-    public Concert findById(Long id) {return concertRepository.findById(id).orElseThrow(() -> new RuntimeException("Concert introuvable"));}
-
-    public void save(Concert groupe) {
-        concertRepository.save(groupe);
+    public ConcertService(ConcertRepository concertRepository) {
+        this.concertRepository = concertRepository;
     }
 
-    public void delete(Concert groupe) {
-        concertRepository.delete(groupe);
+    @Transactional(readOnly = true)
+    public List<Concert> findAll() {
+        return concertRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public Concert findById(Long id) {
+        return concertRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Concert introuvable : " + id));
+    }
+
+    public void save(Concert concert) {
+        concertRepository.save(concert);
     }
 
     public void deleteById(Long id) {
