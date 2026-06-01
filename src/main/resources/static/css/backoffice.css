@@ -361,3 +361,6 @@ erreurCnx p {
 .nom_prenom {
 
 }
+
+.grid-stack-item-content { overflow: auto; }
+.grid-stack-item-content > .hm-card { height: 100%; margin: 0; }

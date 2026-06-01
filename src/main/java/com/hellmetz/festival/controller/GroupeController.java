@@ -4,6 +4,7 @@ import com.hellmetz.festival.model.Groupe;
 import com.hellmetz.festival.service.GroupeService;
 import com.hellmetz.festival.service.ArtisteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,13 +20,32 @@ public class GroupeController {
 
 
     @GetMapping("/liste")
-    public String listGroupes(Model model) {
-        model.addAttribute("groupes", groupeService.findAll());
+    public String listGroupes(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") String taille,
+            Model model) {
+
+        boolean tout = "tout".equalsIgnoreCase(taille);
+        Page<Groupe> pageGroupes = tout
+                ? groupeService.findTout()
+                : groupeService.findPage(page, parseTaille(taille));
+
+        model.addAttribute("groupes", pageGroupes.getContent()); // les lignes du tableau
+        model.addAttribute("page", pageGroupes);                 // les métadonnées de pagination
+        model.addAttribute("taille", taille);                    // pour pré-sélectionner la liste déroulante
         model.addAttribute("pageTitle", "HellMetz - Groupes");
-        model.addAttribute("activeMenu", "templates");
+        model.addAttribute("activeMenu", "groupes");             // ⚠️ corrige "templates" -> "groupes"
         return "groupe/list";
     }
 
+    private int parseTaille(String taille) {
+        try {
+            int t = Integer.parseInt(taille);
+            return t > 0 ? t : 10;
+        } catch (NumberFormatException e) {
+            return 10;
+        }
+    }
 
     @GetMapping("/ajouter")
     public String edit(@RequestParam(required = false) Long id, Model model) {
