@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="menu">
+  <div class="backoffice-logo">HellMetz</div>
+  <div class="backoffice-subtitle">Backoffice organisateur</div>
+
+  <nav class="backoffice-nav">
+    <a th:href="@{/dashboard}"
+       th:class="${activeMenu eq 'dashboard' ? 'active' : ''}">
+      <span>🏠</span><span>Tableau de bord</span>
+    </a>
+
+    <a th:href="@{/scenes/liste}"
+       th:class="${activeMenu eq 'scenes' ? 'active' : ''}">
+      <span>🪩</span><span>Scenes</span>
+    </a>
+
+    <a th:href="@{/artistes/liste}"
+       th:class="${activeMenu eq 'artiste' ? 'active' : ''}">
+      <span>🧑‍🎤</span><span>Artistes</span>
+    </a>
+
+    <a th:href="@{/groupes/liste}"
+       th:class="${activeMenu eq 'groupes' ? 'active' : ''}">
+      <span>🎸</span><span>Groupes</span>
+    </a>
+
+    <a th:href="@{/concerts/liste}"
+       th:class="${activeMenu eq 'concerts' ? 'active' : ''}">
+      <span>🎵</span><span>Concerts</span>
+    </a>
+
+    <!-- Lien admin récupéré de l'ancien bandeau -->
+    <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
+       th:href="@{/utilisateurs}"
+       th:class="${activeMenu eq 'utilisateurs' ? 'active' : ''}">
+      <span>👥</span><span>Utilisateurs</span>
+    </a>
+
+    <a class="disabled"><span>📦</span><span>Logistique & Matériel (à venir)</span></a>
+    <a class="disabled"><span>🧑‍🤝‍🧑</span><span>RH & Bénévoles (à venir)</span></a>
+    <a class="disabled"><span>📍</span><span>Points d'intérêt (à venir)</span></a>
+  </nav>
+</div>
+</html>

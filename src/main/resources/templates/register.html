@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Création d'un compte - HellMetz</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/backoffice.css}" rel="stylesheet">
+</head>
+<body>
+<div class="container connexion mt-5">
+    <form class="form-login" method="post" th:action="@{/register}">
+        <h2 class="form-login-heading">Création d'un compte utilisateur</h2>
+
+        <div th:if="${not #strings.isEmpty(erreur)}" class="erreurCnx">
+            <p th:text="${erreur}"></p>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Nom</label>
+            <input type="text" class="form-control" name="nom" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Prénom</label>
+            <input type="text" class="form-control" name="prenom" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" name="email" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Identifiant</label>
+            <input type="text" class="form-control" name="identifiant" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Mot de passe</label>
+            <input type="password" class="form-control" name="motDePasse" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Rôle de l'utilisateur</label>
+            <select class="form-select" name="idRole" id="selectRole" required>
+                <option value="">-- Choisir un rôle --</option>
+                <option th:each="r : ${roles}"
+                        th:value="${r.idRole}"
+                        th:text="${r.libelle}">
+                </option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Permissions accordées</label>
+            <div id="zonePermissions" class="border rounded p-2">
+                <div class="form-check" th:each="p : ${permissions}">
+                    <input class="form-check-input chkPermission"
+                           type="checkbox"
+                           name="idsPermissions"
+                           th:value="${p.idPermission}"
+                           th:id="'perm_' + ${p.idPermission}"
+                           disabled>
+                    <label class="form-check-label" th:for="'perm_' + ${p.idPermission}">
+                        <strong th:text="${p.codePermission}"></strong> - <span th:text="${p.libelle}"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Créer le compte</button>
+        <a th:href="@{/login}" class="btn btn-secondary">
+            Annuler
+        </a>
+    </form>
+</div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var permissionsParRole = /*[[${permissionsParRole}]]*/ {};
+    /*]]>*/
+
+    document.getElementById("selectRole").addEventListener("change", function () {
+        var idRole = this.value;
+        var cases = document.querySelectorAll(".chkPermission");
+
+        // Réinitialiser toutes les cases
+        cases.forEach(function (c) {
+            c.checked = false;
+            c.disabled = true;
+        });
+
+        if (idRole && permissionsParRole[idRole]) {
+            var permsAutorisees = permissionsParRole[idRole];
+            cases.forEach(function (c) {
+                if (permsAutorisees.includes(parseInt(c.value))) {
+                    c.checked = true;
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout :: layout(~{::content})}">
+<head>
+    <title>Concerts - HellMetz</title>
+</head>
+<body>
+<div th:fragment="content">
+    <div class="hm-card">
+        <div class="hm-card-header">
+            <div>
+                <div class="hm-tag">Gestion</div>
+                <div class="hm-card-title">Concerts du HellMetz Festival</div>
+            </div>
+            <a th:href="@{/concerts/ajouter}" class="hm-btn-primary">
+                <span>＋</span>
+                <span>Nouveau concert</span>
+            </a>
+        </div>
+
+        <div th:if="${#lists.isEmpty(concerts)}" style="padding: 40px; text-align: center;">
+            <p>Aucun concert enregistré pour le moment.</p>
+        </div>
+
+        <div th:unless="${#lists.isEmpty(concerts)}" class="table-responsive">
+            <table class="hm-table">
+                <thead>
+                <tr>
+                    <th>Scène</th>
+                    <th>Groupe</th>
+                    <th>Statut</th>
+                    <th>Début</th>
+                    <th>Fin</th>
+                    <th>Balance début</th>
+                    <th>Balance fin</th>
+                    <th>Décibels max</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="c : ${concerts}">
+                    <td th:text="${c.scene != null ? c.scene.nom : ''}"></td>
+
+                    <td>
+                        <th:block th:if="${not #lists.isEmpty(c.groupes)}">
+                            <span th:each="g, iterStat : ${c.groupes}"
+                                  th:text="${g.nomGroupe} + ${iterStat.last ? '' : ', '}"></span>
+                        </th:block>
+                        <span th:if="${#lists.isEmpty(c.groupes)}">Aucun groupe</span>
+                    </td>
+
+                    <td><span class="hm-pill" th:text="${c.statut}"></span></td>
+                    <td th:text="${c.dateHeureDebut}"></td>
+                    <td th:text="${c.dateHeureFin}"></td>
+                    <td th:text="${c.heureBalanceDebut}"></td>
+                    <td th:text="${c.heureBalanceFin}"></td>
+                    <td><span class="hm-pill" th:text="${c.decibelsMax} + ' dB'"></span></td>
+                    <td>
+                        <a class="hm-link-site"
+                           th:href="@{/concerts/ajouter(id=${c.id})}">
+                            ✏️ éditer
+                        </a>
+                        &nbsp;|&nbsp;
+                        <a class="hm-link-site"
+                           th:href="@{/concerts/delete/{id}(id=${c.id})}"
+                           onclick="return confirm('Supprimer ce concert ?');">
+                            🗑️ supprimer
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

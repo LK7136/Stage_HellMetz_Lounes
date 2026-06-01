@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout :: layout(~{::content})}">
+<head>
+    <title>Groupes - HellMetz</title>
+</head>
+<body>
+<div th:fragment="content">
+    <div class="hm-card">
+        <div class="hm-card-header">
+            <div>
+                <div class="hm-tag">Gestion</div>
+                <div class="hm-card-title">Groupes du HellMetz Festival</div>
+            </div>
+            <a th:href="@{/groupes/ajouter}" class="hm-btn-primary">
+                <span>＋</span>
+                <span>Nouveau groupe</span>
+            </a>
+        </div>
+
+        <div th:if="${#lists.isEmpty(groupes)}" style="padding: 40px; text-align: center;">
+            <p>Aucun groupe enregistré pour le moment.</p>
+        </div>
+
+        <div th:unless="${#lists.isEmpty(groupes)}" class="table-responsive">
+            <table class="hm-table">
+                <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th>Année Création</th>
+                    <th>Pays</th>
+                    <th>Site web</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="g : ${groupes}">
+                    <td><strong th:text="${g.nomGroupe}"></strong></td>
+                    <td><strong th:text="${g.description}"></strong></td>
+                    <td><span class="hm-pill" th:text="${g.anneeCreation}"></span></td>
+                    <td th:text="${g.paysOrigine}"></td>
+                    <td>
+                        <a th:if="${not #strings.isEmpty(g.siteWeb)}"
+                           class="hm-link-site"
+                           th:href="${g.siteWeb}"
+                           target="_blank" rel="noopener noreferrer">
+                            ouvrir
+                        </a>
+                    </td>
+                    <td>
+                        <a class="hm-link-site"
+                           th:href="@{/groupes/ajouter(id=${g.id})}">
+                            ✏️ éditer
+                        </a>
+                        &nbsp;|&nbsp;
+                        <a class="hm-link-site"
+                           th:href="@{/groupes/delete/{id}(id=${g.id})}"
+                           onclick="return confirm('Supprimer ce groupe ?');">
+                            🗑️ supprimer
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
