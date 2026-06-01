@@ -45,7 +45,7 @@
                     <td>
                         <a th:if="${not #strings.isEmpty(s.urlPlanTechnique)}"
                            class="hm-link-site"
-                           th:href="@{/{url}(url=${s.urlPlanTechnique})}"
+                           th:href="@{/scenes/uploads/{url}(url=${s.urlPlanTechnique})}"
                            target="_blank" rel="noopener noreferrer">voir
                         </a>
                         <span th:unless="${not #strings.isEmpty(s.urlPlanTechnique)}"

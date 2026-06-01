@@ -14,6 +14,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
+//pour recuper les fichier uploader d'une scene et les afficher quand on clique sur voir
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 
 @Controller
 @RequestMapping("/scenes")
@@ -73,15 +78,33 @@ public class SceneController {
             } catch (IOException e) {
                 e.printStackTrace();
                 // Optionnel : ajouter une erreur personnalisée si l'écriture échoue
-                return "formulaire-scene";
+                return "/scenes/edit";
             }
         }
 
         // 5. Sauvegarder la scène en BDD via le service
         sceneService.save(scene);
 
-        return "redirect:/scenes";
+        return "redirect:/scenes/liste";
     }
+
+
+    //pour recuper les fichier uploader d'une scene et les afficher quand on clique sur voir
+    @GetMapping("/uploads/{nomFichier:.+}")
+    public ResponseEntity<Resource> voirFichier(@PathVariable String nomFichier) throws IOException {
+        Path cheminFichier = Paths.get(UPLOAD_DIR).resolve(nomFichier).normalize();
+        Resource resource = new UrlResource(cheminFichier.toUri());
+
+        if (!resource.exists() || !resource.isReadable()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, "application/pdf")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + nomFichier + "\"")
+                .body(resource);
+    }
+
 
 
     @GetMapping("/delete/{id}")
