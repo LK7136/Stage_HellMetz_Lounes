@@ -5,6 +5,7 @@ import com.hellmetz.festival.service.ConcertService;
 import com.hellmetz.festival.service.EditionService;
 import com.hellmetz.festival.service.SceneService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,11 +23,31 @@ public class ConcertController {
     private EditionService editionService;
 
     @GetMapping("/liste")
-    public String liste(Model model) {
-        model.addAttribute("concerts", concertService.findAll());
+    public String listConcerts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") String taille,
+            Model model) {
+
+        boolean tout = "tout".equalsIgnoreCase(taille);
+        Page<Concert> pageConcerts = tout
+                ? concertService.findTout()
+                : concertService.findPage(page, parseTaille(taille));
+
+        model.addAttribute("concerts", pageConcerts.getContent()); // les lignes du tableau
+        model.addAttribute("page", pageConcerts);                  // les métadonnées de pagination
+        model.addAttribute("taille", taille);                      // pour la liste déroulante
         model.addAttribute("pageTitle", "HellMetz - Concerts");
-        model.addAttribute("activeMenu", "templates");
+        model.addAttribute("activeMenu", "concerts");
         return "concert/list";
+    }
+
+    private int parseTaille(String taille) {
+        try {
+            int t = Integer.parseInt(taille);
+            return t > 0 ? t : 10;
+        } catch (NumberFormatException e) {
+            return 10;
+        }
     }
 
 
