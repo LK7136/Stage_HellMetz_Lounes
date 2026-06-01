@@ -4,23 +4,33 @@ import com.hellmetz.festival.model.Artiste;
 import com.hellmetz.festival.service.ArtisteService;
 import com.hellmetz.festival.service.StyleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
-@Controller                       // Déclare ce Bean comme Controller Spring MVC
-@RequestMapping("/artistes")       // Préfixe commun à toutes les routes
+
+@Controller
+@RequestMapping("/artistes")
 public class ArtisteController {
 
     @Autowired
-    private ArtisteService artisteService;  // Injecté par Spring
+    private ArtisteService artisteService;
     @Autowired
-    private StyleService styleService;  // Injecté par Spring
+    private StyleService styleService;
 
+    private static final String UPLOAD_DIR = System.getProperty("user.home") + "/Desktop/StageHellMetz/uploads/artistes/";
 
-    // Affichage de la liste — équivaut à votre doGet() actuel
     @GetMapping("/liste")
     public String liste(Model model) {
         model.addAttribute("artistes", artisteService.findAll());
@@ -29,71 +39,82 @@ public class ArtisteController {
         return "artiste/list";
     }
 
-    // Formulaire d'edit — GET affiche le form vide
     @GetMapping("/ajouter")
     public String edit(@RequestParam(required = false) Long id,
                        @RequestParam(required = false) Integer idGroupeParam,
-                       Model model)  {
-
-        // si id null on modifie l'artiste
+                       Model model) {
         if (id != null) {
             Artiste artiste = artisteService.findById(id);
             model.addAttribute("artiste", artiste);
             model.addAttribute("pageTitle", "Modifier l'artiste - HellMetz");
-        } else { // sinon on le creer
+        } else {
             model.addAttribute("artiste", new Artiste());
             model.addAttribute("pageTitle", "Nouvel artiste - HellMetz");
         }
-
-        // si on modifie un artiste dans la page groupe on garde son id
-        // pour retourner d'ou on vient (ptet a changer car retourner la
-        // liste des artistes)
 
         if (idGroupeParam != null) {
             model.addAttribute("idGroupeParam", idGroupeParam);
         }
 
-        // pour le menu deroulant des styles
         model.addAttribute("styles", styleService.findAll());
         return "artiste/edit";
     }
 
-
-
-
-    // Formulaire d'edit à enregistrer et envoyer
     @PostMapping("/edit")
     public String save(@ModelAttribute Artiste artiste,
                        @RequestParam(required = false) Integer idGroupeParam,
                        @RequestParam(required = false) MultipartFile urlPhotoArtiste,
                        @RequestParam(required = false) String supprimerPhoto) {
 
-        // pour supprime photo
         if ("true".equals(supprimerPhoto)) {
             artiste.setUrlPhoto(null);
         }
 
-        // pour upload photo
         if (urlPhotoArtiste != null && !urlPhotoArtiste.isEmpty()) {
-            String fileName = urlPhotoArtiste.getOriginalFilename();
-            artiste.setUrlPhoto("/static/images/artistes/" + fileName);
+            try {
+                Path uploadPath = Paths.get(UPLOAD_DIR);
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+
+                String fileName = urlPhotoArtiste.getOriginalFilename();
+                Path targetLocation = uploadPath.resolve(fileName);
+                Files.copy(urlPhotoArtiste.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+                artiste.setUrlPhoto(fileName);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "artiste/edit";
+            }
         }
+
 
         artisteService.save(artiste);
 
-        // redirge
         if (idGroupeParam != null) {
             return "redirect:/groupe/edit?id=" + idGroupeParam;
         }
         return "redirect:/artistes/liste";
     }
 
+    @GetMapping("/uploads/{nomFichier:.+}")
+    public ResponseEntity<Resource> voirPhoto(@PathVariable String nomFichier) throws IOException {
+        Path cheminFichier = Paths.get(UPLOAD_DIR).resolve(nomFichier).normalize();
+        Resource resource = new UrlResource(cheminFichier.toUri());
 
+        if (!resource.exists() || !resource.isReadable()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + nomFichier + "\"")
+                .body(resource);
+    }
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
         artisteService.deleteById(id);
         return "redirect:/artistes/liste";
     }
-
 }

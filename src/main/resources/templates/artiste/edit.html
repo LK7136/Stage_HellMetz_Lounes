@@ -31,7 +31,7 @@
           <div class="col-auto" style="text-align:center">
             <label for="urlPhotoArtiste" style="cursor:pointer; display:inline-block;">
               <img id="preview"
-                   th:src="${not #strings.isEmpty(artiste.urlPhoto)} ? @{/{p}(p=${artiste.urlPhoto})} : @{/images/artistes/defaultAvatar.png}"
+                   th:src="${not #strings.isEmpty(artiste.urlPhoto)} ? @{/artistes/uploads/{p}(p=${artiste.urlPhoto})} : @{/images/artistes/defaultAvatar.png}"
                    style="width:180px; height:180px; border-radius:5%; object-fit:cover;">
             </label>
             <input type="file" id="urlPhotoArtiste" name="urlPhotoArtiste" accept="image/*" style="display:none;">

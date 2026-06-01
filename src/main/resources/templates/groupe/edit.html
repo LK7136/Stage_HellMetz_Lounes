@@ -22,39 +22,60 @@
     </div>
 
     <div class="p-4">
-      <form th:action="@{/groupes/edit}" method="post">
+      <form th:action="@{/groupes/edit}" method="post" enctype="multipart/form-data">
 
         <input type="hidden" name="id" th:value="${groupe.id}">
+        <input type="hidden" name="supprimerPhoto" id="supprimer_photo" value="false">
 
         <div class="row mb-3">
-          <div class="col-md-6">
-            <label for="nomGroupe" class="form-label fw-bold">Nom du groupe <span class="text-danger">*</span></label>
-            <input type="text" id="nomGroupe" name="nomGroupe" class="form-control"
-                   th:value="${groupe.nomGroupe}" required>
+          <div class="col-auto" style="text-align:center">
+            <label for="urlLogoGroupe" style="cursor:pointer; display:inline-block;">
+              <img id="preview"
+                   th:src="${not #strings.isEmpty(groupe.urlLogo)} ? @{/groupes/uploads/{p}(p=${groupe.urlLogo})} : @{/images/groupes/defaultGroupeAvatar.png}"
+                   style="width:180px; height:180px; border-radius:5%; object-fit:cover;">
+            </label>
+            <input type="file" id="urlLogoGroupe" name="urlLogoGroupe" accept="image/*" style="display:none;">
+            <div th:if="${not #strings.isEmpty(groupe.urlLogo)}" style="margin-top:6px;">
+              <button type="button" id="btnSupprimerPhoto" class="hm-btn-primary"
+                      style="background-color:#6c757d; color:white;">
+                🗑️ Supprimer la photo
+              </button>
+            </div>
           </div>
-          <div class="col-md-6">
-            <label for="anneeCreation" class="form-label fw-bold">Année de création</label>
-            <input type="number" id="anneeCreation" name="anneeCreation" class="form-control"
-                   th:value="${groupe.anneeCreation}">
+
+          <div class="col mb-3" style="display:flex; flex-direction:column; justify-content:space-between; height:180px;">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="nomGroupe" class="form-label fw-bold">Nom du groupe <span class="text-danger">*</span></label>
+                <input type="text" id="nomGroupe" name="nomGroupe" class="form-control"
+                       th:value="${groupe.nomGroupe}" required>
+              </div>
+              <div class="col-md-6">
+                <label for="anneeCreation" class="form-label fw-bold">Année de création</label>
+                <input type="number" id="anneeCreation" name="anneeCreation" class="form-control"
+                       th:value="${groupe.anneeCreation}">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <label for="paysOrigine" class="form-label fw-bold">Pays d'origine</label>
+                <input type="text" id="paysOrigine" name="paysOrigine" class="form-control"
+                       th:value="${groupe.paysOrigine}">
+              </div>
+              <div class="col-md-6">
+                <label for="villeOrigine" class="form-label fw-bold">Ville d'origine</label>
+                <input type="text" id="villeOrigine" name="villeOrigine" class="form-control"
+                       th:value="${groupe.villeOrigine}">
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="mb-3">
-          <label for="description" class="form-label fw-bold">Description</label>
-          <textarea id="description" name="description" class="form-control"
-                    rows="4" th:text="${groupe.description}"></textarea>
-        </div>
-
         <div class="row mb-3">
-          <div class="col-md-6">
-            <label for="paysOrigine" class="form-label fw-bold">Pays d'origine</label>
-            <input type="text" id="paysOrigine" name="paysOrigine" class="form-control"
-                   th:value="${groupe.paysOrigine}">
-          </div>
-          <div class="col-md-6">
-            <label for="villeOrigine" class="form-label fw-bold">Ville d'origine</label>
-            <input type="text" id="villeOrigine" name="villeOrigine" class="form-control"
-                   th:value="${groupe.villeOrigine}">
+          <div class="col-12">
+            <label for="description" class="form-label fw-bold">Description</label>
+            <textarea id="description" name="description" class="form-control"
+                      rows="4" th:text="${groupe.description}"></textarea>
           </div>
         </div>
 
@@ -69,11 +90,7 @@
             <input type="url" id="urlYoutube" name="urlYoutube" class="form-control"
                    th:value="${groupe.urlYoutube}">
           </div>
-          <div class="col-md-4">
-            <label for="urlLogo" class="form-label fw-bold">URL Logo</label>
-            <input type="url" id="urlLogo" name="urlLogo" class="form-control"
-                   th:value="${groupe.urlLogo}">
-          </div>
+
         </div>
 
         <div class="form-check form-switch mb-4 mt-3">
@@ -100,7 +117,7 @@
             <tr th:each="a : ${artistes}">
               <td>
                 <img th:if="${not #strings.isEmpty(a.urlPhoto)}"
-                     th:src="@{/{photo}(photo=${a.urlPhoto})}"
+                     th:src="@{/artistes/uploads/{p}(p=${a.urlPhoto})}"
                      th:alt="${'Photo de ' + a.nom}"
                      style="width:50px; height:50px; border-radius:4px;">
                 <img th:unless="${not #strings.isEmpty(a.urlPhoto)}"
@@ -142,10 +159,32 @@
             <span>💾</span><span>Enregistrer les modifications</span>
           </button>
         </div>
-
       </form>
     </div>
   </div>
+
+  <script th:inline="javascript">
+    const defaultGroupeAvatarUrl = /*[[@{/images/groupes/defaultGroupeAvatar.png}]]*/ '';
+
+    document.getElementById('urlLogoGroupe').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        document.getElementById('preview').src = URL.createObjectURL(file);
+        document.getElementById('supprimer_photo').value = "false";
+      }
+    });
+
+    const btnSuppr = document.getElementById('btnSupprimerPhoto');
+    if (btnSuppr) {
+      btnSuppr.addEventListener('click', function() {
+        document.getElementById('preview').src = defaultAvatarUrl;
+        document.getElementById('urlLogoGroupe').value = "";
+        document.getElementById('supprimer_photo').value = "true";
+        this.style.display = "none";
+      });
+    }
+  </script>
+
 </div>
 </body>
 </html>

@@ -41,7 +41,7 @@
                 <tr th:each="a : ${artistes}">
                     <td>
                         <img th:if="${not #strings.isEmpty(a.urlPhoto)}"
-                             th:src="@{/{photo}(photo=${a.urlPhoto})}"
+                             th:src="@{/artistes/uploads/{photo}(photo=${a.urlPhoto})}"
                              th:alt="${'Photo de ' + a.nom}"
                              style="width: 50px; height: 50px; border-radius: 4px;">
 
