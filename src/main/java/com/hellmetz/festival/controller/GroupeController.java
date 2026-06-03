@@ -35,14 +35,6 @@ public class GroupeController {
     private static final String UPLOAD_DIR = System.getProperty("user.home") + "/Desktop/StageHellMetz/uploads/groupes/";
 
 
-    // pour retourner du JSON pour le front office
-    @GetMapping("/api/groupes")
-    @ResponseBody
-    public List<Groupe> apiListe() {
-        return groupeService.findAll();
-    }
-
-
     @GetMapping("/liste")
     public String listGroupes(Model model) {
         model.addAttribute("groupes", groupeService.findAll());
@@ -124,4 +116,5 @@ public class GroupeController {
         groupeService.deleteById(id);
         return "redirect:/groupes/liste";
     }
+
 }

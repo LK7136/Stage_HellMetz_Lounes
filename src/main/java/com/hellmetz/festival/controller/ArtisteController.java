@@ -117,4 +117,6 @@ public class ArtisteController {
         artisteService.deleteById(id);
         return "redirect:/artistes/liste";
     }
+
+
 }

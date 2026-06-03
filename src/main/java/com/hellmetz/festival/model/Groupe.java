@@ -1,5 +1,6 @@
 package com.hellmetz.festival.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
@@ -59,6 +60,7 @@ public class Groupe {
 
     @ManyToOne
     @JoinColumn(name = "id_concert")
+    @JsonIgnoreProperties("groupes")
     private Concert concert;
 
 

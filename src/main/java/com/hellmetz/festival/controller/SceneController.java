@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 
 //pour recuper les fichier uploader d'une scene et les afficher quand on clique sur voir
 import org.springframework.core.io.Resource;
@@ -112,5 +113,6 @@ public class SceneController {
         sceneService.deleteById(id);
         return "redirect:/scenes/liste";
     }
+
 
 }

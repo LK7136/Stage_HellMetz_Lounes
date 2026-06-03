@@ -1,5 +1,6 @@
 package com.hellmetz.festival.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
@@ -46,6 +47,7 @@ public class Concert {
     private Edition edition;
 
     @OneToMany(mappedBy = "concert", fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("concert")
     private List<Groupe> groupes;
 
 
