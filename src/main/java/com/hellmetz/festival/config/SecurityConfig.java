@@ -28,7 +28,8 @@ public class SecurityConfig {
                         // Ressources publiques : CSS, JS, images
                         .requestMatchers("/css/**", "/js/**").permitAll()
                         .requestMatchers("/login").permitAll()
-
+                        // toud le monde peut fare des requete via api
+                        .requestMatchers("/api/**").permitAll()
                         // acces au back office que pr les admins
                         .requestMatchers("/festival/**").hasAnyRole("ADMIN")
 

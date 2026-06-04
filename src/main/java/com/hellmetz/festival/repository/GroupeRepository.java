@@ -9,6 +9,8 @@ import java.util.List;
 // JpaRepository<T, ID> : T = votre entité, ID = type de sa clé primaire
 public interface GroupeRepository extends JpaRepository<Groupe, Long> {
     List<Groupe> findAllByOrderByNomGroupeAsc();
+
+
 }
 
 

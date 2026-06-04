@@ -28,6 +28,7 @@ public class GroupeService {
                 .orElseThrow(() -> new RuntimeException("Groupe introuvable : " + id));
     }
 
+
     public void save(Groupe groupe) {
         groupeRepository.save(groupe);
     }
