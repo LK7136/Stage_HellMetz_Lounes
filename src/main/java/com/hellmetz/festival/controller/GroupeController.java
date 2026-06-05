@@ -1,6 +1,8 @@
 package com.hellmetz.festival.controller;
 
+import com.hellmetz.festival.model.Concert;
 import com.hellmetz.festival.model.Groupe;
+import com.hellmetz.festival.service.ConcertService;
 import com.hellmetz.festival.service.GroupeService;
 import com.hellmetz.festival.service.ArtisteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 
 
 @Controller
@@ -31,6 +34,8 @@ public class GroupeController {
     private GroupeService groupeService;
     @Autowired
     private ArtisteService artisteService;
+    @Autowired
+    private ConcertService concertService;
 
     private static final String UPLOAD_DIR = System.getProperty("user.home") + "/Desktop/StageHellMetz/uploads/groupes/";
 
@@ -49,7 +54,7 @@ public class GroupeController {
         model.addAttribute("page", pageGroupes);                 // les métadonnées de pagination
         model.addAttribute("taille", taille);                    // pour pré-sélectionner la liste déroulante
         model.addAttribute("pageTitle", "HellMetz - Groupes");
-        model.addAttribute("activeMenu", "groupes");             // ⚠️ corrige "templates" -> "groupes"
+        model.addAttribute("activeMenu", "groupes");
         return "groupe/list";
     }
 
@@ -63,7 +68,12 @@ public class GroupeController {
     }
 
     @GetMapping("/ajouter")
-    public String edit(@RequestParam(required = false) Long id, Model model) {
+    public String edit(@RequestParam(required = false) Long id,
+                       @RequestParam(defaultValue = "0") int concertPage,
+                       @RequestParam(defaultValue = "10") String concertTaille,
+                       Model model) {
+
+        boolean tout = "tout".equalsIgnoreCase(concertTaille);
 
         if (id != null) {
             Groupe groupe = groupeService.findById(id);
@@ -71,14 +81,46 @@ public class GroupeController {
             model.addAttribute("pageTitle", "Modifier le groupe - HellMetz");
             model.addAttribute("artistes", artisteService.findByGroupeId(id));
 
+            Page<Concert> pageConcerts = tout
+                    ? concertService.findDisponiblesOuAnnulesOuGroupeTout(id)
+                    : concertService.findDisponiblesOuAnnulesOuGroupe(id, concertPage, parseTaille(concertTaille));
+
+            model.addAttribute("concertsDispo", pageConcerts.getContent());
+            model.addAttribute("pageConcerts", pageConcerts);
+            model.addAttribute("concertTaille", concertTaille);
+
         } else {
             model.addAttribute("groupe", new Groupe());
             model.addAttribute("pageTitle", "Nouveau groupe - HellMetz");
             model.addAttribute("artistes", java.util.Collections.emptyList());
 
+            Page<Concert> pageConcerts = tout
+                    ? concertService.findDisponiblesOuAnnulesTout()
+                    : concertService.findDisponiblesOuAnnules(concertPage, parseTaille(concertTaille));
+
+            model.addAttribute("concertsDispo", pageConcerts.getContent());
+            model.addAttribute("pageConcerts", pageConcerts);
+            model.addAttribute("concertTaille", concertTaille);
         }
         return "groupe/edit";
     }
+
+
+    // sauvegarder les concert coché
+    @PostMapping("/{groupeId}/concerts")
+    public String saveConcerts(@PathVariable Long groupeId,
+                               @RequestParam(required = false) List<Long> concertIds,
+                               @RequestParam(required = false) List<Long> visibleConcertIds) {
+        Groupe groupe = groupeService.findById(groupeId);
+        concertService.updateGroupeConcerts(
+                groupeId,
+                concertIds != null ? concertIds : java.util.Collections.emptyList(),
+                visibleConcertIds != null ? visibleConcertIds : java.util.Collections.emptyList(),
+                groupe
+        );
+        return "redirect:/groupes/ajouter?id=" + groupeId + "&tab=concerts";
+    }
+
 
 
     @PostMapping("/edit")
@@ -129,9 +171,14 @@ public class GroupeController {
     }
 
 
+
+
+
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
         groupeService.deleteById(id);
         return "redirect:/groupes/liste";
     }
 }
+
+

@@ -45,9 +45,9 @@ public class Concert {
     @JoinColumn(name = "id_edition")
     private Edition edition;
 
-    @OneToMany(mappedBy = "concert", fetch = FetchType.EAGER)
-    private List<Groupe> groupes;
-
+    @ManyToOne
+    @JoinColumn(name = "id_groupe")
+    private Groupe groupe;
 
     public Concert(){}
 
@@ -73,8 +73,8 @@ public class Concert {
     public int getDecibelsMax() { return decibelsMax; }
     public void setDecibelsMax(int decibelsMax) {this.decibelsMax = decibelsMax;}
 
-    public List<Groupe> getGroupes() { return groupes; }
-    public void setGroupes(List<Groupe> groupes) { this.groupes = groupes; }
+    public Groupe getGroupe() { return groupe; }
+    public void setGroupe(Groupe groupe) { this.groupe = groupe; }
 
     public Edition getEdition() { return edition; }
     public void setEdition(Edition edition) { this.edition = edition; }

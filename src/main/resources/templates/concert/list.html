@@ -59,11 +59,8 @@
                     <td th:text="${c.scene != null ? c.scene.nom : ''}"></td>
 
                     <td>
-                        <th:block th:if="${not #lists.isEmpty(c.groupes)}">
-                            <span th:each="g, iterStat : ${c.groupes}"
-                                  th:text="${g.nomGroupe} + ${iterStat.last ? '' : ', '}"></span>
-                        </th:block>
-                        <span th:if="${#lists.isEmpty(c.groupes)}">Aucun groupe</span>
+                        <span th:if="${c.groupe != null}" th:text="${c.groupe.nomGroupe}"></span>
+                        <span th:unless="${c.groupe != null}">Aucun groupe</span>
                     </td>
 
                     <td><span class="hm-pill" th:text="${c.statut}"></span></td>

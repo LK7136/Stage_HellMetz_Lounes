@@ -2,6 +2,8 @@ package com.hellmetz.festival.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "groupe")
 public class Groupe {
@@ -57,10 +59,8 @@ public class Groupe {
     private String urlFicheTechnique;
 
 
-    @ManyToOne
-    @JoinColumn(name = "id_concert")
-    private Concert concert;
-
+    @OneToMany(mappedBy = "groupe", fetch = FetchType.LAZY)
+    private List<Concert> concerts;
 
 
     public Groupe() {}
@@ -114,7 +114,7 @@ public class Groupe {
     public String getUrlFicheTechnique() { return urlFicheTechnique; }
     public void setUrlFicheTechnique(String urlFicheTechnique) { this.urlFicheTechnique = urlFicheTechnique; }
 
-    public Concert getConcert() { return concert; }
-    public void setConcert(Concert concert) { this.concert = concert; }
+    public List<Concert> getConcerts() { return concerts; }
+    public void setConcerts(List<Concert> concerts) { this.concerts = concerts; }
 
 }
