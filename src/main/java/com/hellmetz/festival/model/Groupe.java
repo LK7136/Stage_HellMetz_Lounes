@@ -64,7 +64,7 @@ public class Groupe {
 
 
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinTable(
             name = "style_groupe",
             joinColumns = @JoinColumn(name = "id_groupe"),
