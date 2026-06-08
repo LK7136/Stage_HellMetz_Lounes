@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
@@ -25,7 +26,7 @@
 
       <form th:action="@{/groupes/edit}" method="post" enctype="multipart/form-data">
 
-        <input type="hidden" name="id"             th:value="${groupe.id}">
+        <input th:if="${groupe.id != null}" type="hidden" name="id" th:value="${groupe.id}">
         <input type="hidden" name="supprimerPhoto" id="supprimer_photo" value="false">
         <input type="hidden" name="urlLogo"        th:value="${groupe.urlLogo}">
 
@@ -81,17 +82,56 @@
           </div>
         </div>
 
+
         <div class="row mb-3">
+
+          <div class="col-md-4">
+            <label class="form-label fw-bold">Styles du groupe :</label>
+            <div style="position: relative; width: 100%;">
+
+              <div class="form-control" id="dropdownTrigger"
+                   style="cursor: pointer; display: flex; justify-content: space-between; align-items: center; background-color: #ffffff; color: #212529; min-height: 38px;">
+                <span id="dropdownLabel" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 90%;">Choisir le(s) style(s)</span>
+                <span style="font-size: 0.7rem; color: #6c757d;">▼</span>
+              </div>
+
+              <div id="dropdownMenu"
+                   style="display: none; position: absolute; top: 100%; left: 0; right: 0;
+                          background: #1a1a2e; border: 1px solid #454d55; border-radius: 4px;
+                          max-height: 200px; overflow-y: auto; z-index: 1000; padding: 10px; box-shadow: 0px 4px 15px rgba(0,0,0,0.5);">
+
+                <div class="form-check mb-2" th:each="style : ${tousLesStyles}">
+                  <input class="form-check-input style-checkbox"
+                         type="checkbox"
+                         name="stylesId"
+                         th:value="${style.id}"
+                         th:data-nom="${style.libelle}"
+                         th:id="${'style_' + style.id}"
+                         th:checked="${groupe != null and groupe.stylesDuGroupe != null and #lists.contains(groupe.stylesDuGroupe, style)}">
+
+                  <label class="form-check-label text-white"
+                         th:for="${'style_' + style.id}"
+                         th:text="${style.libelle}"
+                         style="cursor: pointer;">
+                    Nom du Style
+                  </label>
+                </div>
+
+              </div> </div>
+          </div>
+
           <div class="col-md-4">
             <label for="siteWeb" class="form-label fw-bold">Site Web</label>
             <input type="url" id="siteWeb" name="siteWeb" class="form-control"
                    th:value="${groupe.siteWeb}">
           </div>
+
           <div class="col-md-4">
             <label for="urlYoutube" class="form-label fw-bold">Chaîne YouTube</label>
             <input type="url" id="urlYoutube" name="urlYoutube" class="form-control"
                    th:value="${groupe.urlYoutube}">
           </div>
+
         </div>
 
         <div class="form-check form-switch mb-4 mt-3">
@@ -186,7 +226,7 @@
 
         <form th:action="@{/groupes/ajouter}" method="get"
               style="display:flex; justify-content:flex-end; align-items:center; gap:.5rem; padding:.5rem 0; margin:0;">
-          <input type="hidden" name="id"          th:value="${groupe.id}">
+          <input th:if="${groupe.id != null}" type="hidden" name="id" th:value="${groupe.id}">
           <input type="hidden" name="concertPage" value="0">
           <input type="hidden" name="tab"         value="concerts">
           <label style="font-size:.9rem;">Afficher</label>
@@ -201,7 +241,7 @@
           <span style="font-size:.9rem;">par page</span>
         </form>
 
-        <form th:action="@{/groupes/{id}/concerts(id=${groupe.id})}" method="post">
+        <form th:if="${groupe.id != null}" th:action="@{/groupes/{id}/concerts(id=${groupe.id})}" method="post">
 
           <table class="hm-table">
             <thead>
@@ -271,15 +311,18 @@
           </nav>
 
           <div class="text-end mt-3">
-            <button type="submit" class="hm-btn-primary" style="border:none;" th:if="${groupe.id != null}">
+            <button type="submit" class="hm-btn-primary" style="border:none;">
               💾 Enregistrer les concerts
             </button>
-            <span th:unless="${groupe.id != null}" style="color:#999; font-style:italic;">
-              Sauvegardez d'abord le groupe pour assigner des concerts
-            </span>
           </div>
 
         </form>
+
+        <div th:unless="${groupe.id != null}" class="text-end mt-3">
+          <span style="color:#999; font-style:italic;">
+            Sauvegardez d'abord le groupe pour assigner des concerts
+          </span>
+        </div>
 
       </div>
 
@@ -327,6 +370,49 @@
     if (urlParams.get('tab') === 'concerts') {
       switchTab('concerts');
     }
+
+    // --- LOGIQUE JS POUR LE MENU DÉROULANT DES STYLES ---
+    const trigger = document.getElementById('dropdownTrigger');
+    const menu = document.getElementById('dropdownMenu');
+    const label = document.getElementById('dropdownLabel');
+    const checkboxes = document.querySelectorAll('.style-checkbox');
+
+    // Ouvrir / Fermer au clic
+    trigger.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const isVisible = menu.style.display === 'block';
+      menu.style.display = isVisible ? 'none' : 'block';
+    });
+
+    // Fermer le menu si clic à l'extérieur
+    document.addEventListener('click', function(e) {
+      if (!menu.contains(e.target) && e.target !== trigger) {
+        menu.style.display = 'none';
+      }
+    });
+
+    // Mettre à jour l'affichage du libellé
+    function updateDropdownLabel() {
+      const selectionnes = [];
+      checkboxes.forEach(cb => {
+        if (cb.checked) {
+          selectionnes.push(cb.getAttribute('data-nom'));
+        }
+      });
+
+      if (selectionnes.length > 0) {
+        label.textContent = selectionnes.join(', ');
+      } else {
+        label.textContent = 'Choisir le(s) style(s)';
+      }
+    }
+
+    checkboxes.forEach(cb => {
+      cb.addEventListener('change', updateDropdownLabel);
+    });
+
+    // Initialisation au chargement de la page
+    updateDropdownLabel();
   </script>
 
 </div>

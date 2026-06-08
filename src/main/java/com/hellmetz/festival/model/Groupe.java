@@ -1,8 +1,9 @@
 package com.hellmetz.festival.model;
 
 import jakarta.persistence.*;
-
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "groupe")
@@ -23,7 +24,7 @@ public class Groupe {
     private Boolean actif;
 
     @Column(name = "annee_creation")
-    private int anneeCreation;
+    private Integer anneeCreation;
 
     @Column(name = "ville_origine")
     private String villeOrigine;
@@ -58,14 +59,33 @@ public class Groupe {
     @Column(name = "url_fiche_technique")
     private String urlFicheTechnique;
 
-
-    @OneToMany(mappedBy = "groupe", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "groupe")
     private List<Concert> concerts;
 
 
-    public Groupe() {}
 
-    // Getters et Setters
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+    @JoinTable(
+            name = "style_groupe",
+            joinColumns = @JoinColumn(name = "id_groupe"),
+            inverseJoinColumns = @JoinColumn(name = "id_style")
+    )
+    private Set<Style> stylesDuGroupe = new HashSet<>();
+
+
+
+
+
+
+
+
+    public Groupe() {
+    }
+
+
+
+
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -78,8 +98,8 @@ public class Groupe {
     public Boolean getActif() { return actif; }
     public void setActif(Boolean actif) { this.actif = actif; }
 
-    public int getAnneeCreation() { return anneeCreation; }
-    public void setAnneeCreation(int anneeCreation) { this.anneeCreation = anneeCreation; }
+    public Integer getAnneeCreation() { return anneeCreation; }
+    public void setAnneeCreation(Integer anneeCreation) { this.anneeCreation = anneeCreation; }
 
     public String getVilleOrigine() { return villeOrigine; }
     public void setVilleOrigine(String villeOrigine) { this.villeOrigine = villeOrigine; }
@@ -116,5 +136,13 @@ public class Groupe {
 
     public List<Concert> getConcerts() { return concerts; }
     public void setConcerts(List<Concert> concerts) { this.concerts = concerts; }
+
+    public void addStyles(Style style) {
+        if (this.stylesDuGroupe == null) { this.stylesDuGroupe = new HashSet<>(); }
+        this.stylesDuGroupe.add(style);
+    }
+
+    public Set<Style> getStylesDuGroupe() { return stylesDuGroupe; }
+    public void setStylesDuGroupe(Set<Style> stylesDuGroupe) { this.stylesDuGroupe = stylesDuGroupe; }
 
 }

@@ -2,6 +2,7 @@ package com.hellmetz.festival.service;
 
 import com.hellmetz.festival.model.Groupe;
 import com.hellmetz.festival.repository.GroupeRepository;
+import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,14 +17,11 @@ import java.util.List;
 public class GroupeService {
 
     private final GroupeRepository groupeRepository;
-
-
     private static final Sort TRI = Sort.by("nomGroupe").ascending();
 
     public GroupeService(GroupeRepository groupeRepository) {
         this.groupeRepository = groupeRepository;
     }
-
 
     @Transactional(readOnly = true)
     public Page<Groupe> findPage(int page, int taille) {
@@ -46,8 +44,20 @@ public class GroupeService {
                 .orElseThrow(() -> new RuntimeException("Groupe introuvable : " + id));
     }
 
-    public void save(Groupe groupe) {
-        groupeRepository.save(groupe);
+    @Transactional
+    public Groupe findByIdWithStyles(Long id) {
+        Groupe groupe = groupeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Groupe introuvable : " + id));
+
+        if (groupe.getStylesDuGroupe() != null) {
+            Hibernate.initialize(groupe.getStylesDuGroupe());
+        }
+
+        return groupe;
+    }
+
+    public Groupe save(Groupe groupe) {
+        return groupeRepository.save(groupe);
     }
 
     public void deleteById(Long id) {

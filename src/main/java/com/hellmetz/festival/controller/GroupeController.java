@@ -2,9 +2,12 @@ package com.hellmetz.festival.controller;
 
 import com.hellmetz.festival.model.Concert;
 import com.hellmetz.festival.model.Groupe;
+import com.hellmetz.festival.model.Style;
+import com.hellmetz.festival.repository.StyleRepository;
 import com.hellmetz.festival.service.ConcertService;
 import com.hellmetz.festival.service.GroupeService;
 import com.hellmetz.festival.service.ArtisteService;
+import com.hellmetz.festival.service.StyleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.core.io.Resource;
@@ -16,15 +19,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-
 import java.io.IOException;
 import java.nio.file.Files;
-
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.HashSet;
 import java.util.List;
-
 
 @Controller
 @RequestMapping("/groupes")
@@ -36,6 +37,10 @@ public class GroupeController {
     private ArtisteService artisteService;
     @Autowired
     private ConcertService concertService;
+    @Autowired
+    private StyleService styleService;
+    @Autowired
+    private StyleRepository styleRepository;
 
     private static final String UPLOAD_DIR = System.getProperty("user.home") + "/Desktop/StageHellMetz/uploads/groupes/";
 
@@ -50,9 +55,9 @@ public class GroupeController {
                 ? groupeService.findTout()
                 : groupeService.findPage(page, parseTaille(taille));
 
-        model.addAttribute("groupes", pageGroupes.getContent()); // les lignes du tableau
-        model.addAttribute("page", pageGroupes);                 // les métadonnées de pagination
-        model.addAttribute("taille", taille);                    // pour pré-sélectionner la liste déroulante
+        model.addAttribute("groupes", pageGroupes.getContent());
+        model.addAttribute("page", pageGroupes);
+        model.addAttribute("taille", taille);
         model.addAttribute("pageTitle", "HellMetz - Groupes");
         model.addAttribute("activeMenu", "groupes");
         return "groupe/list";
@@ -75,8 +80,11 @@ public class GroupeController {
 
         boolean tout = "tout".equalsIgnoreCase(concertTaille);
 
+        List<Style> tousLesStyles = styleService.findAll();
+        model.addAttribute("tousLesStyles", tousLesStyles);
+
         if (id != null) {
-            Groupe groupe = groupeService.findById(id);
+            Groupe groupe = groupeService.findByIdWithStyles(id);
             model.addAttribute("groupe", groupe);
             model.addAttribute("pageTitle", "Modifier le groupe - HellMetz");
             model.addAttribute("artistes", artisteService.findByGroupeId(id));
@@ -105,8 +113,6 @@ public class GroupeController {
         return "groupe/edit";
     }
 
-
-    // sauvegarder les concert coché
     @PostMapping("/{groupeId}/concerts")
     public String saveConcerts(@PathVariable Long groupeId,
                                @RequestParam(required = false) List<Long> concertIds,
@@ -122,9 +128,9 @@ public class GroupeController {
     }
 
 
-
     @PostMapping("/edit")
     public String save(@ModelAttribute Groupe groupe,
+                       @RequestParam(value = "stylesId", required = false) List<Long> stylesId,
                        @RequestParam(required = false) MultipartFile urlLogoGroupe,
                        @RequestParam(required = false) String supprimerPhoto) {
 
@@ -150,6 +156,23 @@ public class GroupeController {
             }
         }
 
+        // 1. On nettoie proprement les anciens styles associés en mémoire
+        if (groupe.getStylesDuGroupe() != null) {
+            groupe.getStylesDuGroupe().clear();
+        } else {
+            groupe.setStylesDuGroupe(new HashSet<>());
+        }
+
+        // 2. On va chercher et on ajoute les nouveaux styles cochés
+        if (stylesId != null) {
+            for (Long idStyle : stylesId) {
+                Style style = styleRepository.findById(idStyle)
+                        .orElseThrow(() -> new IllegalArgumentException("Style introuvable : " + idStyle));
+
+                groupe.addStyles(style);
+            }
+        }
+
         groupeService.save(groupe);
 
         return "redirect:/groupes/liste";
@@ -170,15 +193,9 @@ public class GroupeController {
                 .body(resource);
     }
 
-
-
-
-
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
         groupeService.deleteById(id);
         return "redirect:/groupes/liste";
     }
 }
-
-
