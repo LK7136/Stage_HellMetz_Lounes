@@ -18,13 +18,31 @@
 
         <h2 class="form-login-heading text-center mb-4">Identification</h2>
 
+<!--        gestion d'erreur-->
+
         <div class="alert alert-success text-center" role="alert" th:if="${param.logout}">
           Vous avez été déconnecté avec succès.
         </div>
 
-        <div class="alert alert-danger text-center" role="alert" th:if="${param.error}">
-          Identifiant ou mot de passe incorrect (ou probleme avec le serveur : je dois corriger cette gestion d'erreur)
+        <div class="alert alert-success text-center" role="alert" th:if="${successMessage}" th:text="${successMessage}"></div>
+
+        <div th:if="${param.error != null}">
+
+          <div class="alert alert-danger text-center" role="alert" th:if="${typeErreur == 'SaisieIncorrecte'}">
+            Identifiant ou mot de passe incorrect
+          </div>
+
+          <div class="alert alert-danger text-center" role="alert" th:if="${typeErreur == 'ServIndisponible'}">
+            Serveur indisponible
+          </div>
+
+          <div class="alert alert-danger text-center" role="alert" th:if="${typeErreur == 'Erreur' or typeErreur == null}">
+            Une erreur technique est survenue lors de l'identification
+          </div>
+
         </div>
+
+
 
         <div class="alert alert-danger" role="alert"
              th:if="${not #strings.isEmpty(erreur)}"
