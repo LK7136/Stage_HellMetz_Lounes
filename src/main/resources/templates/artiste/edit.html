@@ -35,7 +35,8 @@
                    style="width:180px; height:180px; border-radius:5%; object-fit:cover;">
             </label>
             <input type="file" id="urlPhotoArtiste" name="urlPhotoArtiste" accept="image/*" style="display:none;">
-            <div th:if="${not #strings.isEmpty(artiste.urlPhoto)}" style="margin-top:6px;">
+            <div id="containerBtnSupprimer" style="margin-top:6px;"
+                 th:style="${not #strings.isEmpty(artiste.urlPhoto)} ? 'margin-top:6px; display:block;' : 'margin-top:6px; display:none;'">
               <button type="button" id="btnSupprimerPhoto" class="hm-btn-primary"
                       style="background-color:#6c757d; color:white;">
                 🗑️ Supprimer la photo
@@ -110,21 +111,34 @@
   <script th:inline="javascript">
     const defaultAvatarUrl = /*[[@{/images/artistes/defaultAvatar.png}]]*/ '';
 
-    document.getElementById('urlPhotoArtiste').addEventListener('change', function(e) {
+    const containerBtn = document.getElementById('containerBtnSupprimer');
+    const inputPhoto = document.getElementById('urlPhotoArtiste');
+
+    inputPhoto.addEventListener('change', function(e) {
       const file = e.target.files[0];
       if (file) {
         document.getElementById('preview').src = URL.createObjectURL(file);
         document.getElementById('supprimer_photo').value = "false";
+
+        // 🌟 CORRECTION : On force le bouton à apparaître dès qu'un fichier est choisi !
+        if (containerBtn) {
+          containerBtn.style.display = "block";
+        }
       }
     });
+
 
     const btnSuppr = document.getElementById('btnSupprimerPhoto');
     if (btnSuppr) {
       btnSuppr.addEventListener('click', function() {
         document.getElementById('preview').src = defaultAvatarUrl;
-        document.getElementById('urlPhotoArtiste').value = "";
+        inputPhoto.value = ""; // Vide le fichier sélectionné
         document.getElementById('supprimer_photo').value = "true";
-        this.style.display = "none";
+
+        // On masque le container à nouveau
+        if (containerBtn) {
+          containerBtn.style.display = "none";
+        }
       });
     }
   </script>
