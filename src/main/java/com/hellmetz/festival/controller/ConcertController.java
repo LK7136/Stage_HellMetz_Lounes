@@ -1,15 +1,16 @@
 package com.hellmetz.festival.controller;
 
 import com.hellmetz.festival.model.Concert;
+import com.hellmetz.festival.model.Groupe;
 import com.hellmetz.festival.service.ConcertService;
 import com.hellmetz.festival.service.EditionService;
+import com.hellmetz.festival.service.GroupeService;
 import com.hellmetz.festival.service.SceneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 
 @Controller
 @RequestMapping("/concerts")
@@ -21,6 +22,8 @@ public class ConcertController {
     private SceneService sceneService;
     @Autowired
     private EditionService editionService;
+    @Autowired
+    private GroupeService groupeService;
 
     @GetMapping("/liste")
     public String listConcerts(
@@ -33,9 +36,9 @@ public class ConcertController {
                 ? concertService.findTout()
                 : concertService.findPage(page, parseTaille(taille));
 
-        model.addAttribute("concerts", pageConcerts.getContent()); // les lignes du tableau
-        model.addAttribute("page", pageConcerts);                  // les métadonnées de pagination
-        model.addAttribute("taille", taille);                      // pour la liste déroulante
+        model.addAttribute("concerts", pageConcerts.getContent());
+        model.addAttribute("page", pageConcerts);
+        model.addAttribute("taille", taille);
         model.addAttribute("pageTitle", "HellMetz - Concerts");
         model.addAttribute("activeMenu", "concerts");
         return "concert/list";
@@ -50,9 +53,21 @@ public class ConcertController {
         }
     }
 
-
     @GetMapping("/ajouter")
-    public String edit(@RequestParam(required = false) Long id, Model model)  {
+    public String edit(@RequestParam(required = false) Long id,
+                       @RequestParam(defaultValue = "0") int groupesPage,
+                       @RequestParam(defaultValue = "10") String groupesTaille,
+                       Model model) {
+
+        boolean tout = "tout".equalsIgnoreCase(groupesTaille);
+
+        Page<Groupe> pageGroupes = tout
+                ? groupeService.findGroupesSansConcertTout()
+                : groupeService.findGroupesSansConcertPage(groupesPage, parseTaille(groupesTaille));
+
+        model.addAttribute("groupesSansConcert", pageGroupes.getContent());
+        model.addAttribute("pageGroupes", pageGroupes);
+        model.addAttribute("groupesTaille", groupesTaille);
 
         if (id != null) {
             Concert concert = concertService.findById(id);
@@ -69,18 +84,39 @@ public class ConcertController {
         return "concert/edit";
     }
 
-
     @PostMapping("/edit")
-    public String save(@ModelAttribute Concert concert) {
+    public String save(@ModelAttribute Concert concert,
+                       @RequestParam(value = "groupeId", required = false) Long groupeId) {
+
+        // vérifie si le concert existait déjà et s'il avait un groupe
+        boolean avaitUnGroupe = false;
+        if (concert.getId() != null) {
+            Concert existant = concertService.findById(concert.getId());
+            avaitUnGroupe = existant.getGroupe() != null;
+        }
+
+
+        if (groupeId != null) {
+            Groupe groupe = groupeService.findById(groupeId);
+            concert.setGroupe(groupe);
+            concert.setStatut("Programmé");
+        } else {
+            concert.setGroupe(null);
+
+            if (avaitUnGroupe) {
+                concert.setStatut("Annulé");
+            } else {
+                concert.setStatut("Non programmé");
+            }
+        }
+
         concertService.save(concert);
         return "redirect:/concerts/liste";
     }
-
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
         concertService.deleteById(id);
         return "redirect:/concerts/liste";
     }
-
 }

@@ -161,7 +161,7 @@
                 style="padding:10px 22px; border:none; border-radius:6px 6px 0 0;
                          font-weight:600; cursor:pointer; background:#1a1a2e; color:white;
                          border-bottom:2px solid transparent; margin-bottom:-2px;">
-          🎸 Concerts
+          🎵 Concerts
         </button>
       </div>
 
@@ -227,6 +227,8 @@
         <form th:action="@{/groupes/ajouter}" method="get"
               style="display:flex; justify-content:flex-end; align-items:center; gap:.5rem; padding:.5rem 0; margin:0;">
           <input th:if="${groupe.id != null}" type="hidden" name="id" th:value="${groupe.id}">
+          <input type="hidden" name="concertPage"   th:value="${pageConcerts.number}">
+          <input type="hidden" name="concertTaille" th:value="${concertTaille}">
           <input type="hidden" name="concertPage" value="0">
           <input type="hidden" name="tab"         value="concerts">
           <label style="font-size:.9rem;">Afficher</label>

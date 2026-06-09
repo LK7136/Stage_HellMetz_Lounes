@@ -63,4 +63,20 @@ public class GroupeService {
     public void deleteById(Long id) {
         groupeRepository.deleteById(id);
     }
+
+    @Transactional(readOnly = true)
+    public List<Groupe> findGroupesSansConcert() {
+        return groupeRepository.findGroupesSansConcert();
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Groupe> findGroupesSansConcertPage(int page, int taille) {
+        return groupeRepository.findGroupesSansConcertPage(org.springframework.data.domain.PageRequest.of(page, taille));
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Groupe> findGroupesSansConcertTout() {
+        List<Groupe> liste = groupeRepository.findGroupesSansConcert();
+        return new org.springframework.data.domain.PageImpl<>(liste, org.springframework.data.domain.Pageable.unpaged(), liste.size());
+    }
 }

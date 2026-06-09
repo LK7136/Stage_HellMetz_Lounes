@@ -63,8 +63,18 @@
                         <span th:unless="${c.groupe != null}">Aucun groupe</span>
                     </td>
 
-                    <td><span class="hm-pill" th:text="${c.statut}"></span></td>
-                    <td th:text="${c.dateHeureDebut}"></td>
+                    <td>
+                        <span th:if="${#strings.equalsIgnoreCase(c.statut, 'Annulé')}"
+                              style="background:#e74c3c; color:white; padding:3px 10px;
+                              border-radius:12px; font-size:0.8em; font-weight:600; display:inline-block;">❌ Annulé
+                        </span>
+
+                        <span th:unless="${#strings.equalsIgnoreCase(c.statut, 'Annulé')}"
+                              class="hm-pill"
+                              th:text="${c.statut}">
+
+                        </span>
+                    </td>                    <td th:text="${c.dateHeureDebut}"></td>
                     <td th:text="${c.dateHeureFin}"></td>
                     <td th:text="${c.heureBalanceDebut}"></td>
                     <td th:text="${c.heureBalanceFin}"></td>

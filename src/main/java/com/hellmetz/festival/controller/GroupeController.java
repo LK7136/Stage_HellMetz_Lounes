@@ -117,15 +117,47 @@ public class GroupeController {
     public String saveConcerts(@PathVariable Long groupeId,
                                @RequestParam(required = false) List<Long> concertIds,
                                @RequestParam(required = false) List<Long> visibleConcertIds) {
-        Groupe groupe = groupeService.findById(groupeId);
-        concertService.updateGroupeConcerts(
-                groupeId,
-                concertIds != null ? concertIds : java.util.Collections.emptyList(),
-                visibleConcertIds != null ? visibleConcertIds : java.util.Collections.emptyList(),
-                groupe
-        );
+
+        // si aucune case n'est cochée on initialise une liste vide
+        // pour éviter les NullPointerException
+        if (concertIds == null) {
+            concertIds = java.util.Collections.emptyList();
+        }
+
+        //on execute que s'il y a des concerts affichés
+        if (visibleConcertIds != null) {
+
+            Groupe groupe = groupeService.findById(groupeId);
+
+            for (int i = 0; i < visibleConcertIds.size(); i++) {
+
+                Long idConcert = visibleConcertIds.get(i);
+                Concert concert = concertService.findById(idConcert);
+
+                //si on coche un/plusieur concert pour le grp = programé
+                if (concertIds.contains(idConcert)) {
+                    concert.setGroupe(groupe);
+                    concert.setStatut("Programmé");
+                }
+
+                //si on décochée un/plusieur concert appartenant au grp = annulé
+                else {
+                    // On vérifie si ce concert appartenait bien à ce groupe avant de lui retirer
+                    if (concert.getGroupe() != null && concert.getGroupe().getId().equals(groupeId)) {
+                        concert.setGroupe(null);
+                        concert.setStatut("Annulé");
+                    }
+                }
+
+                concertService.save(concert);
+            }
+        }
+
         return "redirect:/groupes/ajouter?id=" + groupeId + "&tab=concerts";
     }
+
+
+
 
 
     @PostMapping("/edit")

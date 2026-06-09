@@ -24,8 +24,10 @@ public interface ConcertRepository extends JpaRepository<Concert, Long> {
 
     List<Concert> findByGroupeId(Long groupeId);
 
-    // trouver un concerts sans groupe ou annulés ou déjà assignés à ce groupe
-    @Query("SELECT c FROM Concert c WHERE c.groupe IS NULL OR c.statut = 'Annulé' OR c.groupe.id = :groupeId")
+    // trouver des concerts sans groupe ou annulés ou déjà assignés à ce groupe
+    @Query("SELECT c FROM Concert c WHERE (c.groupe IS NULL AND (c.statut = 'Non programmé' OR c.statut = 'Annulé')) " +
+            "OR (c.groupe.id = :groupeId) " +
+            "ORDER BY CASE WHEN c.groupe.id = :groupeId THEN 0 ELSE 1 END ASC, c.dateHeureDebut ASC")
     Page<Concert> findDisponiblesOuAnnulesOuGroupe(@Param("groupeId") Long groupeId, Pageable pageable);
 
     // troyver un concert qui est anullé ou qui na pas de groupe

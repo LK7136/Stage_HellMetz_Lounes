@@ -75,13 +75,8 @@ public class Groupe {
 
 
 
-
-
-
-
     public Groupe() {
     }
-
 
 
 
