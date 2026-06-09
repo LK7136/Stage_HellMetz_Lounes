@@ -100,6 +100,15 @@
 
         <div id="panel-groupes" class="table-responsive mt-0">
 
+          <div class="mb-3" style="max-width: 350px; margin-top: 15px;">
+            <div class="input-group">
+              <span class="input-group-text" style="background: #1a1a2e; color: white; border: 1px solid #454d55;">🔍</span>
+              <input type="text" id="rechercheGroupe" class="form-control"
+                     placeholder="Rechercher un groupe..."
+                     style="border: 1px solid #ced4da;" onkeyup="filtrerLesGroupes()">
+            </div>
+          </div>
+
           <table class="hm-table" style="margin-top: 15px;">
             <thead>
             <tr>
@@ -197,6 +206,23 @@
         const checkboxes = document.querySelectorAll('.groupe-checkbox');
         checkboxes.forEach((item) => {
           if (item !== checkbox) item.checked = false;
+        });
+      }
+
+//script pour chercher un groupe avec son nom
+      function filtrerLesGroupes() {
+        const saisie = document.getElementById('rechercheGroupe').value.toLowerCase();
+        const lignes = document.querySelectorAll('#panel-groupes .hm-table tbody tr');
+        lignes.forEach(ligne => {
+          const celluleNom = ligne.querySelector('td:nth-child(3) strong');
+          if (celluleNom) {
+            const nomGroupe = celluleNom.textContent.toLowerCase();
+            if (nomGroupe.includes(saisie)) {
+              ligne.style.display = "";
+            } else {
+              ligne.style.display = "none";
+            }
+          }
         });
       }
     </script>
