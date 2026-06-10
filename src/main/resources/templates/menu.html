@@ -47,6 +47,11 @@
     <a class="disabled"><span class="menu-icon">📦</span><span class="menu-text">Logistique & Matériel</span></a>
     <a class="disabled"><span class="menu-icon">🧑‍🤝‍🧑</span><span class="menu-text">RH & Bénévoles</span></a>
     <a class="disabled"><span class="menu-icon">📍</span><span class="menu-text">Points d'intérêt</span></a>
+
+    <a th:href="@{/parametres/liste}" th:class="${activeMenu eq 'parametres' ? 'active' : ''}">
+      <span class="menu-icon">⚙️</span><span class="menu-text">Paramètres</span>
+    </a>
+
   </nav>
 </div>
 </html>
