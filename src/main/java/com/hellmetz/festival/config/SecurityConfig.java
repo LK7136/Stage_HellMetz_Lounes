@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -27,11 +28,26 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Ressources publiques : CSS, JS, images
                         .requestMatchers("/css/**", "/js/**").permitAll()
+                        // nimporte qui peut se login
                         .requestMatchers("/login").permitAll()
+                        //n'importe qui peut creer un compte (à adapter car n'importe qui peut etre admin)
+                        .requestMatchers("/login", "/register").permitAll()
+
+
+                        //seule l'admin est organisateur ont accès a la page de parametres
+                        .requestMatchers("/parametres/liste").hasAnyRole("ADMIN", "ORGANISATEUR")
+
+
+                        //suppression
+                        .requestMatchers("/*/delete/**").hasRole("ADMIN")
+
+                        //edition et ajout
+                        .requestMatchers("/*/ajouter").hasAnyRole("ADMIN", "ORGANISATEUR")
+                        .requestMatchers(HttpMethod.POST, "/*/edit").hasAnyRole("ADMIN", "ORGANISATEUR")
+
 
                         // acces au back office que pr les admins
-                        .requestMatchers("/festival/**").hasAnyRole("ADMIN")
-
+                        .requestMatchers("/festival/**").hasRole("ADMIN")
                         // acces au reste des ressource que si on est authentifier
                         .anyRequest().authenticated()
                 )

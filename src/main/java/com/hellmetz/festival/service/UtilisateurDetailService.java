@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
  * Implemente UserDetailsService pour brancher l'authentification Spring Security
  * sur la table "utilisateur".
  */
+
 @Service
 @Transactional
 public class UtilisateurDetailService implements UserDetailsService {

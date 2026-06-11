@@ -1,7 +1,9 @@
 package com.hellmetz.festival.controller;
 
+import com.hellmetz.festival.model.Permission;
 import com.hellmetz.festival.model.Role;
 import com.hellmetz.festival.model.Utilisateur;
+import com.hellmetz.festival.service.PermissionService;
 import com.hellmetz.festival.service.RoleService;
 import com.hellmetz.festival.service.UtilisateurDetailService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,6 +14,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 @Controller
 public class UtilisateurController {
 
@@ -20,6 +27,9 @@ public class UtilisateurController {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private PermissionService permissionService;
 
     @GetMapping("/login")
     public String loginPage(@RequestParam(required = false) String success,
@@ -55,10 +65,32 @@ public class UtilisateurController {
 
     @GetMapping("/register")
     public String registerForm(Model model) {
+
+        //ajouter
+        List<Role> roles = roleService.findAllAvecPermissions();
+
         model.addAttribute("utilisateur", new Utilisateur());
         model.addAttribute("roles", roleService.findAll());
+
+        //ajouter pour recup les perm
+        model.addAttribute("permissions", permissionService.findAll());
+
+        //ajouter pour recup les perm
+        Map<Long, List<Long>> permissionsParRole = new HashMap<>();
+        for (Role role : roles) {
+            List<Long> ids = role.getPermissions().stream()
+                    .map(Permission::getIdPermission)
+                    .collect(Collectors.toList());
+            permissionsParRole.put(role.getIdRole(), ids);
+        }
+        model.addAttribute("permissionsParRole", permissionsParRole);
+
+
         return "register";
     }
+
+
+
 
 
     @PostMapping("/register")

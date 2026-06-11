@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <div th:fragment="menu" style="display: flex; flex-direction: column; width: 100%;">
 
@@ -48,7 +48,8 @@
     <a class="disabled"><span class="menu-icon">🧑‍🤝‍🧑</span><span class="menu-text">RH & Bénévoles</span></a>
     <a class="disabled"><span class="menu-icon">📍</span><span class="menu-text">Points d'intérêt</span></a>
 
-    <a th:href="@{/parametres/liste}" th:class="${activeMenu eq 'parametres' ? 'active' : ''}">
+    <a sec:authorize="hasAnyRole('ADMIN', 'ORGANISATEUR')"
+       th:href="@{/parametres/liste}" th:class="${activeMenu eq 'parametres' ? 'active' : ''}">
       <span class="menu-icon">⚙️</span><span class="menu-text">Paramètres</span>
     </a>
 
