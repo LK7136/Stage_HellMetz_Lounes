@@ -27,7 +27,7 @@ public class RoleService {
         return roleRepository.findById(id).orElse(null);
     }
 
-// ajouter pour recupere les roles avec perm
+    // ajouter pour recupere les roles avec perm
     @Transactional(readOnly = true)
     public List<Role> findAllAvecPermissions() {
         List<Role> roles = roleRepository.findAll();
@@ -35,7 +35,8 @@ public class RoleService {
         return roles;
     }
 
-    public void save(Role role) {
-        roleRepository.save(role);
-    }
+    public Role save(Role role) { return roleRepository.save(role);}
+
+
+
 }

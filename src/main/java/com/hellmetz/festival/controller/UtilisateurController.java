@@ -108,6 +108,7 @@ public class UtilisateurController {
 
         utilisateur.setRoles(java.util.List.of(roleChoisi));
 
+
         try {
             utilisateurDetailService.creerUtilisateur(utilisateur);
             return "redirect:/login?success=created";
@@ -164,5 +165,7 @@ public class UtilisateurController {
         utilisateurDetailService.deleteById(id);
         return "redirect:/festival/utilisateurs/liste";
     }
+
+
 }
 

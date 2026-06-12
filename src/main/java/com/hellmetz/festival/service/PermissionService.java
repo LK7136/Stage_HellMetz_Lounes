@@ -21,4 +21,5 @@ public class PermissionService {
     public List<Permission> findAll() {
         return permissionRepository.findAll();
     }
+
 }

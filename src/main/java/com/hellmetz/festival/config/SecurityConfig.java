@@ -44,6 +44,9 @@ public class SecurityConfig {
                         .requestMatchers("/*/ajouter").hasAnyRole("ADMIN", "ORGANISATEUR")
                         .requestMatchers(HttpMethod.POST, "/*/edit").hasAnyRole("ADMIN", "ORGANISATEUR")
 
+                        //acces a la creation de roles que pour l'admin
+                        .requestMatchers(HttpMethod.POST, "/roles").hasRole("ADMIN")
+
 
                         // acces au back office que pr les admins
                         .requestMatchers("/festival/**").hasRole("ADMIN")
