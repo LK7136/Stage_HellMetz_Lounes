@@ -1,8 +1,13 @@
 package com.hellmetz.festival.service;
 
 import com.hellmetz.festival.model.Artiste;
+import com.hellmetz.festival.model.Groupe;
 import com.hellmetz.festival.repository.ArtisteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -36,4 +41,14 @@ public class ArtisteService {
         artisteRepository.delete(artiste);
     }
 
+    @Transactional(readOnly = true)
+    public Page<Artiste> findPage(int page, int taille) {
+        return artisteRepository.findAll(PageRequest.of(page, taille, Sort.by("nomScene").ascending()));
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Artiste> findTout() {
+        List<Artiste> tousLesArtistes = findAll();
+        return new PageImpl<>(tousLesArtistes);
+    }
 }

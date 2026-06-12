@@ -1,11 +1,13 @@
 package com.hellmetz.festival.controller;
 
 import com.hellmetz.festival.model.Artiste;
+import com.hellmetz.festival.model.Groupe;
 import com.hellmetz.festival.service.ArtisteService;
 import com.hellmetz.festival.service.StyleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -32,11 +34,31 @@ public class ArtisteController {
     private static final String UPLOAD_DIR = System.getProperty("user.home") + "/Desktop/StageHellMetz/uploads/artistes/";
 
     @GetMapping("/liste")
-    public String liste(Model model) {
-        model.addAttribute("artistes", artisteService.findAll());
+    public String liste(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") String taille,
+            Model model) {
+
+        boolean tout = "tout".equalsIgnoreCase(taille);
+        Page<Artiste> pageArtistes = tout
+                ? artisteService.findTout()
+                : artisteService.findPage(page, parseTaille(taille));
+
+        model.addAttribute("artistes", pageArtistes.getContent());
+        model.addAttribute("page", pageArtistes);
+        model.addAttribute("taille", taille);
         model.addAttribute("pageTitle", "HellMetz - Artistes");
         model.addAttribute("activeMenu", "templates");
         return "artiste/list";
+    }
+
+    private int parseTaille(String taille) {
+        try {
+            int t = Integer.parseInt(taille);
+            return t > 0 ? t : 10;
+        } catch (NumberFormatException e) {
+            return 10;
+        }
     }
 
     @GetMapping("/ajouter")

@@ -39,10 +39,10 @@
     </a>
 
     <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
-       th:href="@{/utilisateurs}"
+       th:href="@{/festival/utilisateurs/liste}"
        th:class="${activeMenu eq 'utilisateurs' ? 'active' : ''}">
       <span class="menu-icon">👥</span><span class="menu-text">Utilisateurs</span>
-    </a>
+    <a/>
 
     <a class="disabled"><span class="menu-icon">📦</span><span class="menu-text">Logistique & Matériel</span></a>
     <a class="disabled"><span class="menu-icon">🧑‍🤝‍🧑</span><span class="menu-text">RH & Bénévoles</span></a>

@@ -118,4 +118,51 @@ public class UtilisateurController {
         }
     }
 
+
+
+
+    @GetMapping("/festival/utilisateurs/liste")
+    public String liste(Model model) {
+        model.addAttribute("utilisateurs", utilisateurDetailService.findAll());
+        return "utilisateur/list";
+    }
+
+
+    @GetMapping("/festival/utilisateurs/ajouter")
+    public String edit(@RequestParam(required = false) Long id, Model model) {
+        if (id != null) {
+            model.addAttribute("utilisateur", utilisateurDetailService.findById(id));
+            model.addAttribute("pageTitle", "Modifier l'utilisateur - HellMetz");
+        } else {
+            model.addAttribute("utilisateur", new Utilisateur());
+            model.addAttribute("pageTitle", "Nouvel utilisateur - HellMetz");
+        }
+        model.addAttribute("roles", roleService.findAll());
+        return "utilisateur/edit";
+    }
+
+    @PostMapping("/festival/utilisateurs/edit")
+    public String save(@ModelAttribute Utilisateur utilisateur,
+                       @RequestParam Long idRole,
+                       @RequestParam(required = false) Boolean actif) {
+        Role role = roleService.findById(idRole);
+        if (utilisateur.getId() != null) {
+            Utilisateur existing = utilisateurDetailService.findById(utilisateur.getId());
+            existing.setRoles(java.util.List.of(role));
+            existing.setActif(actif != null && actif);
+            utilisateurDetailService.save(existing);
+        } else {
+            // Création
+            utilisateur.setRoles(java.util.List.of(role));
+            utilisateurDetailService.creerUtilisateur(utilisateur);
+        }
+        return "redirect:/festival/utilisateurs/liste";
+    }
+
+    @GetMapping("/festival/utilisateurs/delete/{id}")
+    public String delete(@PathVariable Long id) {
+        utilisateurDetailService.deleteById(id);
+        return "redirect:/festival/utilisateurs/liste";
+    }
 }
+

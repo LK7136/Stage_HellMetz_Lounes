@@ -20,7 +20,23 @@
                 <span>Nouvel artiste</span>
             </a>
         </div>
-
+        <div style="display:flex; justify-content:flex-end; align-items:center; gap:.5rem; padding:.5rem 0;">
+            <form th:action="@{/artistes/liste}" method="get"
+                  style="display:flex; align-items:center; gap:.5rem; margin:0;">
+                <!-- on revient en page 1 quand on change la taille -->
+                <input type="hidden" name="page" value="0">
+                <label for="taille" style="font-size:.9rem;">Afficher</label>
+                <select id="taille" name="taille" class="form-select" style="width:auto;"
+                        onchange="this.form.submit()">
+                    <option value="10"   th:selected="${taille == '10'}">10</option>
+                    <option value="20"   th:selected="${taille == '20'}">20</option>
+                    <option value="50"   th:selected="${taille == '50'}">50</option>
+                    <option value="100"  th:selected="${taille == '100'}">100</option>
+                    <option value="tout" th:selected="${taille == 'tout'}">Tout</option>
+                </select>
+                <span style="font-size:.9rem;">par page</span>
+            </form>
+        </div>
 
         <div th:if="${#lists.isEmpty(artistes)}" style="padding: 40px; text-align: center;">
             <p>Aucun artiste enregistré pour le moment.</p>
@@ -82,6 +98,37 @@
                 </tr>
                 </tbody>
             </table>
+            <nav th:if="${taille != 'tout' and page.totalPages > 1}"
+                 style="display:flex; justify-content:space-between; align-items:center; padding:1rem 0;">
+
+    <span style="font-size:.85rem; color:var(--hm-text-muted);"
+          th:text="${page.totalElements} + ' artistes au total'">0 artistes</span>
+
+                <ul class="pagination mb-0">
+                    <!-- Précédent -->
+                    <li class="page-item" th:classappend="${page.first} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{/artistes/liste(page=${page.number - 1}, taille=${taille})}">‹</a>
+                    </li>
+
+                    <!-- Numéros de page (affichage 1-based) -->
+                    <li class="page-item"
+                        th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+                        th:classappend="${i == page.number} ? 'active'">
+                        <a class="page-link"
+                           th:href="@{/artistes/liste(page=${i}, taille=${taille})}"
+                           th:text="${i + 1}">1</a>
+                    </li>
+
+                    <!-- Suivant -->
+                    <li class="page-item" th:classappend="${page.last} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{/artistes/liste(page=${page.number + 1}, taille=${taille})}">›</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
 </div>
+</body>
+</html>

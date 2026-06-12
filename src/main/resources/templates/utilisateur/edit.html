@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::content})}">
+<head>
+  <title>Modifier utilisateur - HellMetz</title>
+</head>
+<body>
+<div th:fragment="content">
+  <div class="hm-card">
+    <div class="hm-card-header">
+      <div>
+        <div class="hm-tag">Administration</div>
+        <div class="hm-card-title"
+             th:text="${utilisateur.id != null} ? 'Modifier : ' + ${utilisateur.prenom} + ' ' + ${utilisateur.nom} : 'Nouvel utilisateur'">
+        </div>
+      </div>
+      <a th:href="@{/festival/utilisateurs/liste}" class="hm-btn-primary" style="background:#555;">
+        ← Retour
+      </a>
+    </div>
+
+    <div th:if="${erreur}" class="alert alert-danger" style="margin:16px;" th:text="${erreur}"></div>
+
+    <!-- Infos non modifiables (seulement en mode édition) -->
+    <div th:if="${utilisateur.id != null}"
+         style="display:grid; grid-template-columns:1fr 1fr; gap:16px; padding:24px; border-bottom:1px solid #333;">
+      <div>
+        <div style="color:#888; font-size:0.8rem; margin-bottom:4px;">Nom</div>
+        <div th:text="${utilisateur.nom}"></div>
+      </div>
+      <div>
+        <div style="color:#888; font-size:0.8rem; margin-bottom:4px;">Prénom</div>
+        <div th:text="${utilisateur.prenom}"></div>
+      </div>
+      <div>
+        <div style="color:#888; font-size:0.8rem; margin-bottom:4px;">Identifiant</div>
+        <div th:text="${utilisateur.identifiant}"></div>
+      </div>
+      <div>
+        <div style="color:#888; font-size:0.8rem; margin-bottom:4px;">Email</div>
+        <div th:text="${utilisateur.email}"></div>
+      </div>
+      <div>
+        <div style="color:#888; font-size:0.8rem; margin-bottom:4px;">Créé le</div>
+        <div th:text="${utilisateur.dateCreation != null ? #dates.format(utilisateur.dateCreation, 'dd/MM/yyyy') : '-'}"></div>
+      </div>
+      <div>
+        <div style="color:#888; font-size:0.8rem; margin-bottom:4px;">Dernière connexion</div>
+        <div th:text="${utilisateur.derniereConnexion != null ? #dates.format(utilisateur.derniereConnexion, 'dd/MM/yyyy') : 'Jamais'}"></div>
+      </div>
+    </div>
+
+    <!-- Formulaire -->
+    <form th:action="@{/festival/utilisateurs/edit}" method="post"
+          style="padding:24px; display:flex; flex-direction:column; gap:20px; max-width:400px;">
+      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+      <!-- id caché pour savoir si c'est un ajout ou une modification -->
+      <input type="hidden" name="id" th:value="${utilisateur.id}">
+
+      <div>
+        <label style="display:block; margin-bottom:8px;">Rôle</label>
+        <select name="idRole" class="form-select">
+          <option th:each="role : ${roles}"
+                  th:value="${role.idRole}"
+                  th:text="${role.libelle}"
+                  th:selected="${utilisateur.roles != null
+                                          and !utilisateur.roles.isEmpty()
+                                          and utilisateur.roles[0].idRole == role.idRole}">
+          </option>
+        </select>
+      </div>
+
+      <div>
+        <label style="display:block; margin-bottom:8px;">Statut du compte</label>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" name="actif"
+                 th:checked="${utilisateur.actif != null and utilisateur.actif}">
+          <label class="form-check-label">Compte actif</label>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:12px;">
+        <button type="submit" class="hm-btn-primary">💾 Enregistrer</button>
+        <a th:href="@{/festival/utilisateurs/liste}" class="hm-btn-primary" style="background:#555;">
+          Annuler
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+</body>
+</html>

@@ -47,8 +47,12 @@ public class Utilisateur {
     @Temporal(TemporalType.TIMESTAMP)
     private Date derniereConnexion;
 
-    @ManyToMany
-    @JoinTable(name = "role_utilisateur", joinColumns = @JoinColumn(name = "id_utilisateur"), inverseJoinColumns = @JoinColumn(name = "id_role"))
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "role_utilisateur",
+            joinColumns = @JoinColumn(name = "id_utilisateur"),
+            inverseJoinColumns = @JoinColumn(name = "id_role")
+    )
     private List<Role> roles;
 
 

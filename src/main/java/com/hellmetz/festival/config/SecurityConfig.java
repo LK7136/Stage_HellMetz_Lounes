@@ -30,8 +30,7 @@ public class SecurityConfig {
                         .requestMatchers("/css/**", "/js/**").permitAll()
                         // nimporte qui peut se login
                         .requestMatchers("/login").permitAll()
-                        //n'importe qui peut creer un compte (à adapter car n'importe qui peut etre admin)
-                        .requestMatchers("/login", "/register").permitAll()
+
 
 
                         //seule l'admin est organisateur ont accès a la page de parametres
